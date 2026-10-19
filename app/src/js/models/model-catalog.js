@@ -94,6 +94,27 @@ export const MODEL_CATALOG = [
     label: 'GPT 5.3 Spark',
     provider: 'codex',
     supportsFastMode: false
+  },
+  // OpenCode. The value is the opencode CLI's own model id, so the bridge
+  // can hand it to `opencode run --model` unchanged. The label is what the
+  // picker shows.
+  {
+    value: 'apmix/claude-sonnet-4-6-free',
+    label: 'Claude Sonnet 4.6 (OpenCode)',
+    provider: 'opencode',
+    supportsFastMode: false
+  },
+  {
+    value: 'apinex/free/gpt-6-luna',
+    label: 'GPT 6 Luna (OpenCode)',
+    provider: 'opencode',
+    supportsFastMode: false
+  },
+  {
+    value: 'gpt-uni/auto',
+    label: 'GPT-Uni (OpenCode)',
+    provider: 'opencode',
+    supportsFastMode: false
   }
 ];
 export const DEFAULT_MODEL_BY_PROVIDER = {
@@ -101,9 +122,10 @@ export const DEFAULT_MODEL_BY_PROVIDER = {
   // newest Claude and the provider default, above Opus 5.
   claude: 'claude-opus-5-5[1m]',
   codex: 'gpt-6.1-sol',
-  ropilot: 'ropilot-blaze'
+  ropilot: 'ropilot-blaze',
+  opencode: 'apmix/claude-sonnet-4-6-free'
 };
-export const COMPOSER_MODEL_PROVIDER_ORDER = ['ropilot', 'codex', 'claude'];
+export const COMPOSER_MODEL_PROVIDER_ORDER = ['ropilot', 'codex', 'claude', 'opencode'];
 export const ROPILOT_CREDITS_MODEL_VALUES = new Set([
   'gpt-6-astra',
   'gpt-6.1-sol',
@@ -215,6 +237,18 @@ export const ROPILOT_CREDITS_ROUTE_PRIORITY_LABELS = {
 export function normalizeSelectedModel(model) {
   const value = typeof model === 'string' ? model.trim().toLowerCase() : '';
   if (!value) return DEFAULT_MODEL_BY_PROVIDER.claude;
+  // OpenCode model ids are the CLI's own provider/model strings, and they can
+  // contain a legacy Claude alias by accident. A catalogued OpenCode value is
+  // not an alias and must not be rewritten to one.
+  if (MODEL_CATALOG.some((m) => m.provider === 'opencode' && m.value === value)) {
+    return value;
+  }
+  // OpenCode model ids are the CLI's own provider/model strings, and they can
+  // contain a legacy Claude alias by accident. A catalogued OpenCode value is
+  // not an alias and must not be rewritten to one.
+  if (MODEL_CATALOG.some((m) => m.provider === 'opencode' && m.value === value)) {
+    return value;
+  }
   // Legacy Claude aliases — the CLI resolves `opus`/`opus[1m]` to the latest.
   // Pin to explicit IDs so labels always match the actual model.
   // 2026-10-04: Claude is 1M-context only. Fable 5 and the standard-context
@@ -288,6 +322,7 @@ export function normalizeModelProvider(provider) {
   const value = typeof provider === 'string' ? provider.trim().toLowerCase() : '';
   if (value === 'ropilot' || value === 'google' || value === 'gemini') return 'ropilot';
   if (value === 'codex' || value === 'openai') return 'codex';
+  if (value === 'opencode' || value === 'oc') return 'opencode';
   return 'claude';
 }
 

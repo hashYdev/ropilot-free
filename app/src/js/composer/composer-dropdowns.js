@@ -1629,6 +1629,7 @@ export class ComposerDropdowns {
     const normalizedProvider = this.app.normalizeModelProvider(provider);
     if (normalizedProvider === 'ropilot') return 'Ropilot';
     if (normalizedProvider === 'codex') return 'OpenAI';
+    if (normalizedProvider === 'opencode') return 'OpenCode';
     return 'Anthropic';
   }
 

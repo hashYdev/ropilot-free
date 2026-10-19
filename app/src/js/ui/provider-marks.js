@@ -9,8 +9,12 @@ const OPENAI_MARK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="t
 
 const ROPILOT_MARK = '<img src="ropilot_favicon.png" alt="" aria-hidden="true">';
 
+// OpenCode's own mark: the stacked-layers glyph from its logo.
+const OPENCODE_MARK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 21 8 12 13 3 8 12 3Z"/><path d="M3 12 12 17 21 12"/><path d="M3 16 12 21 21 16"/></svg>';
+
 export function getProviderMarkSvg(provider) {
   const p = String(provider || '').trim().toLowerCase();
+  if (p === 'opencode' || p === 'oc') return OPENCODE_MARK;
   if (p === 'codex' || p === 'openai') return OPENAI_MARK;
   if (p === 'ropilot') return ROPILOT_MARK;
   if (p === 'claude' || p === 'anthropic') return CLAUDE_MARK;

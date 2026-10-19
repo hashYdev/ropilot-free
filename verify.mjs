@@ -158,6 +158,47 @@ check('the rewritten wall makes no network calls at all',
   !/\bfetch\s*\(/.test(after.get('src/js/credits/credits-wall.js') || ''),
   'no fetch, no billing, no telemetry');
 
+// ── 3b. the gates that are not about credits ───────────────────────────────
+// Three of these decide whether the build is free in practice, not just on
+// paper. The hosted UI is the big one: a packaged client loads
+// app.ropilot.ai, and the hosted bundle carries the paywall, so patching the
+// local tree changes nothing the user can see until the local branch is
+// forced.
+const setupFlow = after.get('src/js/setup-flow.js') || '';
+const sender = after.get('src/js/message-sender.js') || '';
+const catalog = after.get('src/js/models/model-catalog.js') || '';
+const mainBundle = after.get('main.min.js') || '';
+
+check('the local UI is loaded, not the hosted bundle',
+  mainBundle.includes('free build: loading the local UI')
+    && !/Development mode: Loading local UI/.test(mainBundle),
+  'the renderer loads the patched app/ instead of app.ropilot.ai');
+
+// The two gates that are removed are the unconditional ones. The one that
+// stays is in continueAfterApiKeySetup(), which only runs after a real login —
+// so the key is present and the guard never fires.
+const unconditionalLoginGate =
+  /if \(!this\.app\.apiKey\) \{\s*\n\s*this\._hideAllSetupScreens\(\);\s*\n\s*this\.showLoginSplash\(\);/;
+const unconditionalRouterGate =
+  /if \(!this\.app\.apiKey\) \{\s*\n\s*this\.showLoginSplash\(\);\s*\n\s*return;/;
+
+check('the Ropilot account gate is gone',
+  setupFlow.includes('free build: the Ropilot account gate is gone')
+    && !unconditionalLoginGate.test(setupFlow)
+    && !unconditionalRouterGate.test(setupFlow),
+  'setup falls through to provider install instead of the login splash');
+
+check('the API key no longer gates a local provider',
+  sender.includes('free build: the Ropilot API key check no longer gates a local')
+    && !sender.includes('// Check for API key (either global or folder-specific)')
+    && /normalizeModelProvider\(this\.app\.modelProvider\) === 'ropilot'/.test(sender),
+  'only the hosted provider still needs a Ropilot key');
+
+check('opencode is a provider',
+  catalog.includes("value === 'opencode'")
+    && catalog.includes("provider: 'opencode'"),
+  'the model catalog carries the opencode provider and its models');
+
 // ── 4. the artifact that actually ships, if it has been staged ─────────────
 let asar = null;
 if (fs.existsSync(ASAR)) {

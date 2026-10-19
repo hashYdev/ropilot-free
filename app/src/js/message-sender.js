@@ -612,17 +612,21 @@ export class MessageSender {
 
     if (this.blockUnavailableModel(this.app.selectedModel)) return;
 
-    // Check for API key (either global or folder-specific)
-    const effectiveKey = this.app.getEffectiveApiKey();
-    if (!effectiveKey) {
-      this.app.showApiKeyReminder();
-      return;
-    }
-
-    // Check if API key is validated
-    if (!isApiKeyValidated()) {
-      this.app.showApiKeyReminder('Your API key is invalid. Please double check.');
-      return;
+    // free build: the Ropilot API key check no longer gates a local
+    // provider. The key is a Ropilot account credential — it authenticates
+    // the hosted route, which is gone, and it is validated against their
+    // server. Claude Code, Codex and OpenCode are driven with the user's
+    // own login and never see it. Only the hosted provider still needs one.
+    if (this.app.normalizeModelProvider(this.app.modelProvider) === 'ropilot') {
+      const effectiveKey = this.app.getEffectiveApiKey();
+      if (!effectiveKey) {
+        this.app.showApiKeyReminder();
+        return;
+      }
+      if (!isApiKeyValidated()) {
+        this.app.showApiKeyReminder('Your API key is invalid. Please double check.');
+        return;
+      }
     }
 
     const requestImages = attachedImages.map((image) => ({

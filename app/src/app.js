@@ -2208,7 +2208,9 @@ class RopilotApp {
       ? options.displayContent.trim()
       : normalizedContent;
 
-    if (!this.getEffectiveApiKey()) {
+    // free build: same as the send path — a local provider does not need
+    // a Ropilot key, because the hosted route it authenticates is gone.
+    if (this.normalizeModelProvider(this.modelProvider) === 'ropilot' && !this.getEffectiveApiKey()) {
       this.showApiKeyReminder();
       return false;
     }

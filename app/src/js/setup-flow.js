@@ -671,14 +671,9 @@ export class SetupFlow {
   }
 
   async routeAfterProviderReady() {
-    // Login is the first onboarding step now, so the API key should always be
-    // present by the time we get here. If it isn't (state corruption, manual
-    // logout, etc.), kick back to the splash rather than dropping the user
-    // into a half-configured state.
-    if (!this.app.apiKey) {
-      this.showLoginSplash();
-      return;
-    }
+    // free build: this used to kick back to the login splash when there
+    // was no Ropilot API key. The hosted route is gone, so there is no
+    // key to be missing — carry on to the rest of onboarding.
 
     if (this.isFreeOfferOnboardingPending() && this.shouldShowPluginSetup()) {
       this.showPluginSetup();
@@ -1077,16 +1072,11 @@ export class SetupFlow {
     // The old provider intro screen is no longer a setup step.
     this.markProviderNoticeAcknowledged();
 
-    // Login is the first action in the new onboarding. If we don't have a
-    // Ropilot API key yet, show the splash login screen and stop here. The
-    // splash's "Log In" button drives `startRopilotLoginSetup`, which on
-    // success calls `applySetupApiKey` → `continueAfterApiKeySetup`, and that
-    // re-enters this method to continue with provider install/auth.
-    if (!this.app.apiKey) {
-      this._hideAllSetupScreens();
-      this.showLoginSplash();
-      return;
-    }
+    // free build: the Ropilot account gate is gone. Without a Ropilot
+    // API key this used to stop here on the login splash. The hosted
+    // route those keys authenticate to has been removed, so the key no
+    // longer gates anything: fall through to provider setup, which is
+    // where 1.3.1 started.
 
     // Use managed binary approach - check selected provider CLI status
     if (electronAPI().getClaudeCliStatus) {

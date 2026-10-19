@@ -46,9 +46,26 @@ export class ComposerFooter {
       this.app.clearCodexAccountPlan();
     }
 
+    // OpenCode has no status IPC, so ask the bridge — it reports which
+    // provider CLIs are actually installed. The ws URL already carries the
+    // port, so the same host serves it. The host has to be localhost and not
+    // 127.0.0.1: the page's connect-src allows http://localhost:* and not
+    // the loopback address, and the CSP refusal is silent in the UI.
+    let opencodeAuthenticated = false;
+    try {
+      const wsUrl = await electronAPI().getWsUrl?.();
+      const port = wsUrl ? (new URL(wsUrl).port || '8765') : '8765';
+      const res = await fetch(`http://localhost:${port}/providers`);
+      const info = await res.json();
+      opencodeAuthenticated = !!info?.opencode;
+    } catch (err) {
+      console.warn('Failed to fetch OpenCode availability for models:', err);
+    }
+
     return {
       claude: claudeAuthenticated,
-      codex: codexAuthenticated
+      codex: codexAuthenticated,
+      opencode: opencodeAuthenticated
     };
   }
 

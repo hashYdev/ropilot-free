@@ -70,6 +70,18 @@ python3 "$HERE/patch6.py"
 step "pass 7 — startup calls about the paid product"
 python3 "$HERE/patch7.py"
 
+step "pass 8 — load the local UI, not the hosted bundle"
+python3 "$HERE/patch8.py"
+
+step "pass 9 — take the Ropilot account gate off the front of setup"
+python3 "$HERE/patch9.py"
+
+step "pass 10 — OpenCode as a third provider"
+python3 "$HERE/patch10.py"
+
+step "pass 11 — the API key check on the send path"
+python3 "$HERE/patch11.py"
+
 # ── syntax ──────────────────────────────────────────────────────────────────
 step "parse every file the passes touched"
 SYN=$(mktemp -d)
