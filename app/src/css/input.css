@@ -1,0 +1,3284 @@
+/* ===========================================
+   Input Area - Textarea, Model Selector, Buttons
+   Synara-style composer: one quiet near-black shell, hairline border,
+   ghost footer controls, neutral popover menus.
+   =========================================== */
+
+/* Input Area */
+.input-area {
+  padding: 12px 0 12px;
+  margin-bottom: 4px;
+  background: transparent;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* macOS: More transparent input area for vibrancy */
+body.platform-darwin .input-area {
+  background: transparent;
+}
+
+/* ===========================================
+   Composer footer — Synara ChatComposerFooter, measured (1280x800, codex
+   dark): row padding 0 8 6 6; leading cluster ("+", access chip) gap 4px;
+   actions (context meter, model trigger, send) gap 8px. Every chip is the
+   Button sm/chrome: 28px, 0 10px, gap 6, radius 10, 12px/18 at ink .58,
+   hover = foreground text over the near-invisible elevated fill.
+   =========================================== */
+.input-options-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  padding: 0 8px 6px 6px;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+}
+
+.input-left-options {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+  flex-wrap: nowrap;
+  overflow: visible;
+}
+
+.input-right-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Model Selector */
+.model-selector {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.composer-dropdown {
+  padding: 0;
+}
+
+.composer-dropdown.is-open {
+  z-index: 60;
+}
+
+/* Shared chrome chip (Synara Button size=sm variant=chrome) */
+.composer-footer-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  box-sizing: border-box;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: var(--text-ui-sm);
+  font-weight: 400;
+  line-height: 18px;
+  white-space: nowrap;
+  transition: color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
+}
+
+.composer-footer-control:hover {
+  color: var(--text-primary);
+  background: rgba(252, 252, 252, 0.006);
+}
+
+.composer-footer-control.is-disabled {
+  opacity: 0.64;
+}
+
+/* Dropdown wrappers carry no chrome of their own; the trigger inside does */
+.composer-dropdown.composer-footer-control {
+  height: auto;
+  padding: 0;
+  border: none;
+}
+
+.composer-dropdown.composer-footer-control:hover,
+.composer-dropdown:focus-within {
+  background: transparent;
+}
+
+.composer-footer-toggle {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.composer-footer-toggle.hidden {
+  display: none;
+}
+
+.composer-footer-toggle:focus-visible,
+.composer-extras-trigger:focus-visible,
+.composer-dropdown-trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.6);
+}
+
+.composer-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  box-sizing: border-box;
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-ui-sm);
+  line-height: 18px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--dur) var(--ease-out), background-color var(--dur) var(--ease-out);
+}
+
+.composer-dropdown-trigger:hover,
+.composer-dropdown.is-open .composer-dropdown-trigger {
+  color: var(--text-primary);
+  background: rgba(252, 252, 252, 0.006);
+}
+
+.composer-dropdown.is-disabled .composer-dropdown-trigger {
+  cursor: default;
+}
+
+.composer-dropdown.is-disabled .composer-dropdown-trigger:hover {
+  background: transparent;
+}
+
+/* "+" extras trigger (Synara ComposerExtrasTrigger): 28px icon chrome button,
+   radius 8, a 16px plus at foreground/.8; the open state keeps the
+   button-secondary fill. */
+.composer-extras-trigger {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  box-sizing: border-box;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease-out);
+}
+
+.composer-extras-trigger svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  opacity: 0.8;
+}
+
+.composer-extras-trigger:hover {
+  background: rgba(252, 252, 252, 0.006);
+}
+
+.composer-extras-trigger.is-open {
+  background: rgba(252, 252, 252, 0.026);
+}
+
+/* Auto Playtest in Synara's access-mode chip slot: secondary ink while off,
+   the accent (Synara's "Approve for me" tone) while on. */
+#composer-auto-playtest-control.composer-access-chip {
+  flex-shrink: 0;
+}
+
+#composer-auto-playtest-control.is-active {
+  color: var(--accent);
+}
+
+#composer-auto-playtest-control.is-active:hover {
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+#composer-auto-playtest-control.is-inactive {
+  color: var(--text-secondary);
+}
+
+#composer-auto-playtest-control.is-inactive:hover {
+  color: var(--text-primary);
+}
+
+.composer-auto-playtest-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.composer-auto-playtest-icon svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+  stroke-width: 1.5;
+}
+
+/* Model trigger (Synara ComposerModelMenuTrigger): provider mark at full
+   strength, model in foreground, muted effort (ink .26), 12px chevron at .6. */
+#composer-model-trigger {
+  gap: 6px;
+}
+
+.composer-model-trigger-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.composer-model-trigger-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.composer-model-trigger-label .composer-footer-text {
+  color: var(--text-primary);
+}
+
+.composer-model-trigger-effort {
+  flex-shrink: 0;
+  color: rgba(252, 252, 252, 0.261);
+}
+
+.composer-model-trigger-effort:empty {
+  display: none;
+}
+
+.composer-model-trigger-fast {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  display: inline-flex;
+  color: var(--text-primary);
+}
+
+.composer-model-trigger-fast svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.composer-model-trigger-fast.hidden {
+  display: none;
+}
+
+/* While the picker is open its slider card owns effort: the label freezes
+   invisibly (it keeps sizing the pill) under a centred "Select effort". */
+.composer-model-trigger-placeholder {
+  position: absolute;
+  inset: 0;
+  display: none;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-secondary);
+}
+
+#composer-model-control.is-open.has-effort-slider .composer-model-trigger-label {
+  visibility: hidden;
+}
+
+#composer-model-control.is-open.has-effort-slider .composer-model-trigger-placeholder {
+  display: block;
+  animation: composerTriggerLabelEnter 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes composerTriggerLabelEnter {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.composer-footer-control.is-disabled select {
+  cursor: default;
+}
+
+.composer-footer-text {
+  min-width: 0;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.composer-footer-text:has(.composer-model-badge) {
+  max-width: 260px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.composer-model-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Footer model badge (Low quality): Synara's in-row capsule */
+.composer-model-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  padding: 0 6px;
+  border-radius: 999px;
+  border: none;
+  background: var(--fill-4);
+  color: rgba(252, 252, 252, 0.8);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 15px;
+  text-transform: none;
+}
+
+.composer-model-badge-low-quality {
+  background: color-mix(in srgb, var(--warning) 14%, transparent);
+  color: var(--warning);
+}
+
+.composer-model-badge-recommended {
+  background: rgba(var(--accent-rgb), 0.16);
+  color: var(--accent-light);
+}
+
+.composer-footer-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+.composer-footer-icon svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+#composer-model-icon {
+  color: var(--text-primary);
+}
+
+.composer-provider-logo {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.composer-provider-logo svg,
+.composer-provider-logo img {
+  width: 14px;
+  height: 14px;
+  display: block;
+  object-fit: contain;
+}
+
+.composer-provider-logo-ropilot img {
+  border-radius: 3px;
+}
+
+.composer-footer-chevron {
+  width: 12px;
+  height: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 2px;
+  color: currentColor;
+  opacity: 0.6;
+}
+
+.composer-footer-chevron svg {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+/* Synara toolbars have no dividers between controls */
+.composer-footer-separator {
+  display: none;
+}
+
+.composer-footer-hidden-controls {
+  display: none;
+}
+
+.composer-native-select {
+  display: none;
+}
+
+.reasoning-selector {
+  min-width: 0;
+}
+
+/* ===========================================
+   "+" extras panel — Synara ComposerExtrasPanel on the ComposerMenuPanel
+   chrome (measured): floats 8px above the composer, inset 4px from its
+   edges; opaque popover, ink .07 hairline, radius 18, 4px list inset.
+   "Add" label 12px at ink .35, padding 4 8 2. Rows 28px / 4px 8px / radius
+   14 / gap 8: a 16px icon slot (14px glyph) at ink .35, the title 12px/500
+   at ink .8, the dimmed secondary 12px at ink .32, trailing check at ink .7.
+   The highlighted row takes the button-secondary fill (.026), hover .039.
+   =========================================== */
+.composer-extras-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  z-index: 40;
+  margin-bottom: 8px;
+  padding: 8px 4px 0;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.composer-extras-panel[hidden] {
+  display: none;
+}
+
+.composer-extras-surface {
+  position: relative;
+  max-height: 288px;
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: var(--popover);
+  color: var(--text-primary);
+  box-sizing: border-box;
+  pointer-events: auto;
+}
+
+.composer-extras-group-label {
+  padding: 4px 8px 2px;
+  color: rgba(252, 252, 252, 0.348);
+  font-size: var(--text-ui-sm);
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.composer-extras-row {
+  width: 100%;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: var(--radius-lg);
+  box-sizing: border-box;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-ui);
+  font-weight: 400;
+  line-height: 19.5px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+
+.composer-extras-row.hidden {
+  display: none;
+}
+
+.composer-extras-row.is-highlighted {
+  background: rgba(252, 252, 252, 0.026);
+  color: var(--text-primary);
+}
+
+.composer-extras-row:hover {
+  background: var(--fill-hover);
+}
+
+.composer-extras-row:focus-visible {
+  outline: none;
+  background: var(--fill-hover);
+}
+
+.composer-extras-row:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.composer-extras-row-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(252, 252, 252, 0.348);
+  transition: color var(--dur) var(--ease-out);
+}
+
+.composer-extras-row.is-highlighted .composer-extras-row-icon {
+  color: rgba(252, 252, 252, 0.7);
+}
+
+.composer-extras-row-icon svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.composer-extras-row-body {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+}
+
+.composer-extras-row-title {
+  flex-shrink: 0;
+  color: rgba(252, 252, 252, 0.8);
+  font-size: var(--text-ui-sm);
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.composer-extras-row-secondary {
+  min-width: 0;
+  max-width: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgba(252, 252, 252, 0.319);
+  font-size: var(--text-ui-sm);
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.composer-extras-row-check,
+.composer-extras-row-trailing {
+  flex-shrink: 0;
+  display: none;
+  align-items: center;
+  padding-left: 8px;
+  color: rgba(252, 252, 252, 0.7);
+}
+
+.composer-extras-row-check svg,
+.composer-extras-row-trailing svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.composer-extras-row-trailing {
+  display: inline-flex;
+  width: auto;
+  height: auto;
+  margin: 0;
+  opacity: 1;
+  color: rgba(252, 252, 252, 0.244);
+}
+
+/* Toggle rows: a trailing check while on */
+.composer-extras-row[aria-pressed="true"] .composer-extras-row-check,
+.composer-extras-row.is-active-toggle .composer-extras-row-check,
+#composer-credits-fast-control.is-active .composer-extras-row-check,
+#btn-rojo.running .composer-extras-row-check {
+  display: inline-flex;
+}
+
+/* Managed Fast: the filled bolt wears the brand orange while on (a request
+   that costs more). */
+#composer-credits-fast-control.is-active .composer-credits-fast-icon,
+#composer-fast-mode-control[aria-pressed="true"] .composer-fast-icon {
+  color: var(--brand);
+}
+
+#composer-credits-fast-control.is-active .composer-credits-fast-icon svg path,
+#composer-fast-mode-control[aria-pressed="true"] .composer-fast-icon svg path {
+  fill: currentColor;
+}
+
+.composer-credits-fast {
+  position: relative;
+  display: block;
+}
+
+.composer-credits-fast.hidden {
+  display: none;
+}
+
+/* Cost popover: Synara tooltip surface, above the row's end, shown on
+   hover/focus so the price is readable before clicking. */
+.composer-credits-fast .composer-credits-fast-tip {
+  position: absolute;
+  left: auto;
+  right: 8px;
+  bottom: calc(100% + 4px);
+  top: auto;
+  width: 236px;
+  padding: 6px 8px;
+  border-radius: var(--radius-lg);
+  background: rgba(23, 23, 23, 0.7);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  backdrop-filter: blur(40px) saturate(150%);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-dropdown);
+  color: var(--text-secondary);
+  font-size: var(--text-ui-sm);
+  line-height: 18px;
+  z-index: 20;
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.98);
+  transform-origin: bottom right;
+  transition: opacity 140ms var(--ease-out), transform 140ms var(--ease-out), visibility 140ms var(--ease-out);
+  pointer-events: none;
+}
+
+.composer-credits-fast:hover .composer-credits-fast-tip,
+.composer-credits-fast:focus-within .composer-credits-fast-tip {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.composer-credits-fast .composer-credits-fast-tip::before {
+  display: none;
+}
+
+.composer-credits-fast-tip-title {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.composer-credits-fast-tip-cost {
+  margin-top: 2px;
+  color: var(--brand);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.composer-credits-fast-tip-note {
+  margin-top: 2px;
+  color: var(--text-secondary);
+}
+
+/* Route row: Synara's "chevron" row; its Standard/Priority menu opens above
+   the row's end. */
+.composer-extras-dropdown {
+  position: relative;
+  display: block;
+}
+
+.composer-extras-dropdown.hidden {
+  display: none;
+}
+
+#composer-credit-priority-trigger.composer-extras-row {
+  height: auto;
+  border: none;
+  padding: 4px 8px;
+}
+
+#composer-credit-priority-trigger.composer-extras-row:hover,
+#composer-credit-priority-control.is-open #composer-credit-priority-trigger {
+  background: var(--fill-hover);
+}
+
+#composer-credit-priority-control .composer-dropdown-menu {
+  left: auto;
+  right: 4px;
+  bottom: calc(100% + 4px);
+  min-width: 220px;
+}
+
+/* Rojo row: the secondary says what a click does; the spinner replaces the
+   mark while the server starts. */
+#btn-rojo .rojo-row-secondary::before {
+  content: 'Start file sync';
+}
+
+#btn-rojo.running .rojo-row-secondary::before {
+  content: 'Stop file sync';
+}
+
+#btn-rojo.starting .rojo-row-secondary::before {
+  content: 'Starting…';
+}
+
+#btn-rojo.starting {
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* ---------- Dropdown menus (popover) ----------
+   Synara picker surface (measured): popover/55 over a 40px backdrop blur,
+   which lands at ~#151515 over the #111 chat. Painted opaque here because
+   the menus live inside the composer's own backdrop-filter root, where a
+   nested blur would only sample the composer. 1px ink .07, radius 14,
+   0 6px 24px -10px black/.3, 6px inset (the model menu keeps 4px). */
+.composer-dropdown-menu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  z-index: 40;
+  min-width: max(220px, 100%);
+  max-width: min(320px, calc(100vw - 32px));
+  overflow: visible;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--popover) 66%, var(--surface));
+  color: var(--text-primary);
+  font-size: var(--text-ui);
+  font-weight: 400;
+  line-height: 19.5px;
+  box-shadow: var(--shadow-dropdown);
+  scrollbar-width: thin;
+  /* Opacity only: composer-dropdowns.js measures this menu as it opens, so
+     a scale/translate entrance would skew those rects */
+  animation: menuFadeIn 140ms var(--ease-out);
+}
+
+.composer-dropdown-menu[hidden] {
+  display: none;
+}
+
+.composer-dropdown-menu.is-model-menu {
+  min-width: 240px;
+  max-width: min(300px, calc(100vw - 32px));
+  padding: 4px;
+}
+
+/* The effort / route pickers sit at the composer's right edge: open them
+   end-aligned so they never run past the panel. */
+#composer-reasoning-control .composer-dropdown-menu {
+  left: auto;
+  right: 0;
+}
+
+/* Synara menu-label: 13px/snug at muted-foreground/45 (ink ~.26) */
+.composer-dropdown-group-label {
+  padding: 6px 8px;
+  color: var(--text-faint);
+  font-size: var(--text-ui);
+  font-weight: 400;
+  line-height: 17.875px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* Small explanatory footnote inside a dropdown menu */
+.composer-dropdown-note {
+  margin: 4px 0 0;
+  padding: 8px 8px 4px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: var(--text-ui-sm);
+  line-height: 18px;
+  white-space: normal;
+}
+
+.composer-dropdown-separator {
+  height: 1px;
+  margin: 4px 8px;
+  background: var(--border);
+}
+
+/* Synara menu item: 26px, 1px 8px, gap 8, radius 10, 13px/19.5 foreground.
+   Highlight is a flat ink .039 fill. */
+.composer-dropdown-entry {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 12px;
+  align-items: center;
+  gap: 8px;
+  min-height: 26px;
+  padding: 1px 8px;
+  border: none;
+  border-radius: var(--radius-btn);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-ui);
+  font-weight: 400;
+  line-height: 19.5px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.composer-dropdown-entry:hover,
+.composer-dropdown-entry:focus-visible,
+.composer-dropdown-entry.is-highlighted {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.composer-dropdown-entry.is-disabled,
+.composer-dropdown-entry.is-disabled:hover,
+.composer-dropdown-entry.is-disabled:focus-visible,
+.composer-dropdown-entry.is-disabled.is-highlighted {
+  background: transparent;
+  color: var(--text-primary);
+  opacity: 0.64;
+  cursor: default;
+  outline: none;
+}
+
+/* Locked rows keep full opacity on the row itself: the content fades and the
+   "Upgrade to Plus" overlay stays legible on top. */
+.composer-dropdown-entry.is-locked,
+.composer-dropdown-entry.is-locked:hover,
+.composer-dropdown-entry.is-locked:focus-visible,
+.composer-dropdown-entry.is-locked.is-highlighted {
+  opacity: 1;
+}
+
+.composer-dropdown-item {
+  position: relative;
+  padding-right: 8px;
+  overflow: hidden;
+}
+
+/* Selected check trails the row like Synara's radio items: content takes
+   the first column, the 12px check the last. */
+.composer-dropdown-item > .composer-dropdown-item-content {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.composer-dropdown-item > .composer-dropdown-item-indicator {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.composer-dropdown-item-content {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.composer-dropdown-item-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 1;
+}
+
+.composer-dropdown-item-icon img {
+  width: 14px;
+  height: 14px;
+  display: block;
+  object-fit: contain;
+}
+
+/* Model rows in the submenu: provider glyph a touch larger than chrome icons */
+.composer-dropdown-submenu .composer-dropdown-item-icon,
+.composer-dropdown-submenu .composer-dropdown-item-icon img {
+  width: 16px;
+  height: 16px;
+}
+
+.composer-dropdown-item.is-disabled {
+  cursor: default;
+}
+
+.composer-dropdown-item.is-locked {
+  min-height: 26px;
+  cursor: not-allowed;
+}
+
+.composer-dropdown-item.is-locked::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: transparent;
+  pointer-events: none;
+}
+
+.composer-dropdown-item.is-locked .composer-dropdown-item-indicator,
+.composer-dropdown-item.is-locked .composer-dropdown-item-content {
+  opacity: 0.5;
+}
+
+/* The trailing upgrade hint replaces the row's cost meter / badge */
+.composer-dropdown-entry.is-locked .composer-dropdown-item-cost,
+.composer-dropdown-entry.is-locked .composer-dropdown-item-pill,
+.composer-dropdown-provider.is-locked .composer-dropdown-provider-chevron {
+  visibility: hidden;
+}
+
+.composer-dropdown-item.is-locked .composer-dropdown-item-indicator,
+.composer-dropdown-item.is-locked.is-selected .composer-dropdown-item-indicator {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.composer-dropdown-item-indicator {
+  width: 12px;
+  height: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  opacity: 0;
+}
+
+.composer-dropdown-item-indicator svg {
+  width: 12px;
+  height: 12px;
+  display: block;
+}
+
+.composer-dropdown-item.is-selected .composer-dropdown-item-indicator {
+  opacity: 1;
+}
+
+.composer-dropdown-item-label {
+  min-width: 0;
+  flex: 1 1 auto;
+  line-height: 19.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Synara's in-row chip (the model picker's "Ctrl 1" keycap): 16px capsule,
+   0 8px, 10px/500 at ink .8 on an ink .12 fill (~#313131 in the menu). */
+.composer-dropdown-item-pill {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  min-height: 16px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 999px;
+  background: var(--fill-4);
+  color: rgba(252, 252, 252, 0.8);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 15px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.composer-dropdown-item-pill-free {
+  background: color-mix(in srgb, var(--success) 16%, transparent);
+  color: #3fc072;
+}
+
+.composer-dropdown-item-pill-low-quality {
+  background: color-mix(in srgb, var(--warning) 14%, transparent);
+  color: var(--warning);
+}
+
+.composer-dropdown-item-pill-new {
+  background: var(--fill-4);
+  color: rgba(252, 252, 252, 0.8);
+}
+
+.composer-dropdown-item-pill-recommended {
+  background: rgba(var(--accent-rgb), 0.18);
+  color: var(--accent-light);
+}
+
+.composer-dropdown-item-pill-context {
+  background: var(--fill-4);
+  color: rgba(252, 252, 252, 0.8);
+  box-shadow: none;
+}
+
+/* One-line model descriptor under the label (Ropilot Credits menu): label
+   row and sub stack in a column beside the icon, so the sub aligns exactly
+   under the label text. */
+.composer-dropdown-item-with-sub {
+  padding: 5px 10px;
+}
+
+.composer-dropdown-item-main {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.composer-dropdown-item-title {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.composer-dropdown-item-sub {
+  min-width: 0;
+  font-size: var(--text-ui);
+  font-weight: 400;
+  line-height: 17.875px;
+  color: var(--text-secondary);
+  white-space: normal;
+}
+
+/* Descriptor rows are taller — give the list room to breathe and keep the
+   pill from crowding the cost meter. */
+.composer-dropdown-submenu:has(.composer-dropdown-item-sub) {
+  min-width: 340px;
+}
+
+.composer-dropdown-item-pill + .composer-dropdown-item-cost {
+  margin-left: 8px;
+}
+
+/* Featured flagship row (Ropilot Credits): Synara rows carry no card, so
+   the flagship keeps only a medium-weight name — hierarchy without chrome. */
+.composer-dropdown-item-featured {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.composer-dropdown-item-featured:hover,
+.composer-dropdown-item-featured:focus-visible,
+.composer-dropdown-item-featured.is-highlighted {
+  background: var(--fill-hover);
+}
+
+.composer-dropdown-item-featured .composer-dropdown-item-label {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.composer-dropdown-item-featured .composer-dropdown-item-sub {
+  color: var(--text-secondary);
+}
+
+/* Descriptor rows top-align their glyph with the title line */
+.composer-dropdown-item-with-sub .composer-dropdown-item-content {
+  align-items: flex-start;
+}
+
+.composer-dropdown-item-with-sub .composer-dropdown-item-content > .composer-dropdown-item-icon {
+  margin-top: 2px;
+}
+
+.composer-dropdown-item-with-sub > .composer-dropdown-item-indicator {
+  align-self: start;
+  margin-top: 4px;
+}
+
+/* Reasoning-level cost meter ($ = cheap … $$$$ = expensive) */
+.composer-dropdown-item-cost {
+  margin-left: auto;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-ui-sm);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.composer-dropdown-item-cost .reasoning-cost-muted {
+  color: var(--text-faint);
+  opacity: 0.6;
+}
+
+.composer-dropdown-item-cost .route-priority-cost-muted {
+  color: var(--text-faint);
+  opacity: 0.6;
+}
+
+.composer-dropdown-item-cost .model-cost-muted {
+  color: var(--text-faint);
+  opacity: 0.6;
+}
+
+.reasoning-cost-low .reasoning-cost-filled {
+  color: var(--success);
+}
+
+.reasoning-cost-medium .reasoning-cost-filled {
+  color: var(--warning);
+}
+
+.reasoning-cost-high .reasoning-cost-filled {
+  color: var(--brand);
+}
+
+.reasoning-cost-xhigh .reasoning-cost-filled,
+.reasoning-cost-max .reasoning-cost-filled {
+  color: var(--error);
+}
+
+.reasoning-cost-ultra .reasoning-cost-filled {
+  color: #b18cf2;
+}
+
+.route-priority-cost-economy .route-priority-cost-filled {
+  color: var(--success);
+}
+
+.route-priority-cost-priority .route-priority-cost-filled {
+  color: var(--brand);
+}
+
+.model-cost-1 .model-cost-filled {
+  color: var(--success);
+}
+
+.model-cost-2 .model-cost-filled {
+  color: var(--warning);
+}
+
+.model-cost-3 .model-cost-filled {
+  color: var(--brand);
+}
+
+.model-cost-4 .model-cost-filled {
+  color: var(--error);
+}
+
+.model-cost-5 .model-cost-filled {
+  color: #b18cf2;
+}
+
+/* Locked provider hint (lock + "Upgrade to Plus"): a quiet overlay, no pill */
+.composer-dropdown-provider-lock-overlay {
+  position: absolute;
+  left: auto;
+  right: 8px;
+  top: 50%;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.composer-dropdown-provider-lock-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  opacity: 0.8;
+}
+
+.composer-dropdown-provider-lock-icon svg {
+  width: 13px;
+  height: 13px;
+  display: block;
+}
+
+.composer-dropdown-provider-upgrade {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: currentColor;
+  font-size: var(--text-ui-sm);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.composer-dropdown-submenu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.composer-dropdown-submenu-empty {
+  padding: 4px 8px;
+  color: var(--text-muted);
+  font-size: var(--text-ui);
+}
+
+/* ===========================================
+   Model picker — Synara ComposerModelPicker, measured:
+   296px popup aligned with the trigger's start edge, 4px above it; glassier
+   than other pickers (popover/55 over a 64px, 200% saturate blur), ink .07
+   hairline, radius 14, 0 6px 24px -10px black/.3. Inside, edge to edge:
+   - mode row: Ropilot Credits / My subscription (Synara SegmentedPicker)
+   - tab strip: 6px inset, 28px icon tabs (radius 10, ink .41; the open tab
+     is foreground with a 2px accent bar hanging 4px below it), "+" at the end
+   - search row: 0 12px, 14px magnifier at ink .32, 12px input, hairline
+   - list: 4px inset, max 200px, rows 26px / 1px 8px / radius 10 / gap 8,
+     13px name, muted detail, "Ctrl 1" capsule (16px, 10px/500 at ink .8 on
+     ink .12), 20px star at ink .29 (amber when starred)
+   - footer: hairline, 4px inset, the effort slider card
+   =========================================== */
+#composer-model-control {
+  position: relative;
+}
+
+#composer-model-control .composer-dropdown-menu.is-model-menu {
+  left: 0;
+  right: auto;
+  bottom: calc(100% + 4px);
+  width: min(296px, 92vw);
+  min-width: 0;
+  max-width: 92vw;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: rgba(23, 23, 23, 0.55);
+  -webkit-backdrop-filter: blur(64px) saturate(200%);
+  backdrop-filter: blur(64px) saturate(200%);
+  box-shadow: var(--shadow-dropdown);
+  color: var(--text-primary);
+  font-size: var(--text-ui);
+  line-height: 19.5px;
+  animation: composerPickerEnter 140ms var(--ease-out);
+}
+
+@keyframes composerPickerEnter {
+  from {
+    opacity: 0;
+    scale: 0.98;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.composer-model-picker {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mode row: Synara's raised-thumb segmented control (track = chat
+   background, ink .08 rim, inset shadow; the selected chip hangs past the
+   track ends) */
+.composer-model-picker-mode {
+  padding: 8px 12px 2px;
+}
+
+.composer-segmented {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  width: 100%;
+  padding: 2px;
+  border: 1px solid rgba(252, 252, 252, 0.08);
+  border-radius: var(--radius-btn);
+  background: var(--surface);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+}
+
+.composer-segmented-thumb {
+  position: absolute;
+  top: -1.5px;
+  bottom: -1.5px;
+  z-index: 0;
+  border: 1px solid rgba(252, 252, 252, 0.07);
+  border-radius: var(--radius-md);
+  background: var(--popover);
+  box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+  transition: left 300ms var(--ease-panel), width 300ms var(--ease-panel);
+}
+
+/* Two options: each end chip overhangs its end by 5px + rim */
+.composer-segmented[data-active="credits"] .composer-segmented-thumb {
+  left: calc(-1px - 5px);
+  width: calc((100% - 4px) / 2 + 2px + 1px + 5px);
+}
+
+.composer-segmented[data-active="subscription"] .composer-segmented-thumb {
+  left: calc(2px + (100% - 4px) / 2);
+  width: calc((100% - 4px) / 2 + 2px + 1px + 5px);
+}
+
+.composer-segmented-option {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 10px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-ui-sm);
+  font-weight: 500;
+  line-height: 18px;
+  cursor: pointer;
+  transition: color 200ms var(--ease-out);
+}
+
+.composer-segmented-option:hover,
+.composer-segmented-option[aria-checked="true"] {
+  color: var(--text-primary);
+}
+
+.composer-segmented-option:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.composer-segmented-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  transition: transform 300ms var(--ease-panel);
+}
+
+.composer-segmented-label > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.composer-segmented-label svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* End chips are wider than their cell; their labels shift half the extra out */
+.composer-segmented[data-active="credits"] [data-ai-mode="credits"] .composer-segmented-label {
+  transform: translateX(-4px);
+}
+
+.composer-segmented[data-active="subscription"] [data-ai-mode="subscription"] .composer-segmented-label {
+  transform: translateX(4px);
+}
+
+.composer-dropdown-menu.is-model-menu .composer-dropdown-model-layout {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tab strip */
+.composer-model-picker-tabs {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.composer-dropdown-menu.is-model-menu .composer-dropdown-provider-list {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  margin: -4px 0;
+  padding: 4px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.composer-model-picker-tabs-end {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.composer-model-picker-tabs-end:empty {
+  display: none;
+}
+
+.composer-model-picker-tab.composer-dropdown-entry {
+  position: relative;
+  width: auto;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 6px;
+  border-radius: var(--radius-btn);
+  background: transparent;
+  color: rgba(252, 252, 252, 0.406);
+  overflow: visible;
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+
+.composer-model-picker-tab.composer-dropdown-entry:hover:not(.is-disabled),
+.composer-model-picker-tab.composer-dropdown-entry:focus-visible {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.composer-model-picker-tab.is-active {
+  color: var(--text-primary);
+}
+
+.composer-model-picker-tab.is-active::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: -4px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--accent-strong);
+}
+
+.composer-model-picker-tab .composer-dropdown-provider-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
+.composer-model-picker-tab .composer-dropdown-provider-label,
+.composer-model-picker-tab .composer-dropdown-item-cost {
+  display: none;
+}
+
+/* Provider marks are always full-strength; the bar shows the selection */
+.composer-model-picker-tab .composer-dropdown-item-icon,
+.composer-model-picker-tab .composer-dropdown-item-icon svg,
+.composer-model-picker-tab .composer-dropdown-item-icon img {
+  width: 16px;
+  height: 16px;
+  color: var(--text-primary);
+}
+
+.composer-model-picker-tab-glyph,
+.composer-model-picker-tab-glyph svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+/* Locked provider (Anthropic without Plus): dimmed mark plus a lock badge;
+   the tooltip explains. Pointer events stay on so the tooltip can show. */
+.composer-model-picker-tab.is-locked {
+  cursor: default;
+  opacity: 1;
+}
+
+.composer-model-picker-tab.is-locked:disabled {
+  pointer-events: auto;
+}
+
+.composer-model-picker-tab.is-locked .composer-dropdown-item-icon {
+  opacity: 0.4;
+}
+
+.composer-model-picker-tab .composer-dropdown-provider-lock-overlay {
+  right: 1px;
+  top: auto;
+  bottom: 2px;
+  transform: none;
+  color: var(--text-primary);
+}
+
+.composer-model-picker-tab .composer-dropdown-provider-lock-icon,
+.composer-model-picker-tab .composer-dropdown-provider-lock-icon svg {
+  width: 10px;
+  height: 10px;
+  opacity: 0.9;
+}
+
+.composer-model-picker-tab .composer-dropdown-provider-upgrade {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Search row */
+.composer-model-picker-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.composer-model-picker-search-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  display: inline-flex;
+  color: rgba(252, 252, 252, 0.319);
+}
+
+.composer-model-picker-search-icon svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.composer-model-picker-search-input {
+  min-width: 0;
+  width: 100%;
+  height: 28px;
+  padding: 4px 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: var(--text-ui-sm);
+  line-height: 18px;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.composer-model-picker-search-input::placeholder {
+  color: rgba(252, 252, 252, 0.319);
+}
+
+.composer-model-picker-search-input::-webkit-search-cancel-button {
+  display: none;
+}
+
+/* Model list */
+.composer-dropdown-menu.is-model-menu .composer-dropdown-submenu {
+  position: static;
+  min-width: 0;
+  max-width: none;
+  min-height: 80px;
+  max-height: min(200px, 40vh);
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(252, 252, 252, 0.12) transparent;
+}
+
+.composer-dropdown-menu.is-model-menu .composer-dropdown-submenu-empty {
+  padding: 12px 8px;
+  color: var(--text-secondary);
+  font-size: var(--text-ui);
+  line-height: 21.125px;
+}
+
+.composer-dropdown-menu.is-model-menu .composer-dropdown-note {
+  margin: 4px 0 0;
+  padding: 6px 8px 2px;
+  color: var(--text-muted);
+}
+
+.composer-model-row.composer-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 26px;
+  padding: 1px 4px 1px 8px;
+  border-radius: var(--radius-btn);
+  overflow: hidden;
+}
+
+.composer-model-row.composer-dropdown-item.composer-dropdown-item-with-sub {
+  padding: 1px 4px 1px 8px;
+}
+
+.composer-model-row:hover,
+.composer-model-row:focus-visible {
+  background: var(--fill-hover);
+}
+
+.composer-model-row.is-selected {
+  background: var(--fill-selected);
+}
+
+.composer-model-row.is-selected:hover,
+.composer-model-row.is-selected:focus-visible {
+  background: var(--fill-hover);
+}
+
+/* The selected model's check sits right after its name, so clicking through
+   models with the picker open (it stays open for the effort card) always shows
+   which one is picked; hover and focus only tint the row. */
+.composer-model-row > .composer-dropdown-item-indicator {
+  display: none;
+  order: 1;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+
+.composer-model-row.is-selected > .composer-dropdown-item-indicator {
+  display: inline-flex;
+}
+
+.composer-model-row > .composer-dropdown-item-content {
+  order: 0;
+}
+
+.composer-model-row > :not(.composer-dropdown-item-indicator):not(.composer-dropdown-item-content) {
+  order: 2;
+}
+
+.composer-model-row .composer-dropdown-item-content {
+  min-width: 0;
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+/* The open tab already names the provider; preset rows (Starred) keep it */
+.composer-model-row .composer-dropdown-item-content > .composer-dropdown-item-icon {
+  display: none;
+}
+
+.composer-model-row-preset .composer-dropdown-item-content > .composer-dropdown-item-icon {
+  display: inline-flex;
+}
+
+.composer-model-row .composer-dropdown-item-icon,
+.composer-model-row .composer-dropdown-item-icon svg,
+.composer-model-row .composer-dropdown-item-icon img {
+  width: 14px;
+  height: 14px;
+}
+
+.composer-model-row .composer-dropdown-item-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.composer-model-row .composer-dropdown-item-title {
+  min-width: 0;
+  gap: 6px;
+}
+
+.composer-model-row .composer-dropdown-item-label {
+  flex: 0 1 auto;
+}
+
+/* Synara rows are single-line: the descriptor rides on the row tooltip */
+.composer-model-row .composer-dropdown-item-sub {
+  display: none;
+}
+
+.composer-model-row.composer-dropdown-item-featured .composer-dropdown-item-label {
+  font-weight: 400;
+}
+
+.composer-model-row .composer-dropdown-item-pill {
+  margin-left: 0;
+}
+
+.composer-model-row .composer-dropdown-item-cost {
+  margin-left: 0;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+.composer-model-row .composer-dropdown-item-pill + .composer-dropdown-item-cost {
+  margin-left: 0;
+}
+
+.composer-model-row-detail {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-secondary);
+}
+
+.composer-model-row-spacer {
+  flex: 1 1 auto;
+}
+
+.composer-model-kbd {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 16px;
+  min-width: 16px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(252, 252, 252, 0.12);
+  color: rgba(252, 252, 252, 0.8);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 15px;
+  white-space: nowrap;
+  box-shadow: none;
+  pointer-events: none;
+}
+
+.composer-model-star {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-lg);
+  color: rgba(252, 252, 252, 0.29);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+
+.composer-model-star svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.composer-model-star:hover {
+  background: rgba(252, 252, 252, 0.05);
+  color: var(--text-primary);
+}
+
+.composer-model-star.is-starred {
+  color: #fbbf24;
+}
+
+.composer-model-star.is-starred:hover {
+  color: #fcd34d;
+}
+
+/* No models yet (subscription mode, nothing signed in): Synara "needs setup" */
+.composer-model-picker-setup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px !important;
+  text-align: center;
+}
+
+.composer-model-picker-setup-title {
+  color: var(--text-primary);
+  font-size: var(--text-ui);
+  font-weight: 500;
+}
+
+.composer-model-picker-setup-text {
+  color: var(--text-secondary);
+  font-size: var(--text-ui-sm);
+  line-height: 1.375;
+}
+
+.composer-model-picker-setup-button {
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-ui-xs);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.composer-model-picker-setup-button:hover {
+  background: rgba(252, 252, 252, 0.006);
+}
+
+/* Footer: the effort slider card (Synara ComposerEffortSliderCard) */
+.composer-model-picker-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px;
+  border-top: 1px solid var(--border);
+}
+
+.composer-model-picker-footer[hidden] {
+  display: none;
+}
+
+.composer-effort-card {
+  --effort-thumb: 28px;
+  --effort-p: 0;
+  padding: 2px 4px 4px;
+}
+
+.composer-effort-card-head {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 24px;
+  align-items: center;
+  gap: 4px;
+}
+
+.composer-effort-fast-slot {
+  width: 24px;
+  height: 24px;
+}
+
+.composer-effort-label {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  overflow: hidden;
+  color: var(--accent);
+  font-size: var(--text-ui);
+  font-weight: 500;
+  line-height: 19.5px;
+  white-space: nowrap;
+}
+
+.composer-effort-label .composer-dropdown-item-cost,
+.composer-effort-label .composer-dropdown-item-pill {
+  margin-left: 0;
+  font-size: 11px;
+}
+
+.composer-effort-label-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.composer-effort-label-lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--text-secondary);
+  font-size: var(--text-ui-sm);
+  font-weight: 500;
+}
+
+.composer-effort-label-lock svg {
+  width: 12px;
+  height: 12px;
+}
+
+.composer-effort-card.is-locked-preview .composer-effort-label-text {
+  color: var(--text-secondary);
+}
+
+.composer-effort-icon-button {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: rgba(252, 252, 252, 0.406);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out), opacity var(--dur) var(--ease-out);
+}
+
+.composer-effort-icon-button svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.composer-effort-icon-button:hover {
+  background: rgba(252, 252, 252, 0.06);
+  color: var(--text-primary);
+}
+
+.composer-effort-icon-button:disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.composer-effort-fast.is-on {
+  color: var(--accent);
+}
+
+/* Stepped slider: 24px track at ink .14, accent fill to the thumb's centre,
+   one 4px dot per level on an inset rail (white/.55 under the fill, ink .28
+   past it), a 28px white thumb flush with the track ends. Thumb and fill
+   glide between stops with a short overshoot (Synara "magnetic"). */
+.composer-effort-slider {
+  margin-top: 4px;
+  padding: 2px 2px;
+  outline: none;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.composer-effort-card.is-pressed .composer-effort-slider {
+  cursor: grabbing;
+}
+
+.composer-effort-track {
+  position: relative;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(252, 252, 252, 0.14);
+}
+
+.composer-effort-indicator {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: calc((100% - var(--effort-thumb)) * var(--effort-p) + var(--effort-thumb) / 2);
+  border-radius: 999px;
+  background: var(--accent-strong);
+  transition: width 180ms cubic-bezier(0.22, 1.1, 0.36, 1), opacity 180ms cubic-bezier(0.22, 1.1, 0.36, 1);
+}
+
+.composer-effort-card.is-at-min .composer-effort-indicator {
+  opacity: 0;
+}
+
+.composer-effort-marks {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--effort-thumb) / 2);
+  right: calc(var(--effort-thumb) / 2);
+  pointer-events: none;
+}
+
+.composer-effort-mark {
+  position: absolute;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(252, 252, 252, 0.28);
+  transform: translate(-50%, -50%);
+  transition: background-color 180ms var(--ease-out);
+}
+
+.composer-effort-mark.is-filled {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* Plus-locked stops: a hollow dot */
+.composer-effort-mark.is-locked:not(.is-filled) {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px rgba(252, 252, 252, 0.3);
+}
+
+.composer-effort-thumb {
+  position: absolute;
+  top: -2px;
+  left: calc((100% - var(--effort-thumb)) * var(--effort-p));
+  width: var(--effort-thumb);
+  height: var(--effort-thumb);
+  border-radius: 999px;
+  transition: left 180ms cubic-bezier(0.22, 1.1, 0.36, 1);
+}
+
+.composer-effort-thumb > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 0 0 0.5px rgba(0, 0, 0, 0.05);
+  transition: scale 150ms ease-out, box-shadow 150ms ease-out;
+}
+
+.composer-effort-card.is-pressed .composer-effort-thumb > span {
+  scale: 1.05;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.14), 0 0 0 0.5px rgba(0, 0, 0, 0.05);
+}
+
+.composer-effort-slider:focus-visible .composer-effort-thumb > span {
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.4), 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.composer-effort-note {
+  padding: 4px 4px 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  color: rgba(252, 252, 252, 0.464);
+  font-size: var(--text-ui);
+  line-height: 1.375;
+}
+
+.composer-effort-note[hidden] {
+  display: none;
+}
+
+/* Synara "picker" tooltip: frosted popover/70, ink .07 hairline, radius 14,
+   4px 8px, 12px/18 foreground */
+.composer-tooltip {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2000;
+  max-width: 256px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: rgba(23, 23, 23, 0.7);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  backdrop-filter: blur(40px) saturate(150%);
+  box-shadow: var(--shadow-dropdown);
+  color: var(--text-primary);
+  font-size: var(--text-ui-sm);
+  font-weight: 400;
+  line-height: 18px;
+  pointer-events: none;
+  opacity: 0;
+  scale: 0.98;
+  transition: opacity 120ms var(--ease-out), scale 120ms var(--ease-out);
+  text-wrap: balance;
+}
+
+.composer-tooltip.is-wide {
+  max-width: 240px;
+  padding: 6px 10px;
+}
+
+.composer-tooltip.is-visible {
+  opacity: 1;
+  scale: 1;
+}
+
+.composer-tooltip[hidden] {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  #composer-model-control .composer-dropdown-menu.is-model-menu {
+    width: min(296px, calc(100vw - 24px));
+  }
+}
+
+.codex-fast-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.codex-fast-toggle.hidden {
+  display: none;
+}
+
+.codex-fast-toggle .toggle-label {
+  font-size: var(--text-ui-sm);
+  color: var(--text-secondary);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.codex-fast-toggle .toggle-info-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--fill-3);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  padding: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+}
+
+.codex-fast-toggle .toggle-info-badge:hover,
+.codex-fast-toggle .toggle-info-badge:focus-visible {
+  background: var(--fill-4);
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+/* Tooltip surface (Synara, measured): popover over blur (~#151515), ink
+   .07 hairline, radius 10, 4px 8px inset, 12px/18 foreground, shadow-xl,
+   no arrow */
+.codex-fast-toggle .toggle-info-tip {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  width: 220px;
+  padding: 4px 8px;
+  border-radius: var(--radius-btn);
+  background: color-mix(in srgb, var(--popover) 66%, var(--surface));
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+  font-size: var(--text-ui-sm);
+  line-height: 18px;
+  z-index: 20;
+}
+
+.codex-fast-toggle .toggle-info-tip.hidden {
+  display: none;
+}
+
+.codex-fast-toggle .toggle-info-tip::before {
+  display: none;
+}
+
+/* Auto Playtest Toggle (hidden legacy checkbox): uses the standard switch */
+.auto-playtest-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.auto-playtest-toggle .toggle-label {
+  font-size: var(--text-ui-sm);
+  color: var(--text-secondary);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.beta-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 16px;
+  padding: 0 5px;
+  background: var(--fill-3);
+  border-radius: var(--radius-sm);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* ---------- Switch (Synara): 32x20 track, 16px white thumb ---------- */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 32px;
+  height: 20px;
+}
+
+.toggle-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  background-color: #454545;
+  border: 1px solid rgba(252, 252, 252, 0.14);
+  border-radius: 999px;
+  transition: background-color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), box-shadow var(--dur) var(--ease-out);
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 1px;
+  top: 1px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background-color: var(--accent-strong);
+  border-color: var(--accent-strong);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+  background-color: #ffffff;
+  transform: translateX(12px);
+}
+
+.toggle-switch input:focus-visible + .toggle-slider {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.toggle-switch input:disabled + .toggle-slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toggle-switch:hover .toggle-slider {
+  border-color: var(--border-focus);
+}
+
+.toggle-switch:hover input:checked + .toggle-slider {
+  border-color: var(--accent-strong);
+}
+
+.input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  width: 100%;
+  max-width: min(var(--chat-column-width), var(--chat-content-max-width, 860px));
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+/* ---------- Composer shell ---------- */
+/* Synara chat-composer-surface (measured): 736px, radius 19.2, hairline ink
+   .039, 0 6px 24px -10px black/.3, popover/55 frost. The frost lives on a
+   pseudo-element (as in Synara) so the shell is not a backdrop root and the
+   pickers anchored inside it can blur the transcript themselves. Focus does
+   not restyle the shell. */
+.composer-shell {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  isolation: isolate;
+  background: transparent;
+  border: 1px solid var(--border-composer);
+  border-radius: var(--radius-composer);
+  box-shadow: var(--shadow-composer);
+  transition: border-color 200ms var(--ease-out);
+}
+
+.composer-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--composer-bg);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  backdrop-filter: blur(40px) saturate(150%);
+  pointer-events: none;
+}
+
+/* Plan mode keeps its teal frame as a mode signal, hairline weight */
+.input-area.plan-mode-active .composer-shell {
+  border-color: var(--plan-border);
+}
+
+.input-area.plan-mode-active .composer-shell:hover {
+  border-color: rgba(var(--plan-accent-rgb), 0.44);
+}
+
+.input-area.plan-mode-active .composer-shell:focus-within {
+  border-color: var(--plan-focus);
+}
+
+/* ---------- Slash command menu (popover above the composer) ---------- */
+/* Synara command menu (measured): opaque popover, ink .07 hairline, radius
+   18, 4px inset, sitting 8px above the composer and inset 6px from its
+   edges. Rows 28px / 4px 8px / radius 14; the active row is a .027 fill. */
+.slash-command-menu {
+  margin-bottom: 8px;
+  border: 1px solid var(--border);
+  background: var(--popover);
+  border-radius: var(--radius-xl);
+  box-shadow: none;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  animation: menuFadeIn 140ms var(--ease-out);
+}
+
+.slash-command-menu.hidden {
+  display: none;
+}
+
+.slash-command-item {
+  width: 100%;
+  min-height: 28px;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: var(--text-ui);
+  line-height: 19.5px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.slash-command-item:hover {
+  border-color: transparent;
+  background: var(--fill-selected);
+}
+
+.slash-command-item.active {
+  border-color: transparent;
+  background: var(--fill-selected);
+}
+
+.slash-command-label {
+  flex-shrink: 0;
+  font-family: inherit;
+  font-size: var(--text-ui-sm);
+  font-weight: 500;
+  line-height: 18px;
+  color: rgba(252, 252, 252, 0.8);
+}
+
+.slash-command-desc {
+  min-width: 0;
+  font-size: var(--text-ui-sm);
+  line-height: 18px;
+  color: rgba(252, 252, 252, 0.32);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.input-wrapper {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  transition: none;
+  position: relative;
+  box-shadow: none;
+}
+
+.input-wrapper::before {
+  display: none;
+}
+
+.input-wrapper:hover {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.input-wrapper:focus-within {
+  border-color: transparent;
+  box-shadow: none;
+  background: transparent;
+}
+
+.input-wrapper:focus-within::before {
+  display: none;
+}
+
+.input-area.plan-mode-active .input-wrapper {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.input-area.plan-mode-active .input-wrapper::before {
+  display: none;
+}
+
+.input-area.plan-mode-active .input-wrapper:hover {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.input-area.plan-mode-active .input-wrapper:focus-within {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* Image attachments sit inside the editor's padding box like Synara's
+   ComposerReferenceAttachments: -6px / -4px into the 12px inset, 6px apart,
+   8px above the text. */
+.composer-image-previews {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 8px 14px 8px 6px;
+}
+
+.composer-image-previews:not(.hidden) + .composer-input-line {
+  padding-top: 0;
+}
+
+.composer-input-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 14px 8px 12px;
+}
+
+/* ---------- Context-usage ring ---------- */
+.composer-context-indicator {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  height: 28px;
+}
+
+.composer-context-button {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  padding: 0;
+  cursor: help;
+  transition: background-color var(--dur) var(--ease-out);
+}
+
+.composer-context-button:hover {
+  background: var(--fill-hover);
+}
+
+.composer-context-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.35);
+}
+
+.composer-context-ring {
+  width: 16px;
+  height: 16px;
+  transform: rotate(-90deg);
+}
+
+.composer-context-ring-track,
+.composer-context-ring-progress {
+  fill: none;
+  stroke-width: 3.5;
+}
+
+.composer-context-ring-track {
+  stroke: var(--fill-4);
+}
+
+.composer-context-ring-progress {
+  stroke: var(--text-secondary);
+  stroke-linecap: round;
+  stroke-dasharray: 81.68;
+  stroke-dashoffset: 81.68;
+  transition: stroke-dashoffset 0.18s ease;
+}
+
+.composer-context-indicator .toggle-info-tip {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  left: auto;
+  top: auto;
+  width: 220px;
+  padding: 6px 8px;
+  border-radius: var(--radius-btn);
+  background: color-mix(in srgb, var(--popover) 66%, var(--surface));
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  color: var(--text-secondary);
+  font-size: var(--text-ui-sm);
+  line-height: 18px;
+  z-index: 20;
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.98);
+  transform-origin: bottom right;
+  transition: opacity 140ms var(--ease-out), transform 140ms var(--ease-out), visibility 140ms var(--ease-out);
+  pointer-events: none;
+}
+
+.composer-context-indicator:hover .toggle-info-tip,
+.composer-context-indicator:focus-within .toggle-info-tip {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.composer-context-indicator .toggle-info-tip::before {
+  display: none;
+}
+
+.composer-context-tip-primary {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.composer-context-tip-secondary {
+  margin-top: 2px;
+  color: var(--text-secondary);
+}
+
+.composer-add-image-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 16px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+
+.composer-add-image-btn:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.composer-add-image-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.35);
+}
+
+/* ---------- Image attachments (Synara ComposerImageAttachmentChip) ----------
+   64px tile, radius 14, ink .07 hairline over the elevated fill; the remove
+   badge is a 20px foreground/.8 disc at the top-right corner (4px in). */
+.composer-image-preview-item {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+  background: rgba(252, 252, 252, 0.006);
+  box-sizing: border-box;
+  box-shadow: none;
+  transition: border-color var(--dur) var(--ease-out);
+}
+
+.composer-image-preview-item:hover,
+.composer-image-preview-item:focus-within {
+  border-color: var(--border);
+}
+
+.composer-image-preview-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: zoom-in;
+}
+
+.composer-image-preview-item img:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+.composer-image-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(252, 252, 252, 0.8);
+  color: var(--surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0 0 1px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: background-color var(--dur) var(--ease-out);
+}
+
+.composer-image-remove:hover {
+  background: var(--text-primary);
+}
+
+.composer-image-remove:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.composer-image-hover-preview {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: min(360px, calc(100vw - 32px));
+  max-height: min(360px, calc(100vh - 32px));
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--popover);
+  box-shadow: var(--shadow-dropdown);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 140ms var(--ease-out), transform 140ms var(--ease-out), visibility 140ms var(--ease-out);
+  pointer-events: none;
+  z-index: 1600;
+  overflow: hidden;
+}
+
+.composer-image-hover-preview.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.composer-image-hover-preview-image {
+  display: block;
+  max-width: min(340px, calc(100vw - 52px));
+  max-height: min(320px, calc(100vh - 64px));
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-btn);
+  background: var(--fill-1);
+}
+
+/* ---------- Textarea ---------- */
+textarea {
+  width: 100%;
+  height: 32px;
+  min-height: 32px;
+  max-height: 160px;
+  padding: 6px 12px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: var(--text-ui);
+  line-height: var(--leading-chat);
+  resize: none;
+  transition: height 0.2s ease;
+  box-sizing: border-box;
+}
+
+/* Composer editor: 13px/1.625, roomy resting height like Synara */
+.composer-input-line #input-message {
+  flex: 1;
+  width: auto;
+  height: 42px;
+  min-height: 42px;
+  padding: 0;
+  font-size: var(--text-ui);
+  line-height: 21.125px;
+}
+
+@media (max-width: 640px) {
+  .composer-context-indicator .toggle-info-tip {
+    right: -8px;
+    min-width: 180px;
+  }
+}
+
+textarea::placeholder {
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+  font-weight: 400;
+}
+
+.composer-input-line #input-message::placeholder {
+  color: rgba(252, 252, 252, 0.232);
+}
+
+.input-wrapper:hover textarea::placeholder,
+.input-wrapper:focus-within textarea::placeholder {
+  color: rgba(252, 252, 252, 0.232);
+}
+
+/* Expanded textarea state */
+textarea.expanded {
+  padding-bottom: 4px;
+}
+
+/* Character count indicator (optional, for future use) */
+.input-char-count {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: var(--text-ui-xs);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.input-wrapper:focus-within .input-char-count {
+  opacity: 0.6;
+}
+
+.input-char-count.warning {
+  color: var(--warning);
+}
+
+.input-char-count.error {
+  color: var(--error);
+}
+
+.input-info {
+  display: none;
+}
+
+.input-area:hover .input-info,
+.input-area:focus-within .input-info {
+  display: none;
+}
+
+.input-info #project-dir-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.input-info #project-dir-display:hover {
+  color: var(--text-secondary);
+}
+
+.input-info #project-dir-display::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--success);
+  opacity: 0.8;
+  flex-shrink: 0;
+}
+
+.input-info #project-dir-display.no-project::before {
+  background: var(--text-muted);
+}
+
+.input-hint {
+  font-size: var(--text-ui-xs);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.2s ease;
+}
+
+.input-wrapper:focus-within ~ .input-info .input-hint {
+  opacity: 1;
+}
+
+.input-hint kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 18px;
+  padding: 0 6px;
+  min-width: 16px;
+  font-family: inherit;
+  font-size: var(--text-ui-xs);
+  font-weight: 500;
+  color: rgba(252, 252, 252, 0.8);
+  background: rgba(252, 252, 252, 0.12);
+  border: none;
+  border-radius: 999px;
+  box-shadow: none;
+}
+
+.input-wrapper:focus-within ~ .input-info .input-hint kbd {
+  background: rgba(252, 252, 252, 0.12);
+}
+
+.input-hint .hint-divider {
+  color: var(--text-faint);
+  margin: 0 2px;
+}
+
+/* Input area icon button (folder select): ghost */
+.input-row .btn-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-btn);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.input-row .btn-icon::before {
+  display: none;
+}
+
+.input-row .btn-icon:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+  box-shadow: none;
+}
+
+.input-row .btn-icon:active {
+  background: var(--fill-pressed);
+  box-shadow: none;
+}
+
+.input-row .btn-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.input-row .btn-icon:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.35);
+}
+
+/* Slash menu: same column as the composer shell (input-row has 12px gutters) */
+.input-area > .slash-command-menu {
+  width: calc(min(var(--chat-column-width), var(--chat-content-max-width, 860px)) - 36px);
+  box-sizing: border-box;
+}
+
+.input-area > .plan-composer-slot {
+  width: min(var(--chat-column-width), var(--chat-content-max-width, 860px));
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .input-area {
+    padding: 10px 0 12px;
+  }
+
+  .input-row {
+    gap: 10px;
+  }
+
+  .input-options-row {
+    gap: 6px;
+  }
+
+  .input-left-options {
+    gap: 2px;
+  }
+}
+
+@media (max-width: 640px) {
+  .input-row {
+    align-items: stretch;
+  }
+
+  .composer-shell {
+    border-radius: var(--radius-xl);
+  }
+
+  .input-options-row {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .input-right-actions {
+    justify-content: flex-end;
+  }
+
+  .composer-footer-separator {
+    display: none;
+  }
+
+  .composer-dropdown-menu {
+    left: 0;
+    right: auto;
+    max-width: min(280px, calc(100vw - 24px));
+  }
+
+  .input-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* Rojo icon + spinner — compact, aligned with row cap height */
+#btn-rojo .rojo-composer-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+#btn-rojo .rojo-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+}
+
+#btn-rojo .rojo-spinner {
+  width: 14px;
+  height: 14px;
+  display: none;
+  flex-shrink: 0;
+  animation: rojoSpin 1s linear infinite;
+}
+
+@keyframes rojoSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+#btn-rojo.starting .rojo-icon {
+  display: none;
+}
+
+#btn-rojo.starting .rojo-spinner {
+  display: block;
+  color: var(--text-secondary);
+}
+
+/* Rojo error modal */
+.rojo-error-details {
+  background: var(--fill-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  padding: 8px 10px;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: var(--text-ui-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.rojo-error-details:empty {
+  display: none;
+}
+
+/* Rojo Context Menu (Synara menu) */
+.context-menu {
+  position: fixed;
+  background: color-mix(in srgb, var(--popover) 66%, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-dropdown);
+  padding: 4px;
+  z-index: 10000;
+  min-width: 160px;
+  transform-origin: top left;
+  animation: popoverEnter 140ms var(--ease-out);
+}
+
+.context-menu.hidden {
+  display: none;
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 26px;
+  padding: 1px 8px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-btn);
+  color: var(--text-primary);
+  font-size: var(--text-ui);
+  font-weight: 400;
+  font-family: inherit;
+  line-height: 19.5px;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+  text-align: left;
+}
+
+.context-menu-item:hover,
+.context-menu-item:focus-visible {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.context-menu-item:disabled {
+  opacity: 0.64;
+  cursor: default;
+  background: transparent;
+}
+
+.context-menu-item svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+/* Rojo Logs Modal */
+.modal-logs {
+  width: 600px;
+  max-width: 90vw;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-logs .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid var(--border-divider);
+}
+
+.modal-logs .modal-header h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.modal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.modal-logs .modal-body {
+  flex: 1;
+  padding: 0;
+  overflow: hidden;
+  min-height: 300px;
+}
+
+.rojo-logs-content {
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  max-height: 60vh;
+  margin: 0;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-ui-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-y: auto;
+}
+
+.rojo-logs-content .log-stdout {
+  color: var(--text-secondary);
+}
+
+.rojo-logs-content .log-stderr {
+  color: var(--error);
+}
+
+.rojo-logs-content .log-timestamp {
+  color: var(--text-muted);
+  font-size: var(--text-ui-xs);
+  font-variant-numeric: tabular-nums;
+  margin-right: 8px;
+}
+
+/* Transparency Toggle (Settings Modal) */
+.transparency-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.restart-warning {
+  color: var(--warning);
+  font-size: var(--text-ui-sm);
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+/* Platform-specific visibility */
+.platform-win32-only {
+  display: none;
+}
+
+body.platform-win32 .platform-win32-only {
+  display: block;
+}
+
+
+/* Luna free zone: Low/Medium marks read green, and a two-part legend under
+   the track (aligned to the mark inset) names where credits start. */
+.composer-effort-card.has-free-zone .composer-effort-mark.is-free {
+  background: rgba(64, 201, 119, 0.85);
+}
+
+.composer-effort-zones {
+  display: flex;
+  margin: 6px calc(var(--effort-thumb) / 2) 0;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+  user-select: none;
+}
+
+.composer-effort-zones[hidden] {
+  display: none;
+}
+
+.composer-effort-zone {
+  position: relative;
+  min-width: 0;
+  padding-top: 5px;
+  white-space: nowrap;
+  transition: color 160ms var(--ease-out), opacity 160ms var(--ease-out);
+}
+
+/* A 2px rule over each zone: green for free, orange for credits */
+.composer-effort-zone::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 999px;
+}
+
+.composer-effort-zone.is-free {
+  flex: 0 0 calc(var(--effort-free-split, 0.5) * 100%);
+  padding-right: 4px;
+  color: #40c977;
+}
+
+.composer-effort-zone.is-free::before {
+  right: 2px;
+  background: rgba(64, 201, 119, 0.55);
+}
+
+.composer-effort-zone.is-paid {
+  flex: 1 1 auto;
+  padding-left: 4px;
+  text-align: right;
+  color: var(--accent-light);
+}
+
+.composer-effort-zone.is-paid::before {
+  left: 2px;
+  background: rgba(var(--accent-rgb), 0.5);
+}
+
+/* The zone the thumb is in reads at full strength; the other recedes */
+.composer-effort-card.has-free-zone:not(.is-paid-level) .composer-effort-zone.is-paid,
+.composer-effort-card.has-free-zone.is-paid-level .composer-effort-zone.is-free {
+  opacity: 0.5;
+}

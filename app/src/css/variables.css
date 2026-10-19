@@ -1,0 +1,153 @@
+/* ===========================================
+   Web Fonts
+   =========================================== */
+
+/* JetBrains Mono (OFL, assets/fonts/jetbrains-mono-OFL.txt) — variable weight,
+   Latin + Latin Extended subsets; other scripts fall through to the mono stack. */
+@font-face { font-family: 'JetBrains Mono Variable'; font-weight: 100 800; font-style: normal; font-display: swap; src: url('../../assets/fonts/jetbrains-mono-latin-wght.woff2') format('woff2'); unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'JetBrains Mono Variable'; font-weight: 100 800; font-style: normal; font-display: swap; src: url('../../assets/fonts/jetbrains-mono-latin-ext-wght.woff2') format('woff2'); unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+/* Cal Sans (OFL, assets/fonts/cal-sans-OFL.txt) — Synara's display face for panel titles */
+@font-face { font-family: 'Cal Sans'; font-weight: 400; font-style: normal; font-display: swap; src: url('../../assets/fonts/cal-sans-latin-400.woff2') format('woff2'); }
+@font-face { font-family: 'Fira Mono'; font-weight: 400; font-style: normal; font-display: swap; src: url('../../assets/fonts/fira-mono-400.ttf') format('truetype'); }
+@font-face { font-family: 'Fira Mono'; font-weight: 500; font-style: normal; font-display: swap; src: url('../../assets/fonts/fira-mono-500.ttf') format('truetype'); }
+
+/* ===========================================
+   CSS Variables - Synara-style neutral dark theme
+   Visual design ported from Synara (github.com/Emanuele-web04/synara), MIT —
+   see assets/synara-LICENSE.txt. Values are measured from Synara's default ("codex") dark theme.
+   =========================================== */
+
+:root {
+  /* Window chrome: shell (top bar + rail) around one inset panel */
+  --shell: #1d1d1d;
+  --panel-border: #262626;
+  --rail-width: 51px;
+  --panel-gap: 3px;
+  --panel-radius: 13px;
+
+  /* Surfaces */
+  --surface: #111111;          /* chat / settings content */
+  --sidebar-bg: #151515;       /* sidebar + settings nav */
+  --surface-under: #101010;
+  --card: #161616;             /* settings cards */
+  --popover: #171717;          /* menus, dialogs */
+  --control: #171717;          /* selects, opaque inputs */
+  --composer-bg: rgba(23, 23, 23, 0.55);
+
+  --bg-primary: var(--surface);
+  --bg-secondary: var(--popover);
+  --bg-tertiary: rgba(252, 252, 252, 0.027);
+  --bg-hover: rgba(252, 252, 252, 0.039);
+  --bg-active: rgba(252, 252, 252, 0.055);
+
+  /* Ink fills */
+  --fill-selected: rgba(252, 252, 252, 0.027);
+  --fill-hover: rgba(252, 252, 252, 0.039);
+  --fill-pressed: rgba(252, 252, 252, 0.055);
+  --fill-1: rgba(252, 252, 252, 0.02);
+  --fill-2: rgba(252, 252, 252, 0.039);
+  --fill-3: rgba(252, 252, 252, 0.07);
+  --fill-4: rgba(252, 252, 252, 0.12);
+
+  /* Text */
+  --text-primary: #fcfcfc;
+  --text-row: rgba(252, 252, 252, 0.95);
+  --text-nav: rgba(252, 252, 252, 0.89);
+  --text-secondary: rgba(252, 252, 252, 0.58);
+  --text-muted: rgba(252, 252, 252, 0.336);
+  --text-faint: rgba(252, 252, 252, 0.26);
+  --text-soft: rgba(252, 252, 252, 0.459);
+
+  /* Primary buttons — Ropilot orange, Synara pill shapes */
+  --primary-bg: #f97316;
+  --primary-bg-hover: #fb8530;
+  --primary-bg-active: #ea6a0c;
+  --primary-fg: #ffffff;
+  /* Neutral inverted fill (Synara's ink button), for quiet confirmations */
+  --ink-bg: #fcfcfc;
+  --ink-fg: #111111;
+
+  /* Accent — Ropilot orange: switches, links, focus rings, selection, brand marks */
+  --accent: #fb923c;
+  --accent-strong: #f97316;
+  --accent-hover: #fdba74;
+  --accent-light: #fb923c;
+  --accent-glow: rgba(249, 115, 22, 0.22);
+  --accent-rgb: 249, 115, 22;
+  --accent-gradient: linear-gradient(135deg, #f97316 0%, #eab308 100%);
+  --accent-glow-top: #f59e0b;
+  --accent-surface: var(--primary-bg);
+
+  /* Ropilot brand orange — logo marks and credit amounts only */
+  --brand: #fe8549;
+  --brand-rgb: 254, 133, 73;
+
+  --plan-accent: #04afb1;
+  --plan-accent-rgb: 4, 175, 177;
+  --plan-border: rgba(4, 175, 177, 0.34);
+  --plan-focus: rgba(4, 175, 177, 0.56);
+  --plan-bg-soft: rgba(4, 175, 177, 0.08);
+  --plan-bg-strong: rgba(4, 175, 177, 0.15);
+
+  /* Borders */
+  --border: rgba(252, 252, 252, 0.07);
+  --border-light: rgba(252, 252, 252, 0.07);
+  --border-heavy: rgba(252, 252, 252, 0.118);
+  --border-divider: rgba(252, 252, 252, 0.043);
+  --border-composer: rgba(252, 252, 252, 0.039);
+  --border-focus: rgba(252, 252, 252, 0.3);
+  --border-accent: rgba(249, 115, 22, 0.45);
+  --ring: rgba(249, 115, 22, 0.6);
+
+  /* Status colors */
+  --success: #00a240;
+  --warning: #f5b44a;
+  --error: #e02e2a;
+  --diff-added: #00a240;
+  --diff-removed: #e02e2a;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.25), 0 4px 6px -4px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 16px 50px -12px rgba(0, 0, 0, 0.7);
+  --shadow-accent: none;
+  --shadow-tactile: none;
+  --shadow-dropdown: 0 6px 24px -10px rgba(0, 0, 0, 0.3);
+  --shadow-composer: 0 6px 24px -10px rgba(0, 0, 0, 0.3);
+  --highlight-top: none;
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-dialog: 22px;
+  --radius-btn: 10px;
+  --radius-composer: 19.2px;
+
+  /* Easing */
+  --ease: cubic-bezier(.2, .7, .3, 1);
+  --ease-out: cubic-bezier(.22, 1, .36, 1);     /* reveals, menus */
+  --ease-press: cubic-bezier(.165, .84, .44, 1); /* button press */
+  --ease-panel: cubic-bezier(.32, .72, 0, 1);    /* panel slides, segmented thumb */
+
+  /* Durations */
+  --dur-fast: 80ms;   /* exits, tiny state flips */
+  --dur: 150ms;       /* hover / colour */
+  --dur-slow: 220ms;  /* press, reveals */
+
+  /* Layout */
+  --titlebar-height: 44px;
+  --sidebar-width: 256px;
+  /* --chat-column-width is set on .chat-view (see chat.css) using cqw so it tracks chat-area width, not the viewport */
+
+  /* Typography — system UI font at 13px, Cal Sans for panel titles, JetBrains Mono for code */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Cal Sans', var(--font-sans);
+  --font-brand: var(--font-sans);
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+  --text-ui: 13px;
+  --text-ui-sm: 12px;
+  --text-ui-xs: 11px;
+  --leading-chat: 1.625;
+}

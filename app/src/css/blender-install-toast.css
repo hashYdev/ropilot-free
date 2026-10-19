@@ -1,0 +1,205 @@
+/* Blender install notification (js/blender-install-toast.js), also used for
+   the "Restart Roblox Studio" notice (js/studio-restart-toast.js).
+   Synara's expanded notification (measured): top-centred card, popover/94
+   over a 24px blur, ink .07 hairline, radius 18, shadow-lg/15; 12px 40px
+   12px 14px inset, 13px copy (title 400, detail at foreground/72), a 24px
+   round ghost dismiss pinned 8px from the top-right corner. */
+.blender-install-toast {
+  position: fixed;
+  top: calc(var(--titlebar-height) + 12px);
+  left: 50%;
+  translate: -50% 0;
+  z-index: 1000;
+  width: min(380px, calc(100vw - 32px));
+  padding: 12px 40px 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--popover) 94%, transparent);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -4px rgba(0, 0, 0, 0.15);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-app-region: no-drag;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  transition: opacity var(--dur-slow) var(--ease-out), transform var(--dur-slow) var(--ease-out);
+  pointer-events: none;
+}
+
+.blender-install-toast.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.blender-install-toast .bit-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.blender-install-toast .bit-icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  width: 16px;
+  height: 19.5px;
+  border-radius: 0;
+  background: none;
+  color: rgba(252, 252, 252, 0.92);
+}
+
+.blender-install-toast .bit-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.blender-install-toast .bit-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.blender-install-toast .bit-title {
+  font-size: var(--text-ui);
+  font-weight: 400;
+  line-height: 19.5px;
+}
+
+.blender-install-toast .bit-detail {
+  margin-top: 2px;
+  overflow: hidden;
+  color: rgba(252, 252, 252, 0.72);
+  font-size: var(--text-ui);
+  line-height: 19.5px;
+  text-overflow: ellipsis;
+}
+
+.blender-install-toast[data-state="error"] .bit-detail {
+  white-space: normal;
+}
+
+.blender-install-toast:not([data-state="error"]) .bit-detail {
+  white-space: nowrap;
+}
+
+.blender-install-toast .bit-percent {
+  align-self: flex-start;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: var(--text-ui-sm);
+  line-height: 19.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.blender-install-toast .bit-close {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: rgba(252, 252, 252, 0.65);
+  cursor: pointer;
+  transition: background var(--dur) ease-out, color var(--dur) ease-out;
+}
+
+.blender-install-toast .bit-close svg {
+  width: 14px;
+  height: 14px;
+}
+
+.blender-install-toast .bit-close:hover {
+  background: rgba(252, 252, 252, 0.1);
+  color: var(--text-primary);
+}
+
+.blender-install-toast .bit-bar {
+  position: relative;
+  height: 3px;
+  margin: 10px 0 2px 24px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--fill-3);
+}
+
+.blender-install-toast .bit-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--text-primary);
+  transition: width 0.3s var(--ease-out);
+}
+
+.blender-install-toast[data-state="indeterminate"] .bit-fill {
+  position: absolute;
+  width: 35%;
+  animation: bit-indeterminate 1.2s ease-in-out infinite;
+}
+
+.blender-install-toast[data-state="done"] .bit-fill {
+  width: 100%;
+  background: var(--success);
+}
+
+.blender-install-toast[data-state="done"] .bit-icon {
+  color: var(--success);
+}
+
+/* Synara error tone: a light destructive wash; copy stays foreground and
+   only the icon turns red. */
+.blender-install-toast[data-state="error"] {
+  border-color: color-mix(in srgb, var(--error) 13%, transparent);
+  background: color-mix(in srgb, var(--error) 8%, var(--popover));
+}
+
+.blender-install-toast[data-state="error"] .bit-fill {
+  width: 100%;
+  background: var(--error);
+}
+
+.blender-install-toast[data-state="error"] .bit-icon {
+  color: var(--error);
+}
+
+/* Notices: no progress bar, the text wraps, and they sit below an install
+   toast shown at the same time. */
+.blender-install-toast[data-state="notice"] .bit-detail {
+  white-space: normal;
+}
+
+.blender-install-toast[data-state="notice"] .bit-icon {
+  color: var(--warning);
+}
+
+/* Whichever of the two toasts appeared second goes below the first. */
+.blender-install-toast:not(.studio-restart-toast) ~ .studio-restart-toast,
+.studio-restart-toast ~ .blender-install-toast:not(.studio-restart-toast) {
+  top: calc(var(--titlebar-height) + 100px);
+}
+
+@keyframes bit-indeterminate {
+  from { left: -35%; }
+  to { left: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blender-install-toast,
+  .blender-install-toast .bit-fill {
+    transition: none;
+  }
+  .blender-install-toast[data-state="indeterminate"] .bit-fill {
+    left: 0;
+    width: 100%;
+    animation: none;
+    opacity: 0.5;
+  }
+}

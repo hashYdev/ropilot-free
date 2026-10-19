@@ -1,0 +1,15 @@
+/* Turn separator — the Codex TUI's dim full-width rule between a turn's work
+   (commands, edits, tool activity) and its final answer, translated to the
+   chat column (see MessageRenderer.createTurnSeparatorElement). Derived at
+   render time from the timeline; never persisted. */
+/* Same rule as Synara's divider under "Worked for": the list gap above, and
+   12px + the answer's 2px row padding (here: margin) below */
+.turn-separator {
+  padding: 0;
+  margin: 0 0 2px;
+}
+
+.turn-separator-line {
+  height: 1px;
+  background: var(--border);
+}

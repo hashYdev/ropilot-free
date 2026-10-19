@@ -1,0 +1,471 @@
+/* ===========================================
+   Window chrome (Synara): a #1d1d1d shell holding the 44px top bar and the
+   51px icon rail, around one inset panel (sidebar + content) with a 13px
+   radius, a hairline edge and a 3px gap on the right and bottom.
+   =========================================== */
+
+.app {
+  display: grid;
+  grid-template-columns: calc(var(--rail-width) + 1px) minmax(0, 1fr);
+  grid-template-rows: var(--titlebar-height) minmax(0, 1fr);
+}
+
+.app > .titlebar {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+.app > .app-rail {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.app > .main-content {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0 var(--panel-gap) var(--panel-gap) 0;
+  border-radius: var(--panel-radius);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.055);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+/* ---------- Top bar ---------- */
+
+.titlebar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--titlebar-height);
+  padding: 0;
+  background: transparent;
+  border-bottom: none;
+  -webkit-app-region: drag;
+}
+
+.titlebar-drag {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 100%;
+}
+
+.titlebar-lead {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: calc(var(--rail-width) + 1px + var(--sidebar-width));
+  height: 100%;
+  padding-left: 16px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* The classic Ropilot logo (icon + "Ro" + gradient "pilot" + "Studio"),
+   with the old titlebar's literal values so shared tokens can't drift it. */
+.titlebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 10px;
+  min-width: 0;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.titlebar-brand-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  box-shadow:
+    0 0 9px 1px rgba(249, 115, 22, 0.15),
+    0 0 18px 3px rgba(249, 115, 22, 0.06);
+  object-fit: contain;
+}
+
+.titlebar-brand-text {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fafafa;
+}
+
+.titlebar-brand-text .brand-pilot {
+  display: inline-block;
+  color: #f97316;
+  background: linear-gradient(135deg, #f97316 0%, #eab308 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.titlebar-brand-text .brand-studio {
+  margin-left: 0.32em;
+}
+
+/* Collapsed sidebar: the lead shrinks to its content */
+.app:has(.sidebar.collapsed) .titlebar-brand {
+  margin-right: 4px;
+}
+
+/* Faint divider above the sidebar/content seam, as in Synara's top bar */
+.titlebar-lead::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: rgba(252, 252, 252, 0.07);
+}
+
+.app:has(.sidebar.collapsed) .titlebar-lead {
+  width: auto;
+  padding-right: 12px;
+}
+
+/* macOS: leave room for the traffic lights */
+body.platform-darwin .titlebar-lead {
+  padding-left: 82px;
+}
+
+.titlebar-icon-btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: rgba(252, 252, 252, 0.435);
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  transition: background var(--dur) ease-out, color var(--dur) ease-out;
+}
+
+.titlebar-icon-btn:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.titlebar-icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Chat tabs — Synara's dock tabs: 216px (shrinking to fit), 32px tall,
+   radius 8, 12px text. Idle tabs are bare with .58 text; hover adds a
+   faint fill, swaps the mark for a drag grip and shows ×; the active tab
+   is filled with the content surface and a 0.5px inset edge. */
+.titlebar-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+  height: 100%;
+  padding-left: 20px;
+}
+
+.titlebar-tab-strip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
+  height: 32px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+
+.titlebar-tab-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.titlebar-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 1 216px;
+  min-width: min(108px, 100%);
+  height: 32px;
+  padding: 0 32px 0 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--text-secondary);
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-app-region: no-drag;
+  transition: background var(--dur-fast) ease-out, color var(--dur-fast) ease-out;
+}
+
+/* Hairline between two idle tabs */
+.titlebar-tab:not(.is-active) + .titlebar-tab:not(.is-active)::before {
+  content: '';
+  position: absolute;
+  left: -3px;
+  top: 9px;
+  bottom: 9px;
+  width: 1px;
+  background: rgba(252, 252, 252, 0.07);
+}
+
+.titlebar-tab:hover:not(.is-active) {
+  background: rgba(252, 252, 252, 0.04);
+  color: rgba(252, 252, 252, 0.89);
+}
+
+.titlebar-tab:hover + .titlebar-tab::before,
+.titlebar-tab.is-active + .titlebar-tab::before {
+  display: none;
+}
+
+.titlebar-tab.is-active {
+  background: var(--surface);
+  box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.09);
+  color: var(--text-primary);
+}
+
+/* Synara's SortableSurfaceTabChip: press-and-move drags the tab (dnd-kit,
+   js/ui/sortable.js); the dragged tab rides above its sliding neighbours. */
+.titlebar-tab:active {
+  cursor: grabbing;
+}
+
+.titlebar-tab.is-dragging {
+  z-index: 1;
+}
+
+.titlebar-tab-icon {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.titlebar-tab-mark,
+.titlebar-tab-grip {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+}
+
+.titlebar-tab-mark svg,
+.titlebar-tab-mark img,
+.titlebar-tab-grip svg {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+/* Hovering (or dragging) swaps the tab's mark for the reorder grip in the same slot */
+.titlebar-tab-mark {
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.titlebar-tab-grip {
+  position: absolute;
+  inset: 0;
+  color: rgba(252, 252, 252, 0.58);
+  opacity: 0;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.titlebar-tab:hover .titlebar-tab-mark,
+.titlebar-tab.is-dragging .titlebar-tab-mark {
+  opacity: 0;
+}
+
+.titlebar-tab:hover .titlebar-tab-grip,
+.titlebar-tab.is-dragging .titlebar-tab-grip {
+  opacity: 1;
+}
+
+.titlebar-tab-title {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 16px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 16px), transparent);
+}
+
+.titlebar-tab-close {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity var(--dur-fast) ease-out, background var(--dur-fast) ease-out, color var(--dur-fast) ease-out;
+}
+
+.titlebar-tab.is-active .titlebar-tab-close,
+.titlebar-tab:hover .titlebar-tab-close {
+  opacity: 1;
+}
+
+.titlebar-tab-close:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.titlebar-tab-close svg {
+  width: 14px;
+  height: 14px;
+}
+
+
+/* Windows-style caption buttons (46×44) */
+.titlebar-controls {
+  display: flex;
+  align-self: stretch;
+  gap: 0;
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-btn {
+  width: 46px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: rgba(252, 252, 252, 0.72);
+  cursor: pointer;
+  transition: background var(--dur-fast) ease-out, color var(--dur-fast) ease-out;
+}
+
+.titlebar-btn:hover {
+  background: rgba(252, 252, 252, 0.06);
+  color: var(--text-primary);
+}
+
+.titlebar-btn.btn-close:hover {
+  background: #c42b1c;
+  color: #fff;
+}
+
+.titlebar-btn svg {
+  width: 10px;
+  height: 10px;
+  fill: currentColor;
+}
+
+.titlebar-btn svg [stroke] {
+  stroke-width: 1;
+}
+
+/* ---------- Icon rail ---------- */
+
+.app-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: var(--rail-width);
+  min-height: 0;
+  padding: 10px 0;
+  -webkit-app-region: no-drag;
+}
+
+.app-rail-top,
+.app-rail-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.app-rail-btn {
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--dur) ease-out, color var(--dur) ease-out;
+}
+
+.app-rail-btn:hover {
+  background: var(--fill-hover);
+  color: rgba(252, 252, 252, 0.89);
+}
+
+.app-rail-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Home is current unless Settings is open; then Settings is */
+.app-rail-home,
+body:has(#settings-modal:not(.hidden)) .app-rail-settings {
+  background: var(--fill-selected);
+  color: var(--text-primary);
+}
+
+body:has(#settings-modal:not(.hidden)) .app-rail-home {
+  background: transparent;
+  color: var(--text-muted);
+}
+
+body:has(#settings-modal:not(.hidden)) .app-rail-home:hover {
+  background: var(--fill-hover);
+  color: rgba(252, 252, 252, 0.89);
+}
+
+/* Onboarding / setup screens hide the chrome entirely (see setup-forms.css) */
+body.is-onboarding .app-rail,
+.app:has(.setup-screen:not(.hidden)) .app-rail {
+  display: none;
+}
+
+body.is-onboarding .app > .main-content,
+.app:has(.setup-screen:not(.hidden)) > .main-content {
+  grid-row: 1 / -1;
+  grid-column: 1 / -1;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* The top-bar toggle replaces the floating expand button */
+.btn-expand-sidebar {
+  display: none !important;
+}
+
+/* Settings replaces the chat view, so its tab leaves the top bar (as in Synara) */
+body:has(#settings-modal:not(.hidden)) .titlebar-tabs {
+  display: none;
+}

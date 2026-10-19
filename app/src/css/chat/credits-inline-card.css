@@ -1,0 +1,400 @@
+/* ===========================================
+   Out-of-credits card — inline in chat (Synara card: flat popover surface,
+   hairline border, 14px radius, 13px text, primary/secondary buttons)
+   =========================================== */
+.credits-inline-card {
+  margin: 4px 0 12px;
+  width: min(404px, calc(100% - 24px));
+}
+
+.cic-kicker {
+  margin: 0 0 10px;
+  font-size: var(--text-ui);
+  line-height: var(--leading-chat);
+  color: var(--text-primary);
+}
+
+.cic-card {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 20px 14px;
+  border-radius: var(--radius-lg);
+  background: var(--popover);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.cic-card::before,
+.cic-card::after {
+  content: none;
+}
+
+.cic-logo {
+  position: relative;
+  margin: 0 auto 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.cic-logo::before {
+  content: none;
+}
+
+/* icon.png is already the brand tile — used raw, no glow */
+.cic-logo img {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+  filter: none;
+}
+
+.cic-title {
+  position: relative;
+  margin: 0 0 4px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.cic-sub {
+  position: relative;
+  max-width: 300px;
+  margin: 0 auto 14px;
+  font-size: var(--text-ui);
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.cic-sub strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Primary (inverted ink) button */
+.cic-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--text-ui);
+  font-weight: 500;
+  color: var(--primary-fg);
+  background: var(--primary-bg);
+  border: 1px solid var(--primary-bg);
+  box-shadow: none;
+  transition: opacity var(--dur) ease, background var(--dur) ease, border-color var(--dur) ease, color var(--dur) ease;
+}
+
+.cic-cta:hover {
+  opacity: 0.9;
+}
+
+.cic-cta:active {
+  transform: scale(0.98);
+}
+
+.cic-cta:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.cic-amt {
+  font-weight: 600;
+}
+
+.cic-arrow {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.cic-cta:hover .cic-arrow {
+  transform: translate(1px, -1px);
+}
+
+.cic-resume-status {
+  position: relative;
+  max-width: 300px;
+  margin: 10px auto 0;
+  font-size: var(--text-ui-sm);
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+/* Quiet footer row: manual resume + dismiss share one line under a hairline */
+.cic-footer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 14px -20px 0;
+  padding: 10px 20px 0;
+  border-top: 1px solid var(--border-divider);
+}
+
+/* Secondary (hairline outline) button, small */
+.cic-resume-now {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 96px;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--border-light);
+  background: transparent;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: var(--text-ui);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur) ease, border-color var(--dur) ease, opacity var(--dur) ease;
+}
+
+.cic-resume-now:hover:not(:disabled) {
+  background: var(--fill-hover);
+  border-color: var(--border-heavy);
+}
+
+.cic-resume-now:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.cic-later {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 8px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--text-ui);
+  color: var(--text-secondary);
+  transition: color var(--dur) ease, background var(--dur) ease;
+}
+
+.cic-later:hover {
+  color: var(--text-primary);
+  background: var(--fill-hover);
+}
+
+/* Invite promo: one compact row — gift | title/sub | badge | copy button */
+.cic-invite {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 8px;
+  padding: 8px 8px 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  border-radius: var(--radius-lg);
+  background: var(--popover);
+  border: 1px solid var(--border);
+  box-shadow: none;
+}
+
+.cic-invite-gift {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  color: var(--success);
+}
+
+.cic-invite-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cic-invite-title {
+  font-size: var(--text-ui);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cic-invite-badge {
+  flex-shrink: 0;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-size: var(--text-ui-xs);
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  padding: 0 6px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--fill-3);
+  white-space: nowrap;
+}
+
+.cic-invite-sub {
+  margin: 0;
+  font-size: var(--text-ui-sm);
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+.cic-invite-sub:empty {
+  display: none;
+}
+
+.cic-invite-sub b {
+  color: var(--success);
+  font-weight: 500;
+}
+
+.cic-invite-copy {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  font-weight: 500;
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: background var(--dur) ease, border-color var(--dur) ease, color var(--dur) ease;
+}
+
+.cic-invite-copy:hover:not(:disabled) {
+  background: var(--fill-hover);
+  border-color: var(--border-heavy);
+}
+
+.cic-invite-copy:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.cic-invite-copy svg {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  opacity: 0.8;
+}
+
+
+/* ---- Auto top-up section (opt-in card autocharge) ---- */
+
+.cic-auto {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.cic-auto:empty {
+  display: none;
+}
+
+/* One-tap buy + enable: an outline button with a brand-orange label so the
+   recurring nature reads differently from the one-time primary purchase. */
+.cic-cta-auto {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  color: var(--brand);
+}
+
+.cic-cta-auto:hover {
+  opacity: 1;
+  background: var(--fill-hover);
+  border-color: var(--border-heavy);
+}
+
+.cic-auto-hint {
+  font-size: var(--text-ui-xs);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.cic-auto-on {
+  font-size: var(--text-ui-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0;
+  text-align: center;
+}
+
+.cic-auto-manage {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: var(--text-ui-sm);
+  text-decoration: underline;
+  text-decoration-color: var(--text-faint);
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+  padding: 0 0 0 6px;
+}
+
+.cic-auto-manage:hover {
+  color: var(--text-primary);
+}
+
+.cic-auto-link {
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: var(--text-ui-sm);
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color var(--dur) ease, background var(--dur) ease;
+}
+
+.cic-auto-link:hover {
+  color: var(--text-primary);
+  background: var(--fill-hover);
+}
+
+/* One-time CTA demoted to secondary when the one-tap auto button is present. */
+.cic-cta-secondary {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  color: var(--text-primary);
+}
+
+.cic-cta-secondary:hover {
+  opacity: 1;
+  background: var(--fill-hover);
+  border-color: var(--border-heavy);
+}

@@ -1,0 +1,310 @@
+/* ===========================================
+   Button Styles (Synara: flat ink fills, 10px radius, 13px/500)
+   =========================================== */
+
+/* Generic btn-icon — ghost icon button */
+.btn-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--dur) ease-out, color var(--dur) ease-out;
+}
+
+.btn-icon:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.btn-icon:active {
+  background: var(--fill-pressed);
+}
+
+.btn-icon:focus-visible {
+  outline: 1px solid var(--ring);
+  outline-offset: 1px;
+}
+
+.btn-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Send button — Synara's prominent circle: ink fill, surface-coloured arrow.
+   JS rewrites the button's innerHTML on every state change (message-sender
+   updateButton), so all styling stays on the button and its svg. */
+/* Synara variant="prominent" (measured): 28px foreground (#fcfcfc) disc with
+   a surface-coloured (#111) arrow, hover scale 1.05 over 150ms, disabled at
+   opacity .2. The stop state is the 26px disc holding an 8px square. */
+.btn-send {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: var(--primary-bg);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--primary-fg);
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition:
+    transform 150ms ease-out,
+    opacity 150ms ease-out;
+}
+
+.btn-send:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.btn-send:active:not(:disabled) {
+  transform: scale(0.96);
+}
+
+.btn-send:disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+
+.btn-send svg {
+  width: 18px;
+  height: 18px;
+  position: relative;
+  z-index: 2;
+  transform: translateY(0.5px);
+}
+
+/* Legacy hook kept for callers that still set .processing */
+.btn-send.processing {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.btn-send.processing svg {
+  animation: sendPulse 1s ease-in-out infinite;
+}
+
+@keyframes sendPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Ripple effect for send button click */
+.btn-send .ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(17, 17, 17, 0.18);
+  transform: scale(0);
+  animation: rippleEffect 0.5s ease-out forwards;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes rippleEffect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.btn-send:focus-visible {
+  outline: 1px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Stop button — same circle, holding a small square */
+.btn-send.stop-mode {
+  width: 26px;
+  height: 26px;
+  margin: 1px;
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+}
+
+.btn-send.stop-mode:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.btn-send.stop-mode svg {
+  width: 8px;
+  height: 8px;
+  transform: none;
+}
+
+/* Primary button — inverted ink fill */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 6px 14px;
+  background: var(--primary-bg);
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  color: var(--primary-fg);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity var(--dur) ease-out, background var(--dur) ease-out;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-bg-hover);
+}
+
+.btn-primary:active:not(:disabled) {
+  background: var(--primary-bg-active);
+}
+
+.btn-primary:disabled {
+  opacity: 0.64;
+  cursor: not-allowed;
+}
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-danger:focus-visible {
+  outline: 1px solid var(--ring);
+  outline-offset: 1px;
+}
+
+.btn-primary svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Trailing east arrow (→) that nudges right on hover */
+.btn-primary .btn-arrow {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.btn-primary:hover:not(:disabled) .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* Secondary button — Synara outline: hairline border, transparent fill */
+.btn-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 32px;
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-btn);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur) ease-out, color var(--dur) ease-out,
+    border-color var(--dur) ease-out;
+}
+
+.btn-secondary:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.btn-secondary:active {
+  background: var(--fill-pressed);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.64;
+  cursor: not-allowed;
+}
+
+.btn-secondary svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0.8;
+}
+
+/* Danger button — flat destructive fill */
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 6px 14px;
+  background: var(--error);
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--dur) ease-out, opacity var(--dur) ease-out;
+}
+
+/* Synara destructive: solid --destructive, /90 on hover */
+.btn-danger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--error) 90%, transparent);
+}
+
+.btn-danger:active:not(:disabled) {
+  background: color-mix(in srgb, var(--error) 82%, transparent);
+}
+
+.btn-danger:disabled {
+  opacity: 0.64;
+  cursor: not-allowed;
+}
+
+/* Small button — Synara "sm" (28px) */
+.btn-small {
+  width: auto;
+  min-height: 28px;
+  padding: 4px 10px;
+  font-size: 13px;
+  gap: 6px;
+}
+
+/* Full width button */
+.btn-full-width {
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-full-width svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 2px;
+}
+
+.btn-full-width.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}

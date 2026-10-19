@@ -1,0 +1,24 @@
+/* ===========================================
+   Chat Area - Messages, Status, Welcome/Setup
+   =========================================== */
+
+/* Chat Area */
+.chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  -webkit-user-select: text;
+  user-select: text;
+  /* cqw for --chat-column-width (set on .chat-view) resolves to this panel, not the full window */
+  container-type: inline-size;
+}
+
+/* Live status text (shimmer labels, thinking title, search-group title):
+   muted base with a brightness-only sweep up to text-primary. */
+.chat-area,
+.messages {
+  --status-live-base: rgba(252, 252, 252, 0.6);
+  --status-live-peak: #fcfcfc;
+}
+

@@ -1,0 +1,42 @@
+/* Pre-Synara rules from titlebar.css for the onboarding screens only. :where() keeps
+   the original specificity, and this file loads right after titlebar.css so the
+   old rules win there exactly as before. */
+
+:where(.setup-screen) .logo-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  box-shadow:
+    0 0 12px 2px rgba(249, 115, 22, 0.15),
+    0 0 24px 4px rgba(249, 115, 22, 0.06);
+  object-fit: contain;
+}
+
+:where(.setup-screen) .logo-text {
+  font-family: var(--font-brand);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+}
+
+:where(.setup-screen) .logo-text .logo-ro,
+:where(.setup-screen) .logo-text .logo-studio {
+  color: var(--text-primary);
+}
+
+:where(.setup-screen) .logo-text .logo-pilot {
+  color: var(--accent); 
+  background: linear-gradient(135deg, #f97316 0%, #eab308 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+:where(.setup-screen) .logo-text .logo-studio {
+  margin-left: 0.32em;
+}

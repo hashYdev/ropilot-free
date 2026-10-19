@@ -1,6 +1,15 @@
-node_modules/
-win/
-patched/
+# Fetched by build.sh — Electron 28.3.3 for win32-x64, ~250 MB unpacked.
+# Not vendored: its main binary alone is over GitHub's per-file limit.
+.cache/
+
+# Everything build.sh produces. Rebuild it with `bash build.sh`.
+build/
+
+# A pristine extraction of a stock app.asar, used by verify.mjs to print
+# before/after numbers and by apply-patches.sh as a starting point.
+# Not committed — it's Ropilot's unmodified client, and you can regenerate it
+# from an install you already have.
 orig/
-dist/
-*.exe
+
+__pycache__/
+*.pyc

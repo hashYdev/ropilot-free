@@ -1,0 +1,129 @@
+/* API Key Reminder */
+.api-key-reminder .message-content {
+  background: var(--popover) !important;
+  padding: 12px 14px !important;
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.api-key-reminder .message-content p {
+  margin: 0 0 8px 0;
+}
+
+.api-key-reminder .open-settings-btn {
+  height: 28px;
+  padding: 0 11px;
+  font-size: var(--text-ui);
+}
+
+/* Queue Container - shows queued messages above input */
+.queue-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  animation: fadeIn 0.2s var(--ease-out);
+}
+
+.chat-main-column .queue-container {
+  border-top: none;
+  padding-top: 8px;
+  background: transparent;
+}
+
+.queue-message {
+  padding: 6px 12px;
+  background: var(--popover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  color: var(--text-secondary);
+  font-size: var(--text-ui);
+  line-height: 1.5;
+}
+
+.queue-message.queue-other-chats {
+  color: var(--text-muted);
+}
+
+/* Pending Message - shows user message before it's confirmed */
+.pending-message-container {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-secondary);
+  animation: fadeIn 0.2s var(--ease-out);
+}
+
+.chat-main-column .pending-message-container {
+  border-top: none;
+  padding-top: 8px;
+  background: transparent;
+}
+
+.pending-message-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 8px 8px 14px;
+  background: var(--popover);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: var(--text-primary);
+  font-size: var(--text-ui);
+  line-height: var(--leading-chat);
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.pending-message-text {
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.pending-message-actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.pending-message-content:hover .pending-message-actions {
+  opacity: 1;
+}
+
+.pending-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background var(--dur) ease, color var(--dur) ease;
+}
+
+.pending-action-btn:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.pending-action-btn svg {
+  flex-shrink: 0;
+}
+
+.pending-edit-btn:hover {
+  color: var(--text-primary);
+}
+
+.pending-delete-btn:hover {
+  color: var(--error);
+}
+

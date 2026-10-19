@@ -1,0 +1,865 @@
+/* Status history messages - Synara compact tool-call rows
+   (TimelineWorkEntryRow density=compact): 13px muted-foreground text, 16px
+   icon box (14px glyph), gap 6px, 24px tall (py-0.5 + 20px line) */
+.message-status {
+  padding: 0;
+  margin: 0;
+}
+
+/* Consecutive tool rows stack like Synara's inline run (space-y-px): 1px
+   apart whatever the surrounding list gap (--tl-gap, message-list.css) */
+.message-status:not(.message-compaction) + .message-status:not(.message-compaction) {
+  margin-top: calc(1px - var(--tl-gap, 12px));
+}
+
+.message-status .message-content {
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.status-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  min-height: 24px;
+  font-size: var(--text-ui);
+  line-height: 24px;
+  color: var(--text-secondary);
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Quiet neutral spinner: faint full ring with a brighter head, sized to sit
+   in the 16px icon slot. No accent colour, no glow. */
+.status-spinner {
+  width: 13px;
+  height: 13px;
+  margin: 0 1.5px;
+  box-sizing: border-box;
+  border: 1.5px solid rgba(252, 252, 252, 0.14);
+  border-top-color: rgba(252, 252, 252, 0.7);
+  border-radius: 50%;
+  background: none;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+/* Active rows ease in instead of popping */
+.message-status.status-active {
+  animation: statusRowIn 0.25s ease;
+}
+
+@keyframes statusRowIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+/* One uniform tone for the whole active line — the shimmer base below MUST
+   match this color or the label reads dimmer than the rest of the line */
+.message-status.status-active .status-content {
+  color: var(--status-live-base);
+}
+
+/* Shimmer sweep across the label while the status is live. Only applied to
+   .status-prefix spans (always plain text) — icon/code fragments in the rest
+   of the line would not survive background-clip: text. */
+.message-status.status-active .status-prefix,
+.message-status.status-active.status-thinking-headline .status-detail {
+  /* Brightness-only sweep: the gradient never dips below the line's base tone,
+     so the label always matches the rest of the row and only flashes
+     brighter. Narrow band + faster travel keep it clearly visible. */
+  /* Full-white plateau (46-54%) instead of a single stop at 50% - a lone
+     stop means almost no pixels ever reach peak brightness */
+  background: linear-gradient(100deg,
+    var(--status-live-base) 30%, var(--status-live-peak) 46%, var(--status-live-peak) 54%, var(--status-live-base) 70%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: statusShimmer 1.8s linear infinite;
+}
+
+.message-status.status-thinking-headline .status-text {
+  min-width: 0;
+}
+
+.message-status.status-thinking-headline .status-detail-wrapper {
+  max-width: min(100%, 620px);
+}
+
+.message-status.status-thinking-headline .status-detail {
+  font-weight: 400;
+  letter-spacing: normal;
+  text-overflow: ellipsis;
+}
+
+@keyframes statusShimmer {
+  0% { background-position: 120% 0; }
+  100% { background-position: -80% 0; }
+}
+
+/* The shimmer's background-clip:text forces grayscale AA + transparent fill
+   on the label; plain sibling text keeps subpixel AA and reads bolder and
+   brighter than the label on the SAME line. Render the rest of the active
+   line through the identical pipeline (solid background clipped to glyphs)
+   so the whole row rasterizes uniformly. */
+.message-status.status-active .status-text .status-plain,
+.message-status.status-active .status-detail {
+  background: var(--status-live-base);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Animated ellipsis for bare labels (Working, Thinking) — renders nothing on
+   finalized rows since it is scoped to .status-active */
+.message-status.status-active .status-ellipsis::after {
+  content: '';
+  display: inline-block;
+  min-width: 1.1em;
+  text-align: left;
+  animation: statusEllipsis 1.4s steps(1, end) infinite;
+}
+
+@keyframes statusEllipsis {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}
+
+.message-status.status-done .status-content {
+  color: var(--text-secondary);
+}
+
+.message-status.status-done .status-text {
+  font-style: normal;
+}
+
+.message-status.status-done .status-content {
+  transition: color var(--dur) ease;
+}
+
+.message-status.status-done:hover .status-content {
+  color: var(--text-primary);
+}
+
+.message.assistant.message-compaction .message-content {
+  width: min(520px, 100%);
+  padding: 8px 12px 9px !important;
+  border: 1px solid rgba(252, 252, 252, 0.025) !important;
+  border-radius: 10.4px !important;
+  background: rgba(252, 252, 252, 0.0104) !important;
+  box-shadow: none;
+}
+
+.compaction-content {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.compaction-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.compaction-title {
+  min-width: 0;
+}
+
+.compaction-percent {
+  color: var(--text-muted);
+  font-size: var(--text-ui-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.compaction-progress-bar {
+  position: relative;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--fill-2);
+}
+
+.compaction-progress-fill {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: rgba(252, 252, 252, 0.55);
+  transition: width 0.28s ease;
+}
+
+.compaction-progress-bar.is-indeterminate .compaction-progress-fill {
+  width: 38%;
+  animation: compactionBarSweep 1.15s ease-in-out infinite;
+}
+
+.compaction-detail {
+  color: var(--text-muted);
+  font-size: var(--text-ui-sm);
+  line-height: 1.35;
+}
+
+@keyframes compactionBarSweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(280%);
+  }
+}
+
+/* Status text with flip animation for dynamic parts.
+   Whitespace-only text nodes between flex items are dropped by flexbox, so
+   spacing between the label span, icons, code chips, and path text comes from
+   column-gap — not literal spaces in the markup. */
+.status-text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0 4px;
+  line-height: 24px;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Script icons must escape the markdown image styling: .message-content img
+   gives content images margin: 8px 0 + height: auto + rounded corners. The
+   margin inflates the icon's outer flex size to 32px — the whole row grows,
+   text stays at the top, and the icon (centered in the inflated row) sinks
+   ~8px below the text. Zero it out, then centering the 16px icon against the
+   19.6px text line lands its center exactly on the text's optical center. */
+.status-text .script-icon {
+  margin: 0;
+  height: 16px;
+  border-radius: 0;
+  align-self: center;
+}
+
+.status-text.status-multiline {
+  display: block;
+  white-space: normal;
+  line-height: var(--leading-chat);
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.status-prefix {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.status-text.status-multiline .status-prefix {
+  display: inline-block;
+  margin-bottom: 2px;
+  font-weight: 400;
+}
+
+.status-multiline-intro {
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.status-bullet-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 6px 10px;
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--border);
+  background: rgba(252, 252, 252, 0.015);
+  width: fit-content;
+  max-width: min(100%, 560px);
+}
+
+.status-bullet-item {
+  position: relative;
+  margin: 2px 0;
+  padding-left: 14px;
+  color: var(--text-secondary);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.status-bullet-item::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.status-bullet-item.depth-1 {
+  margin-left: 12px;
+}
+
+.status-bullet-item.depth-2 {
+  margin-left: 24px;
+}
+
+.message-status.status-done .status-text.status-multiline {
+  font-style: normal;
+}
+
+.status-detail-wrapper {
+  position: relative;
+  display: inline-flex;
+  /* spacing comes from .status-text column-gap */
+  margin-left: 0;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* New text - determines the wrapper size, animates in from top */
+.status-detail {
+  display: inline-block;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-text.status-multiline .status-detail {
+  white-space: pre-wrap;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+.status-text code {
+  display: inline-block;
+  min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+}
+
+/* Studio run-command source: truncated, click to expand. Synara writes the
+   command straight into the row ("Ran cd /Users/...") in the row's own type
+   and tone, so the collapsed chip carries no fill or mono face.
+   Scoped under .status-content to out-specify the markdown code rule. */
+.status-content .status-command {
+  display: inline-block;
+  max-width: 360px;
+  min-width: 0;
+  margin-left: 0;
+  padding: 0;
+  background: transparent;
+  border: 0 solid transparent;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--text-ui);
+  line-height: 20px;
+  color: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+  align-self: center;
+  cursor: pointer;
+  transition: background var(--dur) ease, color var(--dur) ease;
+}
+
+.status-content .status-command:hover {
+  background: transparent;
+  color: var(--text-primary);
+}
+
+/* Expanded: a full-width code card on its own line under the label, styled
+   like the search-group card (the flex row wraps to make room) */
+.status-content:has(.status-command.expanded) {
+  flex-wrap: wrap;
+}
+
+.status-content .status-command.expanded {
+  display: block;
+  flex-basis: 100%;
+  width: 100%;
+  max-width: none;
+  margin: 6px 0 2px;
+  padding: 8px 9.6px;
+  border-width: 1px;
+  border-radius: 10.4px;
+  background: rgba(252, 252, 252, 0.026);
+  border-color: transparent;
+  font-family: var(--font-mono);
+  font-size: var(--text-ui-sm);
+  line-height: 1.5;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 300px;
+  overflow-y: auto;
+  text-overflow: clip;
+}
+
+.status-content .status-command.expanded::-webkit-scrollbar {
+  width: 8px;
+}
+
+.status-content .status-command.expanded::-webkit-scrollbar-thumb {
+  background: var(--fill-4);
+  border-radius: 4px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* Output drawer: the command's printed result, revealed with the expanded
+   chip as a connected panel under the code card */
+.status-content .status-command-output {
+  display: none;
+  flex-basis: 100%;
+  width: 100%;
+  margin: 0 0 2px;
+  padding: 8px 9.6px 9px;
+  border: 1px solid transparent;
+  border-top: 1px solid rgba(252, 252, 252, 0.046);
+  border-radius: 0 0 10.4px 10.4px;
+  background: rgba(252, 252, 252, 0.026);
+}
+
+.status-content .status-command.expanded + .status-command-output {
+  display: block;
+}
+
+.status-content .status-command.expanded:has(+ .status-command-output) {
+  margin-bottom: 0;
+  border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.status-command-output .status-command-output-label {
+  margin-bottom: 4px;
+  font-size: var(--text-ui-xs);
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--text-muted);
+}
+
+.status-command-output .status-command-output-text {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-ui-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.status-command-output .status-command-output-text::-webkit-scrollbar {
+  width: 8px;
+}
+
+.status-command-output .status-command-output-text::-webkit-scrollbar-thumb {
+  background: var(--fill-4);
+  border-radius: 4px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* Expanded-chip Lua token colors follow the Script Diff Theme setting
+   (body[data-diff-theme]), mirroring the diff card palettes in diff.css.
+   Default (Ropilot theme): atom-one-dark supplies hljs-* colors; the custom
+   lua-* spans from utils.highlightLua get the same colors as diffs. */
+.status-content .status-command.expanded .hljs-keyword,
+.status-content .status-command.expanded .hljs-literal,
+.status-content .status-command.expanded .lua-keyword {
+  font-weight: 600;
+}
+
+.status-content .status-command.expanded .lua-builtin-name,
+.status-content .status-command.expanded .lua-builtin-member-name,
+.status-content .status-command.expanded .lua-property-name {
+  color: #61afef;
+}
+
+.status-content .status-command.expanded .lua-method-name {
+  color: #d19a66;
+}
+
+/* Roblox Studio theme */
+body[data-diff-theme="studio"] .status-content .status-command.expanded {
+  font-family: 'Fira Mono', var(--font-mono);
+  color: rgb(188, 190, 200);
+}
+
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-keyword,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-selector-tag,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-section,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-link,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .lua-keyword,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-function .hljs-keyword {
+  color: rgb(235, 121, 115);
+  font-weight: 600;
+}
+
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-literal,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-number,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-regexp {
+  color: rgb(242, 186, 42);
+}
+
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-string {
+  color: rgb(142, 233, 182);
+}
+
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-comment,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-quote,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-meta {
+  color: rgb(106, 111, 129);
+}
+
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-built_in,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-builtin-name,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .lua-builtin-name,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .lua-builtin-member-name {
+  color: rgb(143, 180, 255);
+}
+
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-title,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-function .hljs-title,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .lua-method-name {
+  color: rgb(250, 228, 170);
+}
+
+body[data-diff-theme="studio"] .status-content .status-command.expanded .lua-property-name,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-variable,
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-attribute {
+  color: rgb(112, 160, 255);
+}
+
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-type {
+  color: rgb(82, 139, 255);
+}
+
+body[data-diff-theme="studio"] .status-content .status-command.expanded .hljs-params {
+  color: rgb(188, 190, 200);
+}
+
+.status-detail.flip-in {
+  animation: statusFlipIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Old text - positioned absolute so it doesn't affect size, animates out downward */
+.status-detail.flip-out {
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: statusFlipOut 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+@keyframes statusFlipIn {
+  0% {
+    transform: translateY(-100%) rotateX(90deg);
+    opacity: 0;
+    filter: blur(4px);
+  }
+  60% {
+    filter: blur(0.5px);
+  }
+  100% {
+    transform: translateY(0) rotateX(0deg);
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes statusFlipOut {
+  0% {
+    transform: translateY(0) rotateX(0deg);
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    transform: translateY(100%) rotateX(-90deg);
+    opacity: 0;
+    filter: blur(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .message-status.status-active.status-thinking-headline .status-detail {
+    animation: none;
+    background: var(--status-live-base);
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .message-status.status-thinking-headline .status-detail.flip-out {
+    display: none;
+  }
+}
+
+
+/* Route-failure note — deliberately quiet. Same visual register as the
+   finalized status rows ("Thought for 16s"): secondary color, small type,
+   no box, no border. A distracted user can scan straight past it while the
+   auto-retry recovers the turn; success removes the line entirely. */
+.route-failure-note {
+  padding: 0;
+  margin: 0;
+}
+
+.route-failure-line {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  font-size: var(--text-ui);
+  line-height: 24px;
+  color: var(--text-secondary);
+}
+
+.route-failure-text {
+  min-width: 0;
+}
+
+.route-failure-retry {
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.route-failure-retry:hover:not(:disabled) {
+  color: var(--text-primary);
+}
+
+.route-failure-retry:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+  border-radius: 4px;
+}
+
+.route-failure-retry:disabled {
+  text-decoration: none;
+  cursor: default;
+  opacity: 0.6;
+}
+
+.route-failure-line .route-retry-attempts {
+  color: var(--text-muted);
+  font-size: var(--text-ui-sm);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.route-failure-line .route-retry-attempts[hidden] {
+  display: none;
+}
+
+/* Blender 3D preview (js/blender-preview.js): the turn's final Blender model,
+   a full-width viewer at the bottom of the turn, aligned with assistant text. */
+.message-blender-preview .blender-preview-stage {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: 260px;
+  margin: 2px 0 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background-color: var(--card);
+  background-image: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  overflow: hidden;
+}
+
+/* Name of an imported model, under its stage; several imports in one turn
+   stack, each captioned. */
+.message-blender-preview .blender-preview-caption {
+  margin: -2px 2px 6px;
+  font-size: var(--text-ui-xs);
+  line-height: 17.875px;
+  color: var(--text-muted);
+}
+
+.message-blender-preview .blender-preview-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.message-blender-preview .blender-preview-stage canvas:active {
+  cursor: grabbing;
+}
+
+.message-blender-preview .blender-preview-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 12px;
+  font-size: var(--text-ui-sm);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+/* Screenshots the agent took, shown inline (timeline type 'image'). */
+/* The frame hugs the picture (no letterboxing for square or tall renders). */
+.chat-image-entry .chat-image {
+  display: inline-block;
+  margin: 4px 0 8px;
+  max-width: 220px;
+}
+
+.chat-image-entry .chat-image-button {
+  display: block;
+  width: auto;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  overflow: hidden;
+  background: var(--card);
+  cursor: zoom-in;
+  transition: border-color var(--dur) ease;
+}
+
+.chat-image-entry .chat-image-button:hover {
+  border-color: var(--border-heavy);
+}
+
+.chat-image-entry .chat-image-img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 160px;
+}
+
+/* Only the agent's focus note, when it gave one. */
+.chat-image-entry .chat-image-caption {
+  margin: 4px 2px 0;
+  font-size: var(--text-ui-xs);
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.chat-image-entry .chat-image-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Play bar of animated previews, just under the stage. */
+.message-blender-preview .blender-preview {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+
+.message-blender-preview .blender-preview-controls {
+  display: flex;
+  margin: 0 0 6px;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  box-sizing: border-box;
+  padding: 0 10px 0 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  background: rgba(252, 252, 252, 0.015);
+}
+
+.message-blender-preview .bpc-play {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background var(--dur) ease, color var(--dur) ease;
+}
+
+.message-blender-preview .bpc-play:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.message-blender-preview .bpc-play svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Ink for the played part of the track (--progress is set by JS). */
+.message-blender-preview .bpc-scrub {
+  flex: 1;
+  min-width: 0;
+  height: 3px;
+  margin: 0;
+  border-radius: 999px;
+  background: linear-gradient(to right, rgba(252, 252, 252, 0.7) var(--progress, 0%), var(--fill-3) var(--progress, 0%));
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.message-blender-preview .bpc-scrub::-webkit-slider-thumb {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.message-blender-preview .bpc-time {
+  flex: none;
+  font-size: var(--text-ui-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+/* Live preview of the running turn: one viewer after #messages that follows
+   every Blender step (js/blender-preview.js). */
+#blender-live-preview {
+  margin-top: 16px;
+}
+
+#blender-live-preview[hidden],
+#blender-live-preview:empty {
+  display: none !important;
+}

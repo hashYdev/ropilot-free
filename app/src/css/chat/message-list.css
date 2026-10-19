@@ -1,0 +1,12 @@
+.messages {
+  display: flex;
+  flex-direction: column;
+  /* Synara row rhythm: assistant rows are py-0.5 + pb-2, so 12px between
+     consecutive rows; user rows add their own meta strip below (messages.css) */
+  --tl-gap: 12px;
+  gap: var(--tl-gap);
+  align-items: stretch;
+  box-sizing: border-box;
+  min-width: 0;
+}
+

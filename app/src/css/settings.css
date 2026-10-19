@@ -1,0 +1,733 @@
+/* ===========================================
+   Settings page — Synara's settings view, measured 1:1: it fills the same
+   inset panel as the chat (the rail's Chats button closes it), with a
+   #151515 nav of grouped sections and centred 672px content of cards.
+   #settings-modal keeps its .modal / .hidden contract with settings.js;
+   everything here is scoped to it so the other dialogs are unaffected.
+   =========================================== */
+
+#settings-modal.settings-page {
+  position: fixed;
+  top: var(--titlebar-height);
+  left: calc(var(--rail-width) + 1px);
+  right: var(--panel-gap);
+  bottom: var(--panel-gap);
+  display: block;
+  z-index: 100;
+  background: var(--surface);
+  border-radius: var(--panel-radius);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.055);
+  overflow: hidden;
+}
+
+#settings-modal.settings-page.hidden {
+  display: none !important;
+}
+
+#settings-modal.settings-page > .modal-backdrop {
+  display: none;
+}
+
+#settings-modal .settings-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: calc(var(--sidebar-width) + 1px) minmax(0, 1fr);
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  animation: settingsEnter 160ms var(--ease-out);
+}
+
+@keyframes settingsEnter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Left nav ---------- */
+
+#settings-modal .settings-nav {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 6px 6px 16px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--panel-border);
+}
+
+#settings-modal .settings-nav-title {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  margin: 0 0 4px;
+  padding: 0 10px;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 25.5px;
+  letter-spacing: normal;
+  color: var(--text-primary);
+}
+
+#settings-modal .settings-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 28px;
+  padding: 2px 8px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-row);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  text-align: left;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--dur) ease-out, color var(--dur) ease-out;
+}
+
+#settings-modal .settings-nav-item:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+#settings-modal .settings-nav-item.is-active {
+  background: var(--fill-selected);
+  color: var(--text-primary);
+}
+
+#settings-modal.is-searching .settings-nav-item.is-active {
+  background: transparent;
+  color: var(--text-row);
+}
+
+#settings-modal .settings-nav-item:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+#settings-modal .settings-nav-item svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+/* Capsule search: 28px, soft ink fill, hairline */
+#settings-modal .settings-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 28px;
+  margin: 6px 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--fill-selected);
+}
+
+#settings-modal .settings-search svg {
+  position: absolute;
+  left: 13px;
+  width: 14px;
+  height: 14px;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+#settings-modal .settings-search input {
+  width: 100%;
+  height: 100%;
+  padding: 4px 16px 4px 36px;
+  border: none;
+  border-radius: inherit;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 18px;
+  outline: none;
+}
+
+#settings-modal .settings-search input::placeholder {
+  color: var(--text-secondary);
+}
+
+#settings-modal .settings-search:focus-within {
+  border-color: var(--border-focus);
+}
+
+#settings-modal .settings-search input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+#settings-modal .settings-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#settings-modal .settings-nav-group + .settings-nav-group {
+  margin-top: 12px;
+}
+
+#settings-modal .settings-nav-label {
+  padding: 4px 8px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  color: var(--text-muted);
+}
+
+/* ---------- Main column ---------- */
+
+#settings-modal .settings-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: var(--surface);
+}
+
+#settings-modal .settings-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+#settings-modal .settings-content {
+  max-width: 672px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+#settings-modal .settings-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+#settings-modal .settings-header-text {
+  min-width: 0;
+}
+
+#settings-modal .settings-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+}
+
+#settings-modal .settings-header-desc {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 21.125px;
+  color: var(--text-secondary);
+}
+
+#settings-modal .settings-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Synara's xs outline button (Restore defaults / Test): 24px, 11px/500 */
+#settings-modal .settings-xs-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 7px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 16.5px;
+  cursor: pointer;
+  transition: background var(--dur) ease-out, opacity var(--dur) ease-out;
+}
+
+#settings-modal .settings-xs-btn:hover {
+  background: var(--fill-hover);
+}
+
+#settings-modal .settings-xs-btn.is-primary {
+  background: var(--primary-bg);
+  border-color: transparent;
+  color: var(--primary-fg);
+}
+
+#settings-modal .settings-xs-btn.is-primary:hover {
+  opacity: 0.9;
+}
+
+#settings-modal .settings-xs-btn:focus-visible {
+  outline: 1px solid var(--ring);
+  outline-offset: 1px;
+}
+
+#settings-modal .settings-search-empty {
+  padding: 24px 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* Panels: one visible at a time; while searching, every panel with a hit shows */
+#settings-modal .settings-panel {
+  display: none;
+  flex-direction: column;
+  gap: 24px;
+}
+
+#settings-modal .settings-panel.is-active {
+  display: flex;
+}
+
+#settings-modal.is-searching .settings-panel {
+  display: none;
+}
+
+#settings-modal.is-searching .settings-panel.is-search-hit {
+  display: flex;
+  margin-bottom: 24px;
+}
+
+#settings-modal .settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#settings-modal .settings-section.is-search-miss,
+#settings-modal .settings-row.is-search-miss,
+body:not(.platform-win32) #settings-modal .platform-win32-only {
+  display: none;
+}
+
+#settings-modal .settings-section-label {
+  padding: 4px 8px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  color: var(--text-muted);
+}
+
+#settings-modal .settings-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: visible;
+}
+
+/* ---------- Rows ---------- */
+
+#settings-modal .settings-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+}
+
+#settings-modal .settings-card > .settings-row:first-child,
+#settings-modal .settings-card > .settings-row.hidden + .settings-row,
+#settings-modal .settings-card > .settings-row.is-search-miss + .settings-row {
+  border-top: none;
+}
+
+#settings-modal .settings-row.hidden {
+  display: none;
+}
+
+#settings-modal .settings-row-text {
+  flex: 1 1 260px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#settings-modal .settings-row-title {
+  display: flex;
+  align-items: center;
+  min-height: 20px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 19.5px;
+  color: var(--text-primary);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+#settings-modal .settings-row-desc {
+  font-size: 13px;
+  line-height: 19.5px;
+  color: var(--text-secondary);
+}
+
+#settings-modal .settings-row-desc code {
+  padding: 1.6px 5.6px;
+  border-radius: 6.4px;
+  background: var(--fill-selected);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-primary);
+}
+
+#settings-modal .settings-row-desc a {
+  color: var(--accent);
+}
+
+#settings-modal .settings-row-control {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 0;
+}
+
+/* Stacked rows: the control spans the full width under the text */
+#settings-modal .settings-row.is-stacked {
+  align-items: stretch;
+}
+
+#settings-modal .settings-row.is-stacked .settings-row-text,
+#settings-modal .settings-row.is-stacked .settings-row-control {
+  flex: 1 1 100%;
+}
+
+#settings-modal .settings-row.is-stacked .settings-row-control {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+#settings-modal .settings-row-control.settings-row-control-split {
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between;
+}
+
+#settings-modal .settings-row.has-status .upgrade-status {
+  flex: 1 1 100%;
+}
+
+/* ---------- Controls ---------- */
+
+#settings-modal input[type='text'],
+#settings-modal textarea {
+  width: 100%;
+  min-height: 32px;
+  padding: 6px 12px;
+  background: var(--control);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 19.5px;
+  outline: none;
+  transition: border-color var(--dur) ease-out, box-shadow var(--dur) ease-out;
+}
+
+#settings-modal textarea {
+  min-height: 112px;
+  resize: vertical;
+}
+
+#settings-modal input[type='text']::placeholder,
+#settings-modal textarea::placeholder {
+  color: rgba(252, 252, 252, 0.42);
+}
+
+#settings-modal input[type='text']:focus,
+#settings-modal textarea:focus {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.16);
+}
+
+#settings-modal input.input-invalid {
+  border-color: rgba(224, 46, 42, 0.55);
+}
+
+#settings-modal input.input-invalid:focus {
+  box-shadow: 0 0 0 2px rgba(224, 46, 42, 0.16);
+}
+
+#settings-modal input.input-valid {
+  border-color: rgba(0, 162, 64, 0.5);
+}
+
+#settings-modal input.input-valid:focus {
+  box-shadow: 0 0 0 2px rgba(0, 162, 64, 0.14);
+}
+
+#settings-modal input.input-validating {
+  border-color: var(--border-heavy);
+}
+
+#settings-modal .input-error {
+  display: block;
+  font-size: 12px;
+  color: var(--error);
+}
+
+#settings-modal .input-error.hidden {
+  display: none;
+}
+
+/* Row buttons — Synara outline (32px, 13px/500, radius 10) */
+#settings-modal .settings-row-control .btn-secondary,
+#settings-modal .settings-row-control .btn-primary {
+  width: auto;
+  flex: 0 0 auto;
+  min-height: 32px;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  background: transparent;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 500;
+  gap: 8px;
+}
+
+#settings-modal .settings-row-control .btn-secondary:hover {
+  background: var(--fill-hover);
+}
+
+#settings-modal .settings-row-control .btn-secondary svg {
+  width: 16px;
+  height: 16px;
+  margin: 0 -2px;
+  opacity: 0.8;
+  stroke-width: 1.5;
+}
+
+#settings-modal .settings-row-control .btn-secondary.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+#settings-modal .settings-row-control svg.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Plugin status line — quiet text with a coloured dot */
+#settings-modal .plugin-status,
+#settings-modal .plugin-status.installed,
+#settings-modal .plugin-status.not-installed,
+#settings-modal .plugin-status.update-available {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+#settings-modal .plugin-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(252, 252, 252, 0.3);
+  flex-shrink: 0;
+}
+
+#settings-modal .plugin-status.installed::before {
+  background: var(--success);
+}
+
+#settings-modal .plugin-status.not-installed::before {
+  background: var(--error);
+}
+
+#settings-modal .plugin-status.update-available::before {
+  background: var(--warning);
+}
+
+#settings-modal .plugin-status svg {
+  display: none;
+}
+
+#settings-modal .plugin-status-text {
+  color: var(--text-secondary);
+}
+
+/* Upgrade status — inline note under the row */
+#settings-modal .upgrade-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  background: var(--fill-selected);
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--text-secondary);
+}
+
+#settings-modal .upgrade-status.hidden {
+  display: none;
+}
+
+#settings-modal .upgrade-status.success {
+  border-color: rgba(0, 162, 64, 0.32);
+  color: #2fb862;
+}
+
+#settings-modal .upgrade-status.error {
+  border-color: rgba(224, 46, 42, 0.32);
+  color: #ef5a56;
+}
+
+#settings-modal .restart-warning {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--warning);
+}
+
+#settings-modal .restart-warning.hidden {
+  display: none;
+}
+
+/* Subagent dropdown — Synara select trigger (32px, #171717, radius 10) */
+#settings-modal .settings-dropdown {
+  position: relative;
+  min-width: 176px;
+}
+
+#settings-modal .settings-dropdown-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-height: 32px;
+  padding: 0 11px;
+  background: var(--control);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  box-shadow: none;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  cursor: pointer;
+  transition: border-color var(--dur) ease-out, background var(--dur) ease-out;
+}
+
+#settings-modal .settings-dropdown-trigger:hover {
+  background: #1b1b1b;
+}
+
+#settings-modal .settings-dropdown-trigger:focus-visible,
+#settings-modal .settings-dropdown.is-open .settings-dropdown-trigger {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.16);
+}
+
+#settings-modal .settings-dropdown-chevron {
+  display: inline-flex;
+  color: var(--text-primary);
+  opacity: 0.5;
+}
+
+#settings-modal .settings-dropdown-chevron svg {
+  width: 12px;
+  height: 12px;
+}
+
+#settings-modal .settings-dropdown-menu {
+  right: 0;
+  left: auto;
+  min-width: 100%;
+}
+
+/* Script diff theme picker — two selectable preview cards */
+#settings-modal .theme-picker {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+#settings-modal .theme-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 8px 10px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: border-color var(--dur) ease-out, background var(--dur) ease-out;
+}
+
+#settings-modal .theme-card:hover:not(.is-selected) {
+  background: var(--fill-hover);
+}
+
+#settings-modal .theme-card.is-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+  background: transparent;
+}
+
+#settings-modal .theme-card-preview {
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+#settings-modal .theme-card-label {
+  padding: 0 2px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+#settings-modal .theme-card.is-selected .theme-card-label {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+@media (max-width: 760px) {
+  #settings-modal .settings-shell {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+}

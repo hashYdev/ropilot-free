@@ -1,0 +1,240 @@
+/* Message Styles */
+.message {
+  width: 100%;
+  max-width: 100%;
+  animation: fadeIn 0.2s var(--ease-out);
+  position: relative;
+  min-width: 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Subtle fade-up animation for streaming assistant responses */
+@keyframes fadeUpStream {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message.assistant.streaming .message-content {
+  animation: fadeUpStream 0.25s ease-out forwards;
+}
+
+/* Synara user row: bubble, 1px gap, a 24px meta strip (hover actions; the
+   edit button lives there, see message-editing.css), then pb-4. With the
+   12px list gap that puts the next row's text 43px below the bubble. */
+.message.user {
+  align-self: center;
+  padding-bottom: 31px;
+}
+
+/* The row above a user bubble ends 10px short of it (pb-2 + py-0.5), not the
+   12px list gap */
+.message.user:not(:first-child) {
+  margin-top: -2px;
+}
+
+.message.assistant {
+  align-self: center;
+  text-align: left;
+}
+
+.message.assistant.message-with-info,
+.message.emit.message-with-info,
+.message.assistant.emit.message-with-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Keep the reading column full-width (code blocks, tables) when the footer
+   row turns the message into a flex column */
+.message.message-with-info > .message-content {
+  align-self: stretch;
+  width: 100%;
+}
+
+/* Synara chat type: 13px / 1.625, regular weight. The leading resolves to a
+   length (21.125px) so descendants inherit pixels, as Synara's inline
+   transcript style does: 12px inline code then sits on the same 21.125px
+   line and nudges line boxes exactly as it does there. */
+.message-content {
+  font-size: var(--text-ui);
+  line-height: calc(var(--leading-chat) * 1em);
+  font-weight: 400;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* User message: right-aligned soft bubble (ink fill, no border glow) */
+/* Ropilot keeps its orange-edged user bubble on Synara's bubble metrics */
+.message.user .message-content {
+  background: rgba(var(--accent-rgb), 0.07);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  border-radius: 16px;
+  box-shadow: none;
+  -webkit-user-select: text !important;
+  user-select: text !important;
+  cursor: text;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  line-height: calc(var(--leading-chat) * 1em);
+  min-width: 0;
+  max-width: 80%;
+  overflow: hidden;
+}
+
+/* Plan-mode bubble keeps its teal identity, quietly */
+.message.user.user-bubble-plan .message-content {
+  background: rgba(var(--plan-accent-rgb), 0.1);
+  border: 1px solid var(--plan-border);
+  box-shadow: none;
+  color: var(--text-primary);
+}
+
+.message.user.user-bubble-steer .message-content {
+  background: var(--fill-selected);
+  border: 1px solid transparent;
+  box-shadow: none;
+  color: var(--text-primary);
+}
+
+/* Steer marker: a quiet muted return-arrow glyph beside the bubble */
+.message.user.user-bubble-steer .message-wrapper::before {
+  content: "";
+  order: 0;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  align-self: center;
+  background: center / 16px 16px no-repeat url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%3E%3Cpath%20d='M6%204v7a6%206%200%200%200%206%206h7'%20stroke='%23f5f5f5'%20stroke-opacity='.4'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3Cpath%20d='m15%2013%204%204-4%204'%20stroke='%23f5f5f5'%20stroke-opacity='.4'%20stroke-width='1.5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+@media (max-width: 560px) {
+  .message.user.user-bubble-steer .message-wrapper::before {
+    flex-basis: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.message.user .message-text {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.message-image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  max-width: 360px;
+}
+
+.message-image-item {
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--fill-1);
+  border: 1px solid var(--border);
+}
+
+.message-image-item:only-child {
+  grid-column: 1 / -1;
+}
+
+.message-image-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 210px;
+  object-fit: cover;
+  cursor: zoom-in;
+  transition: opacity var(--dur) ease;
+}
+
+.message-image-item img:hover {
+  opacity: 0.92;
+}
+
+/* Ensure all elements inside user message content are selectable */
+.message.user .message-content,
+.message.user .message-content * {
+  -webkit-user-select: text !important;
+  user-select: text !important;
+}
+
+/* Assistant messages - plain text, no visual container */
+.message.assistant .message-content,
+.message.emit .message-content,
+.message.assistant.emit .message-content {
+  background: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  margin: 0;
+  color: var(--text-primary);
+  user-select: text;
+  cursor: text;
+  text-align: left;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* Synara turn footer: mt-0.5, 24px row, items centred, gap 8px */
+.message-action-row {
+  width: 100%;
+  min-height: 24px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+/* Message footer meta: 11px/17.875 muted-foreground (ink .58), tabular */
+.message-action-meta {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-ui-xs);
+  font-weight: 400;
+  line-height: 17.875px;
+  font-variant-numeric: tabular-nums;
+  user-select: text;
+}
+
+/* In-message CTAs (return-login, reinstall, switch-and-retry, provider setup):
+   compact inline Synara secondary buttons instead of full-width setup buttons */
+.message .message-content .btn.btn-secondary,
+.message .message-content .btn.btn-primary {
+  display: inline-flex;
+  width: auto;
+  min-height: 28px;
+  height: 28px;
+  padding: 0 11px;
+  font-size: var(--text-ui);
+  font-weight: 500;
+  line-height: 1;
+}

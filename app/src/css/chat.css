@@ -1,0 +1,28 @@
+/* ===========================================
+   Chat Area - Messages, Status, Welcome/Setup
+   Split into ordered partials; keep imports in cascade order.
+   =========================================== */
+
+@import url('chat/base.css'); /* Chat area container */
+@import url('chat/setup-base.css'); /* Setup screen canvas, content, core actions */
+@import url('chat/setup-install.css'); /* Setup install, status, help, debug affordances */
+@import url('chat/setup-auth.css'); /* Auth provider options, login progress, fallback, debug modal */
+@import url('chat/welcome-screen.css'); /* Initial welcome screen and bonus banner */
+@import url('chat/chat-layout.css'); /* Chat grid, scroll track, floating column */
+@import url('chat/chat-welcome.css'); /* Empty-chat welcome state */
+@import url('chat/message-list.css'); /* Message list container */
+@import url('chat/messages.css'); /* Chat message bubbles and media */
+@import url('chat/status.css'); /* Status rows and compaction progress */
+@import url('chat/search-group.css'); /* Grouped search-step box */
+@import url('chat/thinking.css'); /* Codex reasoning-summary Thinking block */
+@import url('chat/turn-separator.css'); /* Work/answer rule (Codex TUI parity) */
+@import url('chat/turn-work.css'); /* Finished turn's work folded behind "Worked for …" */
+@import url('chat/message-editing.css'); /* Legacy status bar and message editing */
+@import url('chat/queue.css'); /* API reminder, queue, pending message */
+@import url('chat/credits-inline-card.css'); /* Inline credits card */
+@import url('chat/setup-legacy-cic.css'); /* Onboarding: pre-Synara credits card rules */
+@import url('chat/login-splash.css'); /* Login splash */
+@import url('chat/setup-forms.css'); /* Setup form polish and onboarding viewport */
+@import url('chat/setup-legacy-theme.css'); /* Pre-Synara tokens and shared rules, scoped to onboarding */
+
+@import url('chat/astra-announcement.css');

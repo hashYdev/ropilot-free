@@ -1,0 +1,149 @@
+/* Chat Welcome - Empty State */
+.chat-welcome {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: calc(32px + var(--chat-floating-composer-clearance)); /* Above floating composer */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 1;
+  animation: welcomeFadeIn 0.3s ease-out forwards;
+}
+
+.chat-welcome.hidden {
+  display: none;
+}
+
+.chat-welcome.fade-out {
+  animation: welcomeFadeOut 0.4s ease-out forwards;
+}
+
+@keyframes welcomeFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes welcomeFadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+/* Synara new-thread empty state: a 40px mark, 16px gap, then one 30px/400
+   headline at ink .95 (tracking -0.015em), centred in the 736px column. */
+.chat-welcome-content {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 736px;
+  padding: 0 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  user-select: none;
+}
+
+.chat-welcome-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* The pre-redesign brand tile: orange-tinted square with a static soft glow
+   around the white pilot-hat mark. */
+.chat-welcome-logo {
+  width: 72px;
+  height: 72px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--accent-rgb), 0.15);
+  border: 2px solid rgba(var(--accent-rgb), 0.6);
+  border-radius: 18px;
+  box-shadow:
+    0 0 24px 6px rgba(var(--accent-rgb), 0.2),
+    0 0 48px 12px rgba(var(--accent-rgb), 0.08),
+    inset 0 0 22px rgba(var(--accent-rgb), 0.12);
+  overflow: visible;
+}
+
+.chat-welcome-logo::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    0 0 44px 10px rgba(var(--accent-rgb), 0.24),
+    0 0 88px 20px rgba(var(--accent-rgb), 0.1);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.chat-welcome-logo img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: brightness(1.1);
+  position: relative;
+  z-index: 1;
+}
+
+/* Synara shows no product name in the empty state — the mark carries the
+   brand — so the wordmark stays in the DOM for assistive tech only. */
+.chat-welcome-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.chat-welcome-title .brand-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+}
+
+.chat-welcome-title .brand-ro,
+.chat-welcome-title .brand-pilot {
+  color: inherit;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+.chat-welcome-tagline {
+  font-family: var(--font-sans);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: rgba(252, 252, 252, 0.95);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .chat-welcome-tagline {
+    font-size: 26px;
+  }
+}

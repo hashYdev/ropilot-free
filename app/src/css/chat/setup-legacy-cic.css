@@ -1,0 +1,449 @@
+/* Pre-Synara rules from chat/credits-inline-card.css for the onboarding screens only. :where() keeps
+   the original specificity, and this file loads right after chat/credits-inline-card.css so the
+   old rules win there exactly as before. */
+
+:where(.setup-screen) .cic-kicker {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.84);
+}
+
+:where(.setup-screen) .cic-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 23px 30px 16px;
+  border-radius: 24px;
+  background:
+    radial-gradient(120% 86% at 50% -18%, rgba(255, 255, 255, 0.13), transparent 48%),
+    radial-gradient(92% 78% at 18% 10%, rgba(255, 255, 255, 0.048), transparent 48%),
+    radial-gradient(112% 90% at 100% 108%, rgba(249, 115, 22, 0.08), transparent 56%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.014) 46%, rgba(0, 0, 0, 0.16)),
+    rgba(7, 8, 11, 0.72);
+  -webkit-backdrop-filter: blur(42px) saturate(168%);
+  backdrop-filter: blur(42px) saturate(168%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 1px 0 0 rgba(255, 255, 255, 0.045),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.78),
+    inset 0 -44px 70px -58px rgba(0, 0, 0, 0.92),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.026),
+    0 1px 0 rgba(255, 255, 255, 0.04),
+    0 32px 76px -42px rgba(0, 0, 0, 0.94),
+    0 14px 42px -36px rgba(249, 115, 22, 0.34);
+}
+
+:where(.setup-screen) .cic-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(118deg, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0.07) 9%, transparent 31%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.085), transparent 20%),
+    linear-gradient(93deg, rgba(255, 255, 255, 0.07), transparent 22%, transparent 81%, rgba(255, 255, 255, 0.028)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='132' height='132'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.68' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.24' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.085;
+  mix-blend-mode: screen;
+}
+
+:where(.setup-screen) .cic-card::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 23px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 22%, transparent 72%, rgba(249, 115, 22, 0.08)),
+    radial-gradient(170px 58px at 50% 0%, rgba(255, 255, 255, 0.11), transparent 72%),
+    radial-gradient(260px 150px at 50% 48%, rgba(255, 255, 255, 0.022), transparent 76%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.046),
+    inset 0 0 38px rgba(255, 255, 255, 0.022),
+    inset 0 0 74px rgba(0, 0, 0, 0.18);
+}
+
+:where(.setup-screen) .cic-logo {
+  position: relative;
+  z-index: 1;
+  margin: 0 auto 14px;
+  display: flex;
+  justify-content: center;
+}
+
+:where(.setup-screen) .cic-logo::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 112px;
+  height: 92px;
+  pointer-events: none;
+  background:
+    radial-gradient(closest-side, rgba(249, 115, 22, 0.34), rgba(249, 115, 22, 0.13) 48%, transparent 76%),
+    radial-gradient(closest-side, rgba(255, 255, 255, 0.13), transparent 62%);
+  filter: blur(12px);
+  transform: translate(-50%, -50%);
+}
+
+:where(.setup-screen) .cic-logo img {
+  position: relative;
+  z-index: 1;
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+  display: block;
+  filter:
+    drop-shadow(0 14px 24px rgba(0, 0, 0, 0.42))
+    drop-shadow(0 0 18px rgba(249, 115, 22, 0.44));
+}
+
+:where(.setup-screen) .cic-title {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 6px;
+  font-family: var(--font-brand);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #fff;
+}
+
+:where(.setup-screen) .cic-sub {
+  position: relative;
+  z-index: 1;
+  max-width: 280px;
+  margin: 0 auto 16px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+:where(.setup-screen) .cic-sub strong {
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 600;
+}
+
+:where(.setup-screen) .cic-cta {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 11px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #0a0a0a;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(245, 245, 239, 0.98)),
+    #f7f7f2;
+  border: 1px solid rgba(255, 255, 255, 0.86);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.78) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.08) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 12px 26px -17px rgba(0, 0, 0, 0.7);
+  transition: transform 0.15s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+:where(.setup-screen) .cic-cta:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.84) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.07) inset,
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 16px 32px -18px rgba(0, 0, 0, 0.76);
+}
+
+:where(.setup-screen) .cic-cta:active {
+  transform: translateY(0);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.72) inset,
+    0 8px 18px -15px rgba(0, 0, 0, 0.72);
+}
+
+:where(.setup-screen) .cic-amt {
+  font-weight: 700;
+}
+
+:where(.setup-screen) .cic-arrow {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
+  transition: transform 0.15s var(--ease);
+}
+
+:where(.setup-screen) .cic-cta:hover .cic-arrow {
+  transform: translate(2px, -2px);
+}
+
+:where(.setup-screen) .cic-resume-status {
+  position: relative;
+  z-index: 1;
+  max-width: 280px;
+  margin: 12px auto 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+:where(.setup-screen) .cic-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 14px -30px 0;
+  padding: 10px 30px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+:where(.setup-screen) .cic-resume-now {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 104px;
+  min-height: 28px;
+  padding: 0 13px;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.82);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+
+:where(.setup-screen) .cic-resume-now:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+:where(.setup-screen) .cic-resume-now:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+:where(.setup-screen) .cic-later {
+  display: inline-block;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+  transition: color 0.15s ease;
+}
+
+:where(.setup-screen) .cic-later:hover {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+:where(.setup-screen) .cic-invite {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  border-radius: 14px;
+  background:
+    radial-gradient(120% 100% at 50% -25%, rgba(34, 197, 94, 0.1), transparent 60%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01) 55%, rgba(0, 0, 0, 0.14)),
+    rgba(7, 8, 11, 0.6);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+  backdrop-filter: blur(30px) saturate(150%);
+  border: 1px solid rgba(34, 197, 94, 0.26);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 18px 44px -34px rgba(0, 0, 0, 0.9);
+}
+
+:where(.setup-screen) .cic-invite-gift {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  color: #34d399;
+}
+
+:where(.setup-screen) .cic-invite-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+:where(.setup-screen) .cic-invite-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: #d9f4e3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+:where(.setup-screen) .cic-invite-badge {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 1;
+  color: #4ade80;
+  padding: 3px 8px;
+  border: 1px solid rgba(34, 197, 94, 0.34);
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.08);
+  white-space: nowrap;
+}
+
+:where(.setup-screen) .cic-invite-sub {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+:where(.setup-screen) .cic-invite-sub:empty {
+  display: none;
+}
+
+:where(.setup-screen) .cic-invite-sub b {
+  color: #5fe0a0;
+  font-weight: 700;
+}
+
+:where(.setup-screen) .cic-invite-copy {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: #4ade80;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.32);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+:where(.setup-screen) .cic-invite-copy:hover:not(:disabled) {
+  background: rgba(34, 197, 94, 0.16);
+  border-color: rgba(34, 197, 94, 0.5);
+  color: #86efac;
+}
+
+:where(.setup-screen) .cic-invite-copy:disabled {
+  cursor: default;
+  color: rgba(134, 239, 172, 0.46);
+  background: rgba(34, 197, 94, 0.055);
+  border-color: rgba(34, 197, 94, 0.18);
+}
+
+:where(.setup-screen) .cic-invite-copy svg {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 13px;
+}
+
+:where(.setup-screen) .cic-auto {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+:where(.setup-screen) .cic-auto:empty {
+  display: none;
+}
+
+:where(.setup-screen) .cic-cta-auto {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.16), rgba(245, 158, 11, 0.06));
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: #fbbf24;
+}
+
+:where(.setup-screen) .cic-cta-auto:hover {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.24), rgba(245, 158, 11, 0.1));
+  border-color: rgba(245, 158, 11, 0.7);
+}
+
+:where(.setup-screen) .cic-auto-hint {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+}
+
+:where(.setup-screen) .cic-auto-on {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: rgba(251, 191, 36, 0.85);
+  margin: 0;
+  text-align: center;
+}
+
+:where(.setup-screen) .cic-auto-manage {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 11px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0 0 0 6px;
+}
+
+:where(.setup-screen) .cic-auto-manage:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+:where(.setup-screen) .cic-auto-link {
+  background: none;
+  border: none;
+  color: rgba(251, 191, 36, 0.75);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+:where(.setup-screen) .cic-auto-link:hover {
+  color: #fbbf24;
+  text-decoration: underline;
+}
+
+:where(.setup-screen) .cic-cta-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+:where(.setup-screen) .cic-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: rgba(255, 255, 255, 0.85);
+}

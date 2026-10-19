@@ -1,0 +1,159 @@
+/* ===========================================
+   Utility Classes and Global Styles
+   =========================================== */
+
+/* Utility Classes */
+.hidden {
+  display: none !important;
+}
+
+/* Scrollbar (Synara: 10px, ink thumb inset by a 2px transparent border) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(252, 252, 252, 0.07);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(252, 252, 252, 0.14);
+  background-clip: padding-box;
+}
+
+/* Selection */
+::selection {
+  background: rgba(var(--accent-rgb), 0.35);
+  color: var(--text-primary);
+}
+
+/* User bubbles are a quiet ink fill now, so the shared selection reads fine. */
+.message.user .message-content::selection,
+.message.user .message-content *::selection {
+  background: rgba(var(--accent-rgb), 0.4);
+  color: var(--text-primary);
+}
+
+/* Animations */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Surface entrances. Each runs when its element goes from display:none to
+   shown. Uses the individual `scale`/`translate` properties so JS-set inline
+   `transform` positioning is left alone. */
+@keyframes menuFadeIn {
+  from { opacity: 0; }
+}
+
+@keyframes popoverEnter {
+  from { opacity: 0; scale: 0.96; }
+}
+
+@keyframes modalEnter {
+  from { opacity: 0; scale: 0.98; }
+}
+
+/* Reduced motion: keep state changes, drop the movement. Colour/opacity
+   transitions finish instantly; looping decoration stops. Spinners keep
+   turning since they carry meaning. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .composer-dropdown-menu,
+  .composer-dropdown-submenu,
+  .context-menu,
+  .project-context-menu,
+  .modal-content,
+  .modal-backdrop,
+  .drop-overlay,
+  .drop-overlay-content,
+  .btn-send::before,
+  .btn-send .ripple {
+    animation: none !important;
+  }
+}
+
+/* ===========================================
+   Drag and Drop Overlay
+   =========================================== */
+
+.drop-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: dropOverlayFadeIn 0.15s ease-out;
+}
+
+.drop-overlay.hidden {
+  display: none !important;
+}
+
+@keyframes dropOverlayFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.drop-overlay-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 40px 48px;
+  background: var(--popover);
+  border: 1px dashed var(--border-heavy);
+  border-radius: var(--radius-dialog);
+  box-shadow: var(--shadow-lg);
+  animation: dropContentPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dropContentPulse {
+  0%, 100% {
+    border-color: var(--border-heavy);
+  }
+  50% {
+    border-color: var(--border-focus);
+  }
+}
+
+.drop-overlay-content svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--text-secondary);
+  stroke-width: 1.5;
+}
+
+.drop-overlay-content span {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+}

@@ -1,0 +1,40 @@
+/* ===========================================
+   Ropilot Studio - Main Stylesheet
+
+   This file imports all modular CSS components.
+   Each module is organized by feature/component.
+   =========================================== */
+
+/* Core */
+@import url('css/variables.css');    /* CSS custom properties */
+@import url('css/base.css');         /* Reset, app container, platform styles */
+@import url('css/utilities.css');    /* Utility classes, scrollbar, animations */
+
+/* Layout Components */
+@import url('css/titlebar.css');     /* Titlebar and window controls */
+@import url('css/setup-legacy-titlebar.css');   /* Onboarding: pre-Synara rules */
+@import url('css/sidebar.css');      /* Sidebar, projects, chat list */
+
+/* Chat Components */
+@import url('css/chat.css');         /* Chat view, messages, status */
+@import url('css/markdown.css');     /* Markdown content rendering */
+
+/* Input Components */
+@import url('css/input.css');        /* Input area, model selector, toggles */
+@import url('css/buttons.css');      /* Button styles */
+@import url('css/setup-legacy-buttons.css');   /* Onboarding: pre-Synara rules */
+
+/* Modal Components */
+@import url('css/modal.css');        /* Modals and form elements */
+@import url('css/setup-legacy-modal.css');   /* Onboarding: pre-Synara rules */
+
+/* Feature Components */
+@import url('css/diff.css');         /* Diff preview, syntax highlighting */
+@import url('css/playtest.css');     /* Playtest panel */
+@import url('css/blender-install-toast.css'); /* Blender install notification */
+@import url('css/planmode.css');     /* Plan mode UI */
+
+@import url('css/credit-reimbursement.css');
+
+/* Settings page (after modal.css so its scoped rules win) */
+@import url('css/settings.css');

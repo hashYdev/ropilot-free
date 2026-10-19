@@ -1,0 +1,252 @@
+/* Search group - consecutive search-like status rows folded into one
+   collapsible group (see src/js/search-group.js). Rows inside keep their
+   .message-status classes so all live/finalize behavior still applies.
+   Layout follows Synara's tool-call group summary: one quiet inline header
+   (16px icon box, muted label, count, 14px chevron) over plain 24px rows —
+   no card, no fill. */
+.message-search-group {
+  padding: 0;
+  margin: 0;
+}
+
+.message-search-group .search-group-box {
+  position: relative;
+  width: min(680px, 100%);
+}
+
+/* Former thread line: Synara rows carry no rail */
+.message-search-group .search-group-box::after {
+  content: none;
+}
+
+/* ToolCallGroupSummaryRow: inline-flex, gap-1.5, py-0.5 around a 24px line */
+.search-group-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 2px 0;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: var(--text-ui);
+  line-height: 24px;
+  font-weight: 400;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+  transition: color var(--dur) ease;
+}
+
+.search-group-header:hover {
+  color: var(--text-primary);
+}
+
+.search-group-header:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.search-group-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.search-group-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.search-group-title {
+  font-weight: 400;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.search-group-count {
+  font-size: var(--text-ui);
+  color: inherit;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Chevron keeps muted-foreground/70 while the label brightens on hover */
+.search-group-chevron {
+  display: flex;
+  color: rgba(252, 252, 252, 0.406);
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.search-group-chevron svg {
+  width: 14px;
+  height: 14px;
+}
+
+.message-search-group.collapsed .search-group-chevron {
+  transform: rotate(-90deg);
+}
+
+/* Step rows: plain list under the header (pt-0.5), scroll-capped */
+.search-group-body {
+  margin: 2px 0 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  max-height: 249px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Open/close animates the drawer's grid row 0fr <-> 1fr (height to the
+   list's natural size) with a fade; visibility flips after the close so
+   hidden rows aren't focusable. Same motion as the turn fold (turn-work.css). */
+.search-group-drawer {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.22s ease 0.04s,
+    visibility 0s;
+}
+
+.message-search-group.collapsed .search-group-drawer {
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.16s ease,
+    visibility 0s linear 0.28s;
+}
+
+.search-group-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-group-drawer,
+  .message-search-group.collapsed .search-group-drawer,
+  .search-group-chevron {
+    transition: none;
+  }
+}
+
+.search-group-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.search-group-body::-webkit-scrollbar-thumb {
+  background: var(--fill-4);
+  border-radius: 4px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* 24px rows, 1px apart (Synara space-y-px).Padding lives on the row itself — .message-content
+   padding is force-zeroed by messages.css
+   (`.message.assistant .message-content { padding: 0 !important }`). */
+.search-group-body .message-status {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Live rows slide open (height + fade together) at their staggered reveal
+   time (appendStepToGroup sets .search-step-animate + animation-delay), so a
+   parallel burst grows the list smoothly row by row. History re-renders skip
+   this class: rows must have full height immediately or scroll-to-bottom
+   measures them at height 0 and lands short. backwards fill keeps a row
+   collapsed until its delay elapses. */
+.search-group-body .message-status.search-step-animate {
+  animation: searchStepIn 0.32s cubic-bezier(0.25, 1, 0.4, 1) backwards;
+}
+
+@keyframes searchStepIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 24px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* Beats the tight-stack rule in status.css (same specificity, later file) */
+.message-search-group .search-group-body .message-status + .message-status {
+  margin-top: 1px;
+}
+
+.search-group-body .message-status.status-done .status-text {
+  font-style: normal;
+}
+
+.search-group-body .status-content {
+  gap: 6px;
+}
+
+/* Muted verb, brighter target: the path is the information, the verb is chrome */
+.search-step-verb {
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+/* Synara keeps the whole tool row in one muted tone */
+.search-step-target {
+  color: inherit;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Step kind icon (16px box): hidden while the row is live (the spinner takes its slot) */
+.search-step-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.search-step-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.message-status.status-active .search-step-icon {
+  display: none;
+}
+
+/* While any row inside is live, the header title shimmers like status labels
+   (keyframes shared with chat/status.css) */
+.message-search-group:has(.message-status.status-active) .search-group-title {
+  background: linear-gradient(100deg,
+    var(--status-live-base) 30%, var(--status-live-peak) 46%, var(--status-live-peak) 54%, var(--status-live-base) 70%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: statusShimmer 1.8s linear infinite;
+}

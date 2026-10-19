@@ -11,7 +11,8 @@ import os
 import shutil
 import sys
 
-ROOT = '/tmp/opencode/rp/patched'
+ROOT = os.environ.get('ROPILOT_APP', os.path.abspath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'app')))
 applied = []
 
 
@@ -31,7 +32,7 @@ def edit(rel, old, new, why):
 
 
 # ── 1. the wall, rewritten ───────────────────────────────────────────────────
-shutil.copyfile('/tmp/opencode/rp/credits-wall.free.js',
+shutil.copyfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'credits-wall.free.js'),
                 os.path.join(ROOT, 'src/js/credits/credits-wall.js'))
 applied.append('src/js/credits/credits-wall.js')
 print('  + %-44s full rewrite: no checkout, no auto top-up' % 'src/js/credits/credits-wall.js')

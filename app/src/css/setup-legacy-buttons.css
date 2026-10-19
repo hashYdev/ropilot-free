@@ -1,0 +1,54 @@
+/* Pre-Synara rules from buttons.css for the onboarding screens only. :where() keeps
+   the original specificity, and this file loads right after buttons.css so the
+   old rules win there exactly as before. */
+
+:where(.setup-screen) .btn-primary {
+  line-height: normal;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  background: var(--accent);
+  border: 1px solid var(--accent-light);
+  border-radius: var(--radius-btn);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.25s var(--ease), border-color 0.25s var(--ease),
+    transform 0.15s var(--ease);
+}
+
+:where(.setup-screen) .btn-primary:hover:not(:disabled) {
+  background: var(--accent-light);
+  border-color: var(--accent-light);
+}
+
+:where(.setup-screen) .btn-primary:active:not(:disabled) {
+  transform: scale(0.97);
+  transition-duration: 0.08s;
+}
+
+:where(.setup-screen) .btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+:where(.setup-screen) .btn-primary .btn-arrow {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  transition: transform 0.15s var(--ease);
+}
+
+:where(.setup-screen) .btn-primary:hover:not(:disabled) .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* The Synara button sets a min-height the old one never had. */
+:where(.setup-screen) .btn-primary {
+  min-height: auto;
+}

@@ -1,0 +1,167 @@
+/* Thinking block - Codex public reasoning summaries folded into one compact,
+   collapsible block per reasoning item (see src/js/thinking-block.js).
+   Follows the reference: a quiet muted "Thinking" header with an inline
+   chevron, and the summary text underneath in a lighter gray. Header idiom
+   (hover pill, rotating chevron, live shimmer) matches the search group;
+   the statusShimmer keyframes live in chat/status.css. */
+/* The row keeps the .message default width: 100% — constraining the root
+   would make align-self: center float the whole block toward the middle of
+   wide chat columns instead of left-aligning with other assistant content.
+   The 680px reading-width cap lives on the body instead. */
+.message-thinking {
+  padding: 0;
+  margin: 0;
+}
+
+.thinking-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 0 -2px;
+  padding: 0;
+  min-height: 24px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: var(--text-ui);
+  line-height: var(--leading-chat);
+  font-weight: 400;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+  transition: color var(--dur) ease;
+}
+
+.thinking-header:hover {
+  color: var(--text-primary);
+}
+
+.thinking-header:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.thinking-title {
+  color: inherit;
+}
+
+/* Chevron keeps muted-foreground/70 while the label brightens */
+.thinking-chevron {
+  display: flex;
+  color: rgba(252, 252, 252, 0.406);
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.thinking-chevron svg {
+  width: 14px;
+  height: 14px;
+}
+
+.message-thinking.collapsed .thinking-chevron {
+  transform: rotate(-90deg);
+}
+
+/* Summary text: Synara narration tone (muted-foreground), capped height so a long summary
+   scrolls inside the block instead of growing the timeline. The JS pins the
+   scroll to the newest text only while the reader is already at the end. */
+.thinking-body {
+  margin: 2px 0;
+  padding: 0;
+  max-width: 680px;
+  font-size: var(--text-ui);
+  line-height: calc(var(--leading-chat) * 1em);
+  color: var(--text-secondary);
+  max-height: 240px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.message-thinking.collapsed .thinking-body {
+  display: none;
+}
+
+.thinking-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.thinking-body::-webkit-scrollbar-thumb {
+  background: var(--fill-4);
+  border-radius: 4px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* Sanitized markdown (thinking-block.js renderThinkingMarkdown) — line breaks
+   are explicit (<p>/<br>), so no pre-wrap; break pathological tokens instead
+   of overflowing horizontally. Kept compact and muted: emphasis reads through
+   weight, not brightness jumps. */
+.thinking-part {
+  overflow-wrap: anywhere;
+}
+
+.thinking-part + .thinking-part {
+  margin-top: 8px;
+}
+
+.thinking-part p,
+.thinking-part ul,
+.thinking-part ol,
+.thinking-part pre,
+.thinking-part blockquote {
+  margin: 0 0 10.4px;
+}
+
+.thinking-part > *:last-child {
+  margin-bottom: 0;
+}
+
+.thinking-part ul,
+.thinking-part ol {
+  padding-left: 20px;
+}
+
+.thinking-part h1,
+.thinking-part h2,
+.thinking-part h3,
+.thinking-part h4,
+.thinking-part h5,
+.thinking-part h6 {
+  margin: 0 0 4px;
+  font-size: var(--text-ui);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.thinking-part strong {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.thinking-part code {
+  font-size: var(--text-ui-sm);
+}
+
+/* Neutralized links (hrefs stripped) render as plain emphasized text */
+.thinking-part a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--text-faint);
+  cursor: default;
+}
+
+/* While summary text is still streaming, the header title shimmers like live
+   status labels (keyframes shared with chat/status.css). Text updates land
+   via textContent on stable nodes, so there is no per-delta animation and no
+   layout jump. */
+.message-thinking.thinking-streaming .thinking-title {
+  background: linear-gradient(100deg,
+    var(--status-live-base) 30%, var(--status-live-peak) 46%, var(--status-live-peak) 54%, var(--status-live-base) 70%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: statusShimmer 1.8s linear infinite;
+}

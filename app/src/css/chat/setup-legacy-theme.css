@@ -1,0 +1,175 @@
+/* Onboarding keeps its pre-Synara look: the UI refresh is limited to the
+   app itself. Restores the old design tokens, IBM Plex type and window backdrop for
+   the setup screens; the shared button/spinner/form/logo rules live in the
+   setup-legacy-*.css files next to their originals. */
+@font-face { font-family: 'IBM Plex Sans'; font-weight: 400; font-style: normal; font-display: swap; src: url('../../../assets/fonts/ibm-plex-sans-400.ttf') format('truetype'); }
+@font-face { font-family: 'IBM Plex Sans'; font-weight: 500; font-style: normal; font-display: swap; src: url('../../../assets/fonts/ibm-plex-sans-500.ttf') format('truetype'); }
+@font-face { font-family: 'IBM Plex Sans'; font-weight: 600; font-style: normal; font-display: swap; src: url('../../../assets/fonts/ibm-plex-sans-600.ttf') format('truetype'); }
+@font-face { font-family: 'IBM Plex Sans'; font-weight: 700; font-style: normal; font-display: swap; src: url('../../../assets/fonts/ibm-plex-sans-700.ttf') format('truetype'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 400; font-style: normal; font-display: swap; src: url('../../../assets/fonts/ibm-plex-mono-400.ttf') format('truetype'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 500; font-style: normal; font-display: swap; src: url('../../../assets/fonts/ibm-plex-mono-500.ttf') format('truetype'); }
+
+.setup-screen {
+  /* Backgrounds - Dark theme with transparency for blur effect */
+  /* These values work with system-level blur (Windows acrylic, macOS vibrancy) */
+  --bg-primary: rgba(9, 9, 11, 0.75);
+  --bg-secondary: rgba(24, 24, 27, 0.70);
+  --bg-tertiary: rgba(28, 28, 31, 0.65);
+  --bg-hover: rgba(39, 39, 42, 0.65);
+  --bg-active: rgba(52, 52, 56, 0.65);
+
+  /* Text colors */
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+
+  /* Accent colors - Orange theme */
+  --accent: #f97316;
+  --accent-hover: #ea580c;
+  --accent-light: #fb923c;
+  --accent-glow: rgba(249, 115, 22, 0.25);
+  --accent-gradient: linear-gradient(135deg, #f97316 0%, #eab308 100%);
+  --plan-accent: #04afb1;
+  --plan-accent-rgb: 4, 175, 177;
+  --plan-border: rgba(4, 175, 177, 0.34);
+  --plan-focus: rgba(4, 175, 177, 0.56);
+  --plan-bg-soft: rgba(4, 175, 177, 0.08);
+  --plan-bg-strong: rgba(4, 175, 177, 0.15);
+
+  /* Borders */
+  --border: rgba(255, 255, 255, 0.06);
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-focus: rgba(249, 115, 22, 0.5);
+  --border-accent: rgba(249, 115, 22, 0.3);
+
+  /* Status colors */
+  --success: #22c55e;
+  --warning: #eab308;
+  --error: #ef4444;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-accent: 0 8px 30px -8px rgba(249, 115, 22, 0.5);
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  /* Rounded-rectangle action buttons (matches ropilot.ai "Get started free") */
+  --radius-btn: 12px;
+
+  /* Easing */
+  --ease: cubic-bezier(.2, .7, .3, 1);
+
+  /* Layout */
+  --titlebar-height: 44px;
+  --sidebar-width: 280px;
+  /* --chat-column-width is set on .chat-view (see chat.css) using cqw so it tracks chat-area width, not the viewport */
+
+  /* Typography */
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  /* Logo / wordmark only — system stack used before IBM Plex was primary */
+  --font-brand: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'SF Mono', 'IBM Plex Mono', 'Fira Code', 'Monaco', monospace;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: normal;
+  letter-spacing: normal;
+  color: var(--text-primary);
+}
+
+/* Old window tint and orange/yellow corner glows behind onboarding (pre-Synara base.css). */
+.app:has(.setup-screen:not(.hidden)) {
+  background: rgba(9, 9, 11, 0.75);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+}
+
+/* macOS: avoid a parent backdrop boundary so child glass panels can blur page content. */
+body.platform-darwin .app:has(.setup-screen:not(.hidden)) {
+  background: rgba(9, 9, 11, 0.72);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Windows with native blur working: Semi-transparent dark tint for readability */
+body.native-blur-success .app:has(.setup-screen:not(.hidden)) {
+  background: rgba(9, 9, 11, 0.55);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Windows with transparency effects disabled: More opaque since blur won't render */
+body.native-blur-success.transparency-disabled .app:has(.setup-screen:not(.hidden)) {
+  background: rgba(9, 9, 11, 0.92);
+}
+
+/* Hide gradient overlays when native blur is active */
+body.native-blur-success .app:has(.setup-screen:not(.hidden))::before,
+body.native-blur-success .app:has(.setup-screen:not(.hidden))::after {
+  display: none !important;
+}
+
+/* Windows 11 without native blur: Use stronger CSS blur as fallback */
+body.platform-win32.win11-css-fallback .app:has(.setup-screen:not(.hidden)) {
+  background: rgba(9, 9, 11, 0.65);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+}
+
+/* Windows 10: CSS blur (default works fine) */
+body.win10-fallback .app:has(.setup-screen:not(.hidden)) {
+  background: rgba(9, 9, 11, 0.65);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+}
+
+/* User disabled transparency in settings - solid black background */
+body.transparency-disabled-by-user .app:has(.setup-screen:not(.hidden)) {
+  background: #0e0e11 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ===========================================
+   Background glow effects
+   =========================================== */
+
+/* Subtle background glow - matches website aesthetic */
+.app:has(.setup-screen:not(.hidden))::before {
+  display: block;
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -25%;
+  width: 50%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app:has(.setup-screen:not(.hidden))::after {
+  display: block;
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  right: -20%;
+  width: 40%;
+  height: 80%;
+  background: radial-gradient(circle, rgba(234, 179, 8, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.app:has(.setup-screen:not(.hidden)) > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+.app:has(.setup-screen:not(.hidden)) {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}

@@ -22,7 +22,8 @@ import os
 import re
 import sys
 
-ROOT = '/tmp/opencode/rp/patched'
+ROOT = os.environ.get('ROPILOT_APP', os.path.abspath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'app')))
 applied = []
 
 

@@ -1,0 +1,166 @@
+/* Chat View */
+.chat-view {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr min(var(--chat-column-width), var(--chat-content-max-width)) 1fr;
+  grid-template-rows: 1fr;
+  min-height: 0; /* Critical: allows grid/flex child to shrink below content size */
+  overflow: hidden;
+  position: relative;
+  /* Match chat panel width (sidebar excluded); :root % was viewport-wide and drifted on resize */
+  --chat-column-width: min(100cqw, calc(100cqw - 8vw), 760px);
+  /* Synara reading column: 736px of text inside 12px track insets */
+  --chat-content-max-width: 760px;
+  /* Message text aligns with composer shell (same horizontal padding as .input-row) */
+  --chat-track-pad-x: 12px;
+  --chat-track-gap: 12px;
+  --chat-composer-inset-left: var(--chat-track-pad-x);
+  --chat-composer-inset-right: var(--chat-track-pad-x);
+  /* Fallback before JS measures the actual floating bottom column height */
+  --chat-floating-composer-clearance: 140px;
+}
+
+@media (max-width: 900px) {
+  .chat-view {
+    --chat-track-gap: 10px;
+  }
+}
+
+.chat-view > .chat-welcome {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+}
+
+/* Full-width scroll layer so the scrollbar sits on the panel edge; track below stays centered */
+.chat-view > .chat-messages-scroll {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
+  align-self: stretch;
+  justify-self: stretch;
+  /* Synara's transcript scroll-edge-fade (paint only): rows dissolve over 24px
+     at the top edge once scrolled, and just above the composer's top edge
+     while scrolled away from the end - that band slides away under the glass
+     as the end is reached so the resting tail is never cut. A second, static
+     layer always dissolves content above the composer's footer row so nothing
+     shows behind the send controls or the strip below the composer. */
+  --tl-fade-size: 24px;
+  --tl-fade-inset-b: calc(var(--chat-floating-composer-clearance, 126px) - 12px);
+  --_tl-fade-b-start: calc(100% - (var(--tl-fade-inset-b) + var(--tl-fade-size)) * var(--tl-fade-b-progress));
+  -webkit-mask-image:
+    linear-gradient(to bottom,
+      transparent 0,
+      #000 var(--tl-fade-t),
+      #000 var(--_tl-fade-b-start),
+      transparent calc(var(--_tl-fade-b-start) + var(--tl-fade-size))),
+    linear-gradient(to bottom, #000 calc(100% - 108px), transparent calc(100% - 68px));
+  mask-image:
+    linear-gradient(to bottom,
+      transparent 0,
+      #000 var(--tl-fade-t),
+      #000 var(--_tl-fade-b-start),
+      transparent calc(var(--_tl-fade-b-start) + var(--tl-fade-size))),
+    linear-gradient(to bottom, #000 calc(100% - 108px), transparent calc(100% - 68px));
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation:
+    tlScrollFadeRevealT 1ms linear both,
+    tlScrollFadeRevealB 1ms linear both;
+  animation-timeline: scroll(self y), scroll(self y);
+  animation-range: 0 96px, calc(100% - 96px) 100%;
+}
+
+@property --tl-fade-t {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --tl-fade-b-progress {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@keyframes tlScrollFadeRevealT {
+  from { --tl-fade-t: 0px; }
+  to { --tl-fade-t: 24px; }
+}
+
+@keyframes tlScrollFadeRevealB {
+  from { --tl-fade-b-progress: 1; }
+  to { --tl-fade-b-progress: 0; }
+}
+
+/* Centered track inside the scroller: same width & horizontal insets as composer */
+.chat-messages-track {
+  max-width: min(var(--chat-column-width), var(--chat-content-max-width));
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  box-sizing: border-box;
+  /* Synara: scroller padding-top 16px; its 728px reading column sits 1px left
+     of the composer's edge and ends 9px short of its right edge (the stable
+     scrollbar gutter offsets Synara's list by half a gutter). */
+  padding: 16px calc(var(--chat-composer-inset-right) + 9px) calc(41px + var(--chat-floating-composer-clearance))
+    calc(var(--chat-composer-inset-left) - 1px);
+}
+
+/* Queue/pending + composer: same grid cell as scroll, pinned to bottom (no footer strip) */
+.chat-view > .chat-main-column {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-self: end;
+  justify-self: stretch;
+  width: 100%;
+  max-width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  background: transparent;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.chat-main-column > * {
+  pointer-events: auto;
+}
+
+
+.storage-save-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 8px;
+  padding: 8px 8px 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  background: var(--popover);
+  color: var(--text-primary);
+  font-size: var(--text-ui);
+  line-height: 1.5;
+}
+.storage-save-status span { flex: 1; }
+.storage-save-status button {
+  flex-shrink: 0;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-ui-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur) ease;
+}
+.storage-save-status button:hover:not(:disabled) { background: var(--fill-hover); }
+.storage-save-status button:disabled { opacity: 0.5; cursor: default; }

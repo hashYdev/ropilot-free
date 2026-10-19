@@ -1,0 +1,131 @@
+/* Turn work fold - a finished turn's work (status rows, Search/Blender boxes,
+   reasoning, progress notes) behind one quiet "Worked for 2m 57s ›" header,
+   ruled off from the answer below (see src/js/turn-work.js). Header idiom
+   (hover pill, rotating chevron) matches the Thinking block and search group. */
+/* Synara: trigger pb-2, full-width 1px divider, mb-3 to the answer. The fold
+   sits outside the answer's py-0.5 group, so it starts 2px higher than a
+   plain row would (41px under a bubble, not 43) and the answer lands 14px
+   (12px gap + 2px) under the divider. */
+.turn-work {
+  padding: 0 0 8px;
+  margin: -2px 0 2px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Synara "Worked for 12s ›": 13px muted label, no pill, brightens on hover */
+.turn-work-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 0 -2px;
+  padding: 0;
+  min-height: 24px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: var(--text-ui);
+  line-height: var(--leading-chat);
+  font-weight: 400;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+  transition: color var(--dur) ease;
+}
+
+.turn-work-header:hover {
+  color: var(--text-primary);
+}
+
+.turn-work-header:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+/* First row of the list has no bubble above it to tuck under */
+.turn-work:first-child {
+  margin-top: 0;
+}
+
+/* Chevron keeps its own tone (muted-foreground/70) while the label brightens */
+.turn-work-chevron {
+  display: flex;
+  color: rgba(252, 252, 252, 0.406);
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.turn-work-chevron svg {
+  width: 14px;
+  height: 14px;
+}
+
+.turn-work.expanded .turn-work-chevron {
+  transform: rotate(90deg);
+}
+
+/* Open/close: the drawer's single grid row animates 0fr <-> 1fr (a height
+   transition to the content's natural size) while the log fades and settles.
+   visibility flips after the close finishes so folded rows are not
+   focusable. The clip bleeds 6px sideways so hover pills inside (negative
+   margins, see search-group.css) aren't cut off. */
+.turn-work-drawer {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.18s ease,
+    visibility 0s linear 0.3s;
+}
+
+.turn-work.expanded .turn-work-drawer {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.24s ease 0.05s,
+    visibility 0s;
+}
+
+.turn-work-clip {
+  min-height: 0;
+  overflow: hidden;
+  margin: 0 -6px;
+  padding: 0 6px;
+}
+
+/* Synara's opened panel: items space-y-1.5 (6px), mb-2.5 above the divider
+   (2px here + the fold's 8px bottom padding) */
+.turn-work-body {
+  --tl-gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--tl-gap);
+  align-items: stretch;
+  min-width: 0;
+  padding-top: 8px;
+  padding-bottom: 2px;
+  transform: translateY(-6px);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.turn-work.expanded .turn-work-body {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .turn-work-drawer,
+  .turn-work.expanded .turn-work-drawer,
+  .turn-work-body,
+  .turn-work-chevron {
+    transition: none;
+  }
+}
+
+/* Rows inside an opened fold are history: skip the entrance animation */
+.turn-work-body .message {
+  animation: none;
+}

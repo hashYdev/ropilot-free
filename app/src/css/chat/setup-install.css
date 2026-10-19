@@ -1,0 +1,286 @@
+/* Plugin actions - horizontal layout */
+/* Plugin setup actions - stacked vertically with bigger Install button */
+.plugin-actions {
+  flex-direction: column !important;
+  gap: 16px !important;
+  align-items: center !important;
+}
+
+.plugin-actions .btn-download {
+  padding: 18px 48px;
+  font-size: 18px;
+  min-width: 240px;
+  box-shadow: 0 0 30px rgba(249, 115, 22, 0.4);
+  justify-content: center;
+}
+
+.plugin-actions .btn-download:hover {
+  box-shadow: 0 0 40px rgba(249, 115, 22, 0.6);
+}
+
+.plugin-actions .btn-download svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Download-style button */
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius-md);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-download:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}
+
+.btn-download:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-download svg {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-download .btn-spinner {
+  display: inline-flex;
+}
+
+.btn-download .btn-spinner.hidden {
+  display: none;
+}
+
+.btn-download .btn-text.hidden {
+  display: none;
+}
+
+.btn-download .spinner {
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+}
+
+.skip-link {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 10px 0;
+}
+
+.skip-link:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+.support-link:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* Setup prereq notice */
+.setup-prereq {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.setup-prereq .prereq-label {
+  display: inline-block;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.setup-prereq p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.setup-prereq a {
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+.setup-prereq a:hover {
+  text-decoration: underline;
+}
+
+/* Setup status indicators */
+.setup-status {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+}
+
+.setup-status.hidden {
+  display: none;
+}
+
+.setup-status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+}
+
+.status-icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.status-icon.pending {
+  color: var(--text-secondary);
+}
+
+.status-icon.checking {
+  color: var(--accent);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.status-icon.success {
+  color: #22c55e;
+}
+
+.status-icon.error {
+  color: #ef4444;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.status-label {
+  font-weight: 500;
+}
+
+.status-result {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* Setup help link */
+.setup-help {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.setup-help p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.setup-help a {
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.setup-help a:hover {
+  color: var(--accent-light);
+  text-decoration: none;
+}
+
+.setup-help .relaunch-note {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+.setup-auth-divider {
+  width: 100%;
+  max-width: 220px;
+  display: grid;
+  grid-template-columns: minmax(28px, 1fr) auto minmax(28px, 1fr);
+  align-items: center;
+  gap: 10px;
+  margin: 14px auto 14px;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.setup-auth-divider span {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14));
+}
+
+.setup-auth-divider span:last-child {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.14), transparent);
+}
+
+.setup-auth-divider strong {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.download-link {
+  color: var(--accent);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.download-link:hover {
+  text-decoration: underline;
+}
+
+/* Debug Details Button */
+.setup-debug-btn {
+  margin-top: 12px;
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 4px 8px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.setup-debug-btn:hover {
+  color: var(--text-secondary);
+}
+
+/* Install provider picker */

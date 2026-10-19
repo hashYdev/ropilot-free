@@ -1,0 +1,358 @@
+/* ===========================================
+   Markdown Rendering Styles (Synara .chat-markdown)
+   =========================================== */
+
+.message-content {
+  overflow-wrap: anywhere;
+}
+
+/* Headers: compact hierarchy, 600 weight, tight leading */
+.message-content h1,
+.message-content h2,
+.message-content h3,
+.message-content h4,
+.message-content h5,
+.message-content h6 {
+  margin: 1.1em 0 0.35em;
+  padding: 0;
+  border: none;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.message-content h1 {
+  font-size: 1.75em;
+}
+
+.message-content h2 {
+  font-size: 1.55em;
+}
+
+.message-content h3 {
+  font-size: 1.35em;
+}
+
+.message-content h4 {
+  font-size: 1.2em;
+}
+
+.message-content h5 {
+  font-size: 1.1em;
+}
+
+.message-content h6 {
+  font-size: 1em;
+  color: var(--text-secondary);
+}
+
+.message-content h1 + h2,
+.message-content h2 + h3,
+.message-content h3 + h4,
+.message-content h4 + h5,
+.message-content h5 + h6 {
+  margin-top: 0.5em;
+}
+
+/* First element shouldn't have top margin */
+.message-content > *:first-child {
+  margin-top: 0;
+}
+
+/* Last element shouldn't have bottom margin */
+.message-content > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Block rhythm. Synara's rem is 16px and ours is 13px, so its rem values are
+   spelled out in px throughout this file (.65rem = 10.4px). */
+.message-content p,
+.message-content ul,
+.message-content ol,
+.message-content blockquote,
+.message-content pre,
+.message-content table {
+  margin: 10.4px 0;
+}
+
+.message-content p {
+  line-height: inherit;
+}
+
+/* Bold and Italic */
+.message-content strong,
+.message-content b {
+  font-weight: 500;
+  font-synthesis: none;
+}
+
+.message-content em {
+  font-style: italic;
+}
+
+/* Links */
+.message-content a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--dur) ease;
+}
+
+.message-content a:hover,
+.message-content a:focus-visible {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: from-font;
+  text-underline-offset: 0.18em;
+}
+
+/* Lists */
+.message-content ul,
+.message-content ol {
+  padding-left: 20px;
+}
+
+.message-content li {
+  margin: 0;
+  line-height: inherit;
+}
+
+.message-content li + li {
+  margin-top: 4px;
+}
+
+/* Nested list styling */
+.message-content ul {
+  list-style-type: disc;
+}
+
+.message-content ul ul {
+  list-style-type: circle;
+}
+
+.message-content ul ul ul {
+  list-style-type: square;
+}
+
+.message-content ol {
+  list-style-type: decimal;
+}
+
+.message-content ol ol {
+  list-style-type: lower-alpha;
+}
+
+/* Checkboxes in task lists */
+.message-content input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: var(--accent-strong);
+}
+
+/* Blockquotes */
+.message-content blockquote {
+  padding: 0 0 0 12.8px;
+  border-left: 2px solid var(--border);
+  background: none;
+  border-radius: 0;
+  color: var(--text-secondary);
+}
+
+/* Code blocks: Synara .chat-markdown-codeblock - borderless ink card
+   (code surface ink .026), .65rem radius, .5rem .6rem padding */
+.message-content pre {
+  background: rgba(252, 252, 252, 0.026);
+  border: 0;
+  border-radius: 10.4px;
+  padding: 8px 9.6px;
+  overflow-x: auto;
+  max-width: 100%;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-ui-sm);
+  line-height: 1.5;
+  overflow-wrap: normal;
+}
+
+.message-content pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: var(--text-ui-sm);
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+.message-content pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.message-content pre::-webkit-scrollbar-thumb {
+  background: var(--fill-4);
+  border-radius: 4px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* Inline code: 12px mono, padding .1rem .35rem, radius .4rem (Synara rem) */
+.message-content code {
+  font-family: var(--font-mono);
+  font-size: var(--text-ui-sm);
+  background: var(--fill-selected);
+  padding: 1.6px 5.6px;
+  border-radius: 6.4px;
+  color: var(--text-primary);
+}
+
+/* Tables: full column width, collapsed hairlines, bold header (Synara leaves
+   th at the UA's bold) */
+.message-content table {
+  display: table;
+  width: 100%;
+  max-width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-ui);
+}
+
+.message-content thead {
+  background: none;
+}
+
+.message-content th {
+  padding: 5.6px 7.2px;
+  text-align: left;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.message-content td {
+  padding: 5.6px 7.2px;
+  text-align: left;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.message-content tr:nth-child(even),
+.message-content tr:hover {
+  background: none;
+}
+
+/* Horizontal rules */
+.message-content hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  height: 0;
+  background: none;
+  margin: 24px 0;
+}
+
+/* Images */
+.message-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-btn);
+  margin: 8px 0;
+}
+
+/* Strikethrough */
+.message-content del {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* Keyboard input */
+.message-content kbd {
+  display: inline-block;
+  padding: 0 6px;
+  font-family: inherit;
+  font-size: var(--text-ui-xs);
+  font-weight: 500;
+  line-height: 18px;
+  background: var(--fill-3);
+  border: none;
+  border-radius: var(--radius-sm);
+  box-shadow: none;
+  color: var(--text-secondary);
+}
+
+/* Subscript and Superscript */
+.message-content sub,
+.message-content sup {
+  font-size: 0.75em;
+}
+
+/* Definition lists */
+.message-content dl {
+  margin: 10.4px 0;
+}
+
+.message-content dt {
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.message-content dd {
+  margin-left: 20px;
+  color: var(--text-secondary);
+}
+
+/* User bubble: the bubble tint IS the code surface, so code steps up one
+   ink level, and block margins tighten inside the compact bubble padding. */
+.message.user .message-text > :first-child {
+  margin-top: 0;
+}
+
+.message.user .message-text > :last-child {
+  margin-bottom: 0;
+}
+
+.message.user .message-content p,
+.message.user .message-content ul,
+.message.user .message-content ol,
+.message.user .message-content blockquote,
+.message.user .message-content pre,
+.message.user .message-content table {
+  margin: 7.2px 0;
+}
+
+.message.user .message-content h1,
+.message.user .message-content h2,
+.message.user .message-content h3,
+.message.user .message-content h4,
+.message.user .message-content h5,
+.message.user .message-content h6 {
+  color: var(--text-primary);
+}
+
+.message.user .message-content a {
+  color: var(--accent);
+}
+
+.message.user .message-content code {
+  background: rgba(252, 252, 252, 0.09);
+  color: var(--text-primary);
+}
+
+.message.user .message-content pre {
+  background: rgba(252, 252, 252, 0.07);
+  border-color: transparent;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.message.user .message-content pre code {
+  background: none;
+  color: var(--text-primary);
+}
+
+.message.user .message-content blockquote {
+  border-color: var(--border-heavy);
+  color: var(--text-secondary);
+}
+
+.message.user .message-content th,
+.message.user .message-content td {
+  border-color: var(--border-light);
+  color: var(--text-primary);
+}

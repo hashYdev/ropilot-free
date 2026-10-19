@@ -1,0 +1,1280 @@
+/* ===========================================
+   Sidebar — Synara's project/thread tree, measured 1:1 from Synara
+   (256px #151515 panel, 28px rows, 13px/400, threads indented 32px).
+   =========================================== */
+
+.sidebar {
+  width: calc(var(--sidebar-width) + 1px);
+  min-width: calc(var(--sidebar-width) + 1px);
+  display: flex;
+  flex-direction: column;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--panel-border);
+  padding: 0;
+  transition: width 0.25s var(--ease-panel), min-width 0.25s var(--ease-panel), opacity 0.2s ease;
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  width: 0;
+  min-width: 0;
+  padding: 0;
+  border-right: none;
+}
+
+.sidebar.collapsed .sidebar-header,
+.sidebar.collapsed .chat-list,
+.sidebar.collapsed .sidebar-footer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-bottom: none;
+}
+
+/* Primary nav rows ("New chat") */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 6px 0;
+}
+
+.sidebar .sidebar-nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  width: 100%;
+  height: 28px;
+  padding: 2px 8px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text-nav);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur) ease-out, color var(--dur) ease-out;
+}
+
+.sidebar .sidebar-nav-row:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.sidebar .sidebar-nav-row:active {
+  background: var(--fill-pressed);
+}
+
+.sidebar .sidebar-nav-row:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.sidebar .sidebar-nav-row svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.sidebar-nav-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Section header ("Projects") with a hover toolbar */
+.sidebar-section-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 28px;
+  margin: 16px 6px 4px;
+  padding: 2px 8px;
+}
+
+.sidebar-header .sidebar-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--text-muted);
+}
+
+.sidebar-section-actions {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity var(--dur) ease-out;
+}
+
+.sidebar-section-header:hover .sidebar-section-actions,
+.sidebar-section-header:focus-within .sidebar-section-actions {
+  opacity: 1;
+}
+
+.sidebar-icon-btn {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: rgba(252, 252, 252, 0.348);
+  cursor: pointer;
+  transition: background var(--dur) ease-out, color var(--dur) ease-out;
+}
+
+.sidebar-icon-btn:hover {
+  background: var(--fill-hover);
+  color: rgba(252, 252, 252, 0.82);
+}
+
+.sidebar-icon-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Header, Pinned and the project tree scroll as one, as in Synara */
+.sidebar-scroll {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.chat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 6px 10px;
+}
+
+/* Section labels ("Pinned"), Synara's text-ui muted-foreground/58 */
+.sidebar-section-label {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Pinned chats — Synara's renderPinnedThreadsSection (mb-3, header my-1 px-2 py-1, rows gap-0.5) */
+.sidebar-pinned {
+  display: flex;
+  flex-direction: column;
+  margin: 12px 6px 12px;
+}
+
+.sidebar-pinned[hidden] {
+  display: none;
+}
+
+.sidebar-pinned:not([hidden]) + .sidebar-section-header {
+  margin-top: 4px;
+}
+
+.sidebar-pinned-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 0;
+  padding: 4px 8px;
+}
+
+.sidebar-pinned-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Project Folders — rows 28px, 12px between folders */
+.project-folder {
+  position: relative;
+  border-radius: var(--radius-md);
+}
+
+.project-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  min-height: 28px;
+  padding: 2px 8px;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  outline: none;
+  cursor: pointer;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-header:hover {
+  background: var(--fill-hover);
+}
+
+.project-header:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+/* The folder glyph: closed / open with the folder */
+.project-folder-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-row);
+}
+
+.project-folder-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.project-folder-icon .project-folder-open,
+.project-folder.expanded .project-folder-icon .project-folder-closed {
+  display: none;
+}
+
+.project-folder.expanded .project-folder-icon .project-folder-open {
+  display: block;
+}
+
+/* Only the name yields room to the hover toolbar (Synara's pr-[4.75rem] reserve) */
+.project-name-wrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  transition: padding 150ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.project-header:hover .project-name-wrap,
+.project-header:has(:focus-visible) .project-name-wrap,
+.project-header:focus-visible .project-name-wrap {
+  padding-right: 50px;
+}
+
+.project-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  color: var(--text-row);
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.project-name-input,
+.chat-name-input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  height: 22px;
+  padding: 0 6px;
+  background: var(--control);
+  border: 1px solid var(--border-focus);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.16);
+}
+
+/* Hover toolbar: absolute top-1 right-1.5, gap 6, revealed on hover / keyboard focus */
+.project-actions {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-header:hover .project-actions,
+.project-header:focus-visible .project-actions,
+.project-header:has(:focus-visible) .project-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.project-add-chat-btn,
+.project-menu-btn {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: rgba(252, 252, 252, 0.348);
+  cursor: pointer;
+  outline: none;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-add-chat-btn:hover,
+.project-menu-btn:hover {
+  background: var(--fill-hover);
+  color: rgba(252, 252, 252, 0.82);
+}
+
+.project-add-chat-btn:focus-visible,
+.project-menu-btn:focus-visible {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.project-add-chat-btn svg,
+.project-menu-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Disclosure — Synara's lib/disclosureMotion.ts: the shell animates
+   grid-template-rows 0fr/1fr with a fade, the list drifts 4px, 220ms ease-out.
+   The 2px top offset (pt-0.5) stays while closed. */
+.project-chats {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  padding-top: 2px;
+  margin: 0;
+  transition: grid-template-rows 220ms cubic-bezier(0, 0, 0.2, 1), opacity 220ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.project-folder.expanded > .project-chats {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.project-chats-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.project-chats-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  translate: 0 -4px;
+  pointer-events: none;
+  transition: opacity 220ms cubic-bezier(0, 0, 0.2, 1), translate 220ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.project-folder.expanded .project-chats-list {
+  opacity: 1;
+  translate: 0 0;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-chats,
+  .project-chats-list {
+    transition: none;
+  }
+}
+
+/* "Show more" / "Show less" — Synara's paging buttons (h-7, muted-foreground/79, no hover fill) */
+.chat-paging {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.chat-show-more,
+.chat-show-less {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  margin: 0;
+  background: none;
+  border: none;
+  border-radius: var(--radius-btn);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  color: var(--text-soft);
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-show-more {
+  flex: 1;
+  min-width: 0;
+  padding: 0 8px 0 32px;
+}
+
+.chat-show-less {
+  flex: none;
+  padding: 0 8px;
+}
+
+.chat-show-less.is-alone {
+  flex: 1;
+  padding: 0 8px 0 32px;
+}
+
+.chat-show-more:hover,
+.chat-show-less:hover {
+  color: var(--text-primary);
+}
+
+.chat-show-more:focus-visible,
+.chat-show-less:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+/* Project Context Menu — Synara popup surface */
+.project-context-menu {
+  min-width: 192px;
+  background: rgba(23, 23, 23, 0.94);
+  backdrop-filter: blur(40px) saturate(150%);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-dropdown);
+  padding: 4px;
+  z-index: 200;
+  transform-origin: top left;
+  animation: popoverEnter 140ms var(--ease-out);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 26px;
+  padding: 1px 8px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-btn);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 19.5px;
+  cursor: default;
+  transition: background var(--dur-fast) ease-out;
+  text-align: left;
+}
+
+.menu-item:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.menu-item svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.8;
+  margin: 0 -2px;
+}
+
+.menu-item-danger,
+.menu-item-danger:hover {
+  color: var(--text-primary);
+}
+
+.menu-item-separator {
+  height: 1px;
+  background: var(--border);
+  margin: 4px 8px;
+}
+
+.menu-item.menu-item-has-value {
+  position: relative;
+}
+
+.menu-item-badge {
+  margin-left: auto;
+  padding: 0 6px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  background: var(--fill-3);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Chat Items — Synara's thread rows: 28px, threads indented 32px, pinned rows flush (8px) */
+.chat-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 28px;
+  min-height: 28px;
+  padding: 0 8px 0 32px;
+  margin: 0;
+  border: none;
+  border-radius: var(--radius-md);
+  color: rgba(252, 252, 252, 0.89);
+  cursor: pointer;
+  outline: none;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-item:hover {
+  background: var(--fill-hover);
+}
+
+.chat-item.active,
+.chat-item.active:hover {
+  background: var(--fill-selected);
+  color: var(--text-primary);
+}
+
+.chat-item:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.chat-item-icon {
+  width: 12px;
+  height: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-primary);
+}
+
+.chat-item-icon svg,
+.chat-item-icon img {
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
+}
+
+.chat-item-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Title: 13px / 20px, faded (truncate-fade, 1.5rem) instead of an ellipsis */
+.chat-item-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--text-row);
+  -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 24px), transparent 100%);
+}
+
+.chat-item.active .chat-item-title {
+  color: var(--text-primary);
+}
+
+/* Pinned rows: flush left, gap 6, title sized from its text, project label at right */
+.chat-item--pinned {
+  gap: 6px;
+  padding: 2px 8px;
+}
+
+.chat-item--pinned .chat-item-title {
+  flex: 1 1 auto;
+}
+
+.chat-item-project {
+  flex-shrink: 0;
+  min-width: 0;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: right;
+  font-size: 11px;
+  line-height: 20px;
+  color: rgba(252, 252, 252, 0.22);
+}
+
+/* Trailing slot: the status glyph, replaced on hover by the action icons */
+.chat-item-trailing {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3px;
+  min-width: 0;
+  align-self: stretch;
+}
+
+.chat-item:hover .chat-item-trailing,
+.chat-item:focus-within .chat-item-trailing {
+  min-width: 48px;
+}
+
+.chat-item-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-item:hover .chat-item-status,
+.chat-item:focus-within .chat-item-status {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hover actions: Pin + Delete, 20px with 15px glyphs, 8px apart, flush right */
+.chat-item-actions {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-item:hover .chat-item-actions,
+.chat-item:focus-within .chat-item-actions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.chat-item-pin,
+.chat-item-delete {
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 2px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: rgba(252, 252, 252, 0.197);
+  cursor: pointer;
+  outline: none;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-item.active .chat-item-pin,
+.chat-item.active .chat-item-delete {
+  color: rgba(252, 252, 252, 0.64);
+}
+
+.chat-item--pinned .chat-item-pin,
+.chat-item--pinned .chat-item-delete,
+.chat-item--pinned.active .chat-item-pin,
+.chat-item--pinned.active .chat-item-delete {
+  color: rgba(252, 252, 252, 0.244);
+}
+
+.chat-item .chat-item-pin:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.chat-item .chat-item-delete:hover {
+  background: var(--fill-hover);
+  color: rgba(252, 252, 252, 0.89);
+}
+
+.chat-item-pin:focus-visible,
+.chat-item-delete:focus-visible {
+  box-shadow: 0 0 0 1px var(--ring);
+}
+
+.chat-item-pin svg,
+.chat-item-delete svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.chat-item.editing {
+  background: var(--fill-selected);
+}
+
+.chat-item-spinner {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid rgba(252, 252, 252, 0.14);
+  border-top-color: rgba(252, 252, 252, 0.7);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+/* ===========================================
+   Sidebar footer — credits and invite (Settings lives in the rail)
+   =========================================== */
+
+.sidebar-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 12px 12px;
+  border-top: none;
+}
+
+.sidebar-footer:not(:has(> :not(.hidden))) {
+  display: none;
+}
+
+.actions-counter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0;
+  padding: 10px 12px;
+  overflow: hidden;
+  background: var(--fill-selected);
+  border-radius: var(--radius-btn);
+  border: 1px solid var(--border);
+}
+
+.actions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.actions-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+.actions-text {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.actions-counter.is-managed-credits .actions-header {
+  align-items: baseline;
+}
+
+.actions-text,
+.actions-counter.is-managed-credits .actions-text {
+  color: var(--accent-light);
+}
+
+.actions-counter.is-managed-credits .actions-text {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+.actions-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--fill-3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.actions-bar-fill {
+  height: 100%;
+  background: var(--accent-gradient);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.actions-bar-fill.warning {
+  background: var(--warning);
+}
+
+.actions-bar-fill.critical {
+  background: var(--error);
+}
+
+.buy-credits-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 32px;
+  margin: 0;
+  padding: 0 11px;
+  border: 1px solid rgba(var(--accent-rgb), 0.34);
+  border-radius: var(--radius-btn);
+  background: rgba(var(--accent-rgb), 0.1);
+  box-shadow: none;
+  color: #ffb16d;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  cursor: pointer;
+  transition: background var(--dur) ease-out;
+}
+
+.buy-credits-btn:hover {
+  background: rgba(var(--accent-rgb), 0.16);
+  border-color: rgba(var(--accent-rgb), 0.5);
+  color: #ffd2aa;
+}
+
+.buy-credits-btn:active {
+  background: rgba(var(--accent-rgb), 0.2);
+}
+
+.buy-credits-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.invite-widget {
+  position: relative;
+  margin: 0;
+  padding: 10px 12px;
+  overflow: hidden;
+  background: var(--fill-selected);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  box-shadow: none;
+}
+
+.invite-widget-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.invite-widget-gift {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.invite-widget-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--text-primary);
+}
+
+.invite-widget-badge {
+  flex-shrink: 0;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--text-secondary);
+  padding: 0 6px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--fill-3);
+  white-space: nowrap;
+}
+
+.invite-widget-sub {
+  margin: 6px 0 9px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.invite-widget-sub b {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.invite-widget-copy {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 9px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  cursor: pointer;
+  transition: background var(--dur) ease-out;
+}
+
+.invite-widget-copy:hover:not(:disabled) {
+  background: var(--fill-hover);
+}
+
+.invite-widget-copy:disabled {
+  cursor: default;
+  color: var(--text-muted);
+}
+
+.invite-widget-copy svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.claim-bonus-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 32px;
+  padding: 0 11px;
+  margin: 0;
+  background: var(--primary-bg);
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  color: var(--primary-fg);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity var(--dur) ease-out;
+}
+
+.claim-bonus-btn:hover {
+  opacity: 0.9;
+}
+
+.claim-bonus-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.claim-bonus-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* project-ui.js draws these menu icons at 2px; Synara's menus use 1.5 */
+.project-context-menu svg [stroke-width],
+.project-context-menu svg {
+  stroke-width: 1.5;
+}
+
+/* Chat hover card — Synara's ThreadHoverCardContent in its TooltipPopup:
+   256px, frosted popover (rgba(23,23,23,.55) + blur 40 / saturate 1.5),
+   1px border, radius 10, shadow-xl; scale .98 to 1 + fade, 150ms. */
+.chat-hover-card {
+  position: fixed;
+  z-index: 300;
+  width: 256px;
+  display: flex;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--popover) 55%, transparent);
+  backdrop-filter: blur(40px) saturate(1.5);
+  -webkit-backdrop-filter: blur(40px) saturate(1.5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+  font-size: 12px;
+  line-height: 15px;
+  opacity: 0;
+  scale: 0.98;
+  transition: scale 150ms cubic-bezier(0.4, 0, 0.2, 1), opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-hover-card.is-open {
+  opacity: 1;
+  scale: 1;
+}
+
+.chat-hover-card.is-instant {
+  transition: none;
+}
+
+/* A project card riding along with a dragged folder eases after it (Base UI positioner) */
+.chat-hover-card.is-following {
+  transition: top 150ms cubic-bezier(0.4, 0, 0.2, 1), left 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-hover-card[hidden] {
+  display: none;
+}
+
+.chat-hover-card-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 2px;
+}
+
+.chat-hover-card-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 6px;
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  line-height: 12px;
+}
+
+.chat-hover-card-title {
+  flex: 1;
+  min-width: 0;
+  white-space: normal;
+  font-weight: 500;
+  line-height: 15px;
+  color: var(--text-primary);
+}
+
+.chat-hover-card-age {
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 11px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(252, 252, 252, 0.319);
+}
+
+.chat-hover-card-meta {
+  color: rgba(252, 252, 252, 0.8);
+}
+
+.chat-hover-card-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: rgba(252, 252, 252, 0.435);
+}
+
+.chat-hover-card-icon svg,
+.chat-hover-card-icon img {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.chat-hover-card-spinner {
+  width: 11px;
+  height: 11px;
+  border: 1.5px solid rgba(252, 252, 252, 0.14);
+  border-top-color: rgba(252, 252, 252, 0.7);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.chat-hover-card-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-hover-card-muted {
+  flex-shrink: 0;
+  color: rgba(252, 252, 252, 0.406);
+}
+
+/* Project card (Synara's ProjectHoverCardContent): name, chat count, path, Edit project.
+   The header keeps the height of Synara's (its 20px pin toggle is not ported). */
+.chat-hover-card-head--project {
+  min-height: 28px;
+}
+
+.chat-hover-card-icon--strong {
+  color: var(--text-secondary);
+}
+
+.chat-hover-card-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.chat-hover-card-sep {
+  height: 1px;
+  margin: 2px -2px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.chat-hover-card-action {
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chat-hover-card-action:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.chat-hover-card-action:focus-visible {
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+/* Invite card keeps its green reward tint */
+.invite-widget {
+  background: rgba(0, 162, 64, 0.06);
+  border-color: rgba(0, 162, 64, 0.26);
+}
+
+.invite-widget-gift,
+.invite-widget-sub b {
+  color: #34d399;
+}
+
+.invite-widget-badge {
+  color: #4ade80;
+  background: rgba(0, 162, 64, 0.12);
+}
+
+.invite-widget-copy {
+  color: #4ade80;
+  border-color: rgba(0, 162, 64, 0.32);
+}
+
+.invite-widget-copy:hover:not(:disabled) {
+  background: rgba(0, 162, 64, 0.12);
+}
+
+/* Synara rows are pointer targets, not text: no I-beam, no selection */
+.sidebar .chat-item,
+.sidebar .chat-item *,
+.sidebar .project-header,
+.sidebar .project-header *,
+.sidebar .sidebar-nav-row,
+.sidebar .chat-show-more,
+.sidebar .chat-show-less {
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.sidebar .chat-name-input,
+.sidebar .project-name-input {
+  cursor: text;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Folder rows are drag handles for reordering (Synara: cursor-grab active:cursor-grabbing) */
+.sidebar .project-header,
+.sidebar .project-header .project-name,
+.sidebar .project-header .project-name-wrap,
+.sidebar .project-header .project-folder-icon,
+.sidebar .project-header .project-folder-icon * {
+  cursor: grab;
+}
+
+.sidebar .project-header:active,
+.sidebar .project-header:active .project-name,
+.sidebar .project-header:active .project-name-wrap {
+  cursor: grabbing;
+}
+
+.sidebar .project-header button,
+.sidebar .project-header button * {
+  cursor: pointer;
+}
+
+/* Dragged folder: Synara's SortableProjectItem (z-20, opacity .8);
+   the folder under the pointer gets ring-1 ring-primary/40 (Synara primary = ink #fcfcfc). */
+.project-folder.is-dragging {
+  z-index: 20;
+  opacity: 0.8;
+}
+
+.project-folder.is-drop-over {
+  box-shadow: 0 0 0 1px rgba(252, 252, 252, 0.4);
+}
+
+/* While any sortable drag runs, the hand stays closed everywhere */
+body.is-sortable-dragging,
+body.is-sortable-dragging * {
+  cursor: grabbing !important;
+}

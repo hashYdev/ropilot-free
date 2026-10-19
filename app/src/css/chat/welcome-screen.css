@@ -1,0 +1,161 @@
+/* Welcome Screen — Synara's new-thread empty state: the 40px mark, 16px
+   gap, a 30px/400 headline at ink .95, a 14px muted line, and Synara's
+   onboarding capsule button. */
+.welcome-screen {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+}
+
+.welcome-content {
+  text-align: center;
+  max-width: 736px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+}
+
+.welcome-logo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--accent-rgb), 0.12);
+  border: 1.5px solid rgba(var(--accent-rgb), 0.4);
+  border-radius: var(--radius-lg);
+  color: var(--accent);
+  box-shadow:
+    0 0 24px 4px rgba(var(--accent-rgb), 0.15),
+    0 0 48px 8px rgba(var(--accent-rgb), 0.06),
+    inset 0 0 12px rgba(var(--accent-rgb), 0.08);
+}
+
+.welcome-logo svg,
+.welcome-logo img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+
+.welcome-content h1 {
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0;
+  letter-spacing: -0.015em;
+  color: rgba(252, 252, 252, 0.95);
+}
+
+.welcome-content h1 .gradient-text {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: currentColor;
+  color: inherit;
+}
+
+.welcome-content p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin: 8px 0 0;
+  line-height: 21px;
+}
+
+.welcome-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.welcome-actions .btn-primary {
+  height: 32px;
+  min-height: 32px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+/* Welcome Bonus Banner — a Synara card with a success-tinted icon */
+.welcome-bonus-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 10px 10px 10px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+
+.bonus-banner-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  border-radius: var(--radius-btn);
+}
+
+.bonus-banner-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--success);
+  stroke-width: 1.75;
+}
+
+.bonus-banner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.bonus-banner-title {
+  font-size: var(--text-ui);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.bonus-banner-desc {
+  font-size: var(--text-ui-sm);
+  color: var(--text-secondary);
+}
+
+.bonus-banner-btn {
+  flex-shrink: 0;
+  min-height: 28px;
+  padding: 4px 12px;
+  background: var(--primary-bg);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--primary-fg);
+  font-family: inherit;
+  font-size: var(--text-ui);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur) ease-out, opacity var(--dur) ease-out;
+}
+
+.bonus-banner-btn:hover {
+  background: var(--primary-bg-hover);
+}
+
+.bonus-banner-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@keyframes bonusBannerPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 1; }
+}

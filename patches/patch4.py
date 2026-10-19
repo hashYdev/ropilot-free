@@ -21,7 +21,8 @@ import re
 import shutil
 import sys
 
-ROOT = '/tmp/opencode/rp/patched'
+ROOT = os.environ.get('ROPILOT_APP', os.path.abspath(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'app')))
 applied = []
 
 
@@ -64,7 +65,7 @@ def neutralise(rel, signature, ret, why):
 
 
 # ── 1. the reimbursement module ──────────────────────────────────────────────
-shutil.copyfile('/tmp/opencode/rp/credit-reimbursement.free.js',
+shutil.copyfile(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'credit-reimbursement.free.js'),
                 os.path.join(ROOT, 'src/js/credits/credit-reimbursement.js'))
 applied.append('src/js/credits/credit-reimbursement.js')
 print('  + %-44s full rewrite: never a valid notice' % 'src/js/credits/credit-reimbursement.js')

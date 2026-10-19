@@ -1,0 +1,1572 @@
+/* ===========================================
+   Modal and Form Styles
+   Synara dialog (measured from the running app, "Create project"): flat
+   black/60 overlay; opaque #171717 panel, 1px ink .047 hairline, 22px
+   radius, 0 16px 50px -12px black/.7 lift. Header 20/20/4 with an 18px/600
+   title, panel 0/20/12, footer 12/20/20 with capsule (pill) actions, ghost
+   28px close in the top-right corner.
+   =========================================== */
+
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  animation: menuFadeIn 200ms var(--ease-out);
+}
+
+.modal-backdrop.no-close {
+  cursor: default;
+}
+
+.modal-content {
+  position: relative;
+  width: calc(100% - 32px);
+  max-width: 512px;
+  max-height: calc(100vh - 32px);
+  display: flex;
+  flex-direction: column;
+  background: var(--popover);
+  border: 1px solid rgba(252, 252, 252, 0.047);
+  border-radius: var(--radius-dialog);
+  box-shadow: var(--shadow-lg);
+  color: var(--text-primary);
+  font-size: var(--text-ui);
+  animation: modalEnter 200ms var(--ease-out);
+}
+
+.modal-content h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22.5px;
+  letter-spacing: normal;
+  color: var(--text-primary);
+}
+
+.image-preview-modal {
+  z-index: 260;
+}
+
+.image-preview-modal .modal-backdrop {
+  background: rgba(0, 0, 0, 0.82);
+}
+
+.image-preview-shell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.image-preview-image {
+  display: block;
+  max-width: min(96vw, 1800px);
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+  background: var(--surface);
+  pointer-events: auto;
+}
+
+.image-preview-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-btn);
+  background: color-mix(in srgb, var(--popover) 88%, transparent);
+  backdrop-filter: blur(24px);
+  color: var(--text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background var(--dur) ease-out, color var(--dur) ease-out;
+}
+
+.image-preview-close:hover {
+  background: var(--popover);
+  color: var(--text-primary);
+}
+
+.image-preview-close svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.75;
+}
+
+/* Settings modal: keep footer visible and scroll body when content is tall */
+#settings-modal .modal-content {
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+}
+
+#settings-modal .modal-body {
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.modal-content.modal-small {
+  max-width: 420px;
+}
+
+.modal-content.modal-medium {
+  max-width: 560px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 20px 20px 4px;
+}
+
+/* Title clears the absolutely-placed close button */
+.modal-header:has(> .btn-icon:last-child) h2 {
+  padding-right: 24px;
+}
+
+/* Close (×): Synara's ghost icon-sm, placed 8px in from the panel's
+   top-right corner (end-2 top-2). */
+.modal-header > .btn-icon:last-child {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  margin: 0;
+}
+
+.modal-header-actions {
+  margin: -6px -8px 0 0;
+}
+
+.modal-header .btn-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-btn);
+  color: var(--text-secondary);
+}
+
+.modal-header .btn-icon:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.modal-header .btn-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.75;
+  opacity: 0.8;
+}
+
+.modal-body {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 2px 20px 20px;
+  font-size: var(--text-ui);
+  line-height: 1.5;
+}
+
+.modal-body:has(+ .modal-footer) {
+  padding-bottom: 12px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 12px 20px 20px;
+}
+
+/* Dialog actions: Synara capsule buttons, 32px, 14px text. Primary is the
+   ink pill; secondary is Synara's ghost "Cancel" (no outline, muted text
+   that lifts to the foreground on hover). */
+.modal-footer :is(.btn-primary, .btn-secondary, .btn-danger),
+.model-announcement-actions :is(.btn-primary, .btn-secondary),
+.modal-connection-error .modal-body :is(.btn-primary, .btn-secondary) {
+  width: auto;
+  height: 32px;
+  min-height: 32px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.modal-footer :is(.btn-primary, .btn-danger),
+.model-announcement-actions .btn-primary,
+.modal-connection-error .modal-body .btn-primary {
+  font-weight: 500;
+}
+
+.modal-footer .btn-secondary,
+.model-announcement-actions .btn-secondary,
+.modal-connection-error .modal-body .btn-secondary {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.modal-footer .btn-secondary:hover,
+.model-announcement-actions .btn-secondary:hover,
+.modal-connection-error .modal-body .btn-secondary:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.modal-footer .btn-secondary:active,
+.model-announcement-actions .btn-secondary:active,
+.modal-connection-error .modal-body .btn-secondary:active {
+  background: var(--fill-pressed);
+}
+
+.modal-warning {
+  color: var(--text-secondary);
+  line-height: 1.375;
+}
+
+.modal-description {
+  color: var(--text-secondary);
+  margin: 0 0 12px;
+  font-size: var(--text-ui);
+  line-height: 1.375;
+}
+
+.modal-description:last-child,
+.modal-description:has(+ .hidden:last-child) {
+  margin-bottom: 0;
+}
+
+.app-alert-note {
+  position: relative;
+  overflow: hidden;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: rgba(252, 252, 252, 0.02);
+}
+
+.app-alert-note::before {
+  display: none;
+}
+
+.app-alert-note-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 18px;
+  margin-bottom: 8px;
+  padding: 0 6px;
+  border-radius: var(--radius-sm);
+  background: var(--fill-3);
+  color: var(--text-secondary);
+  font-size: var(--text-ui-xs);
+  font-weight: 500;
+}
+
+.app-alert-note-title {
+  color: var(--text-primary);
+  font-size: var(--text-ui);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.app-alert-note-body {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-ui);
+  line-height: 1.5;
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: var(--text-ui);
+  font-weight: 500;
+  line-height: 19.5px;
+  color: var(--text-primary);
+}
+
+/* Synara input-group: 36px, radius 10, input/32 fill, ink .12 hairline;
+   focus lifts the border to foreground/30 with no ring. */
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 12px;
+  background: rgba(23, 23, 23, 0.32);
+  border: 1px solid var(--border-heavy);
+  border-radius: var(--radius-btn);
+  color: var(--text-primary);
+  font-size: var(--text-ui);
+  font-family: inherit;
+  line-height: 19.5px;
+  outline: none;
+  transition: border-color var(--dur) ease-out, box-shadow var(--dur) ease-out;
+}
+
+.form-group textarea {
+  resize: vertical;
+  line-height: 1.5;
+  min-height: 96px;
+  padding: 8px 10px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--border-focus);
+  box-shadow: none;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: rgba(252, 252, 252, 0.42);
+}
+
+.form-group select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 17px) calc(50% - 1px),
+    calc(100% - 13px) calc(50% - 1px);
+  background-size: 4px 4px, 4px 4px;
+  background-repeat: no-repeat;
+  padding-right: 32px;
+}
+
+.settings-dropdown {
+  position: relative;
+}
+
+.settings-dropdown.is-open {
+  z-index: 20;
+}
+
+.settings-dropdown-trigger {
+  width: 100%;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  background: var(--fill-1);
+  color: var(--text-primary);
+  font-size: var(--text-ui);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--dur) ease-out, background var(--dur) ease-out, box-shadow var(--dur) ease-out;
+}
+
+.settings-dropdown-trigger:hover {
+  border-color: var(--border-light);
+}
+
+.settings-dropdown-trigger:focus-visible,
+.settings-dropdown.is-open .settings-dropdown-trigger {
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.16);
+}
+
+.settings-dropdown.is-disabled .settings-dropdown-trigger {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.settings-dropdown-label {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-dropdown-chevron {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: transform var(--dur) ease-out, color var(--dur) ease-out;
+}
+
+.settings-dropdown-chevron svg {
+  width: 14px;
+  height: 14px;
+}
+
+.settings-dropdown.is-open .settings-dropdown-chevron {
+  transform: rotate(180deg);
+  color: var(--text-primary);
+}
+
+.settings-dropdown-menu {
+  top: calc(100% + 6px);
+  bottom: auto;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  max-height: min(240px, 40vh);
+  overflow-y: auto;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 6px;
+  font-size: var(--text-ui-sm);
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.form-group a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--dur) ease-out;
+}
+
+.form-group a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* Configure directory path display */
+.configure-dir-path {
+  padding: 7px 12px;
+  background: var(--fill-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  color: var(--text-secondary);
+  font-size: var(--text-ui-sm);
+  font-family: var(--font-mono);
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.configure-dir-path.no-dir {
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: var(--text-ui);
+  font-style: normal;
+}
+
+/* Input validation states */
+.form-group input.input-invalid {
+  border-color: color-mix(in srgb, var(--error) 45%, transparent);
+}
+
+.form-group input.input-invalid:focus {
+  border-color: color-mix(in srgb, var(--error) 60%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--error) 16%, transparent);
+}
+
+.form-group input.input-valid {
+  border-color: color-mix(in srgb, var(--success) 40%, transparent);
+}
+
+.form-group input.input-valid:focus {
+  border-color: color-mix(in srgb, var(--success) 55%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--success) 16%, transparent);
+}
+
+.form-group input.input-validating {
+  border-color: var(--border-focus);
+}
+
+.input-error {
+  display: block;
+  margin-top: 6px;
+  font-size: var(--text-ui-sm);
+  color: var(--error);
+  font-weight: 400;
+}
+
+.input-error.hidden {
+  display: none;
+}
+
+/* Plugin Status */
+.plugin-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(252, 252, 252, 0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  margin-bottom: 12px;
+  font-size: var(--text-ui);
+}
+
+.plugin-status.installed {
+  color: var(--success);
+}
+
+.plugin-status.not-installed {
+  color: var(--text-muted);
+}
+
+.plugin-status.update-available {
+  color: var(--warning);
+}
+
+/* Upgrade Status */
+.upgrade-status {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--text-ui-sm);
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding: 8px 10px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+  background: rgba(252, 252, 252, 0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+}
+#upgrade-claude-status-text,
+#upgrade-codex-status-text {
+  white-space: pre-wrap;
+  max-height: 120px;
+  overflow-y: auto;
+}
+.upgrade-status.success {
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 22%, transparent);
+  background: color-mix(in srgb, var(--success) 6%, transparent);
+}
+.upgrade-status.error {
+  color: var(--error);
+  border-color: color-mix(in srgb, var(--error) 22%, transparent);
+  background: color-mix(in srgb, var(--error) 6%, transparent);
+}
+
+.upgrade-status-spinner {
+  margin: 6px auto 2px;
+}
+
+.settings-provider-login-btn {
+  margin-top: 8px;
+}
+
+/* New Project Modal */
+.modal-content.modal-new-project {
+  max-width: 560px;
+}
+
+/* Synara puts 20px between the title and the first control */
+.project-type-cards {
+  display: flex;
+  gap: 12px;
+  margin: 14px 0 16px;
+}
+
+.project-type-card {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 14px 16px;
+  background: rgba(252, 252, 252, 0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+  transition: background var(--dur) ease-out, border-color var(--dur) ease-out;
+  text-align: center;
+}
+
+.project-type-card:hover {
+  background: var(--fill-hover);
+  border-color: var(--border-light);
+}
+
+.project-type-card:active {
+  background: var(--fill-pressed);
+}
+
+.project-type-card:focus {
+  outline: none;
+}
+
+.project-type-card:focus-visible {
+  border-color: var(--border-heavy);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.16);
+}
+
+.project-type-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fill-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-secondary);
+}
+
+.project-type-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+}
+
+.project-type-icon-recommended {
+  background: var(--fill-3);
+  color: var(--text-primary);
+}
+
+.project-type-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 6px;
+  font-size: var(--text-ui-xs);
+  font-weight: 500;
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.14);
+  border-radius: var(--radius-sm);
+}
+
+.project-type-warning {
+  color: var(--warning) !important;
+}
+
+.project-type-warning strong {
+  color: var(--warning);
+  font-weight: 500;
+}
+
+.project-type-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.project-type-title {
+  font-size: var(--text-ui);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.project-type-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.project-type-benefits li {
+  font-size: var(--text-ui-sm);
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.project-type-benefits li::before {
+  content: none;
+}
+
+.project-api-key-section {
+  padding-top: 16px;
+  border-top: 1px solid var(--border-divider);
+}
+
+.label-optional {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: var(--text-ui-sm);
+}
+
+/* Rewind Modal */
+.modal-content.modal-rewind {
+  max-width: 440px;
+}
+
+.rewind-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rewind-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: rgba(252, 252, 252, 0.02);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+  transition: background var(--dur) ease-out, border-color var(--dur) ease-out;
+  text-align: left;
+  width: 100%;
+}
+
+.rewind-option:hover {
+  background: var(--fill-hover);
+  border-color: var(--border-light);
+}
+
+.rewind-option:active {
+  background: var(--fill-pressed);
+}
+
+.rewind-option-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--fill-2);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.rewind-option-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.75;
+}
+
+.rewind-option-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.rewind-option-title {
+  font-size: var(--text-ui);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.rewind-option-desc {
+  font-size: var(--text-ui-sm);
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* Revert option is the primary/default action: the "selected" card. */
+.rewind-option-revert {
+  background: var(--fill-selected);
+  border-color: var(--border-heavy);
+}
+
+.rewind-option-revert .rewind-option-icon {
+  background: var(--fill-3);
+  color: var(--text-primary);
+}
+
+.rewind-option-revert:hover {
+  background: var(--fill-pressed);
+  border-color: var(--border-heavy);
+}
+
+.rewind-option-revert:hover .rewind-option-icon {
+  background: var(--fill-4);
+}
+
+/* Focus state for keyboard navigation */
+.rewind-option:focus {
+  outline: none;
+}
+
+.rewind-option:focus-visible {
+  outline: none;
+  border-color: var(--border-heavy);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.16);
+}
+
+/* Keyboard hint for revert button */
+.rewind-option-revert .rewind-option-desc::after {
+  content: " (Enter)";
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Loading state for rewind buttons */
+.rewind-option.loading {
+  pointer-events: none;
+  opacity: 0.64;
+}
+
+.rewind-option.loading .rewind-option-icon svg {
+  animation: spin 0.8s linear infinite reverse;
+}
+
+/* Connection Error Modal */
+.modal-content.modal-connection-error {
+  max-width: 400px;
+}
+
+.modal-connection-error .modal-body {
+  padding: 28px 24px 20px !important;
+}
+
+.modal-connection-error .modal-body h2 {
+  margin-bottom: 6px !important;
+}
+
+.modal-connection-error .modal-body .btn-secondary {
+  width: auto;
+}
+
+.connection-error-icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--error) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--error) 20%, transparent);
+  border-radius: 12px;
+  color: var(--error);
+}
+
+.connection-error-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke-width: 1.75;
+}
+
+#btn-connection-retry {
+  min-width: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+#btn-connection-retry .retry-spinner {
+  display: none;
+}
+
+#btn-connection-retry .retry-spinner.visible {
+  display: inline-flex;
+}
+
+/* Claim-bonus modal: markup carries inline green gradients and hover
+   handlers that write box-shadow; neutralise them to the Synara primary. */
+#claim-bonus-modal .connection-error-icon {
+  color: var(--text-primary) !important;
+  background: var(--fill-2);
+  border-color: var(--border);
+}
+
+#claim-bonus-modal .modal-description {
+  margin-bottom: 20px !important;
+}
+
+#modal-claim-bonus-btn {
+  background: var(--primary-bg) !important;
+  color: var(--primary-fg) !important;
+  box-shadow: none !important;
+  min-height: 32px;
+  padding: 6px 14px !important;
+  font-size: var(--text-ui) !important;
+}
+
+#modal-claim-bonus-btn:hover {
+  background: var(--primary-bg-hover) !important;
+}
+
+#modal-claim-bonus-btn svg {
+  width: 16px !important;
+  height: 16px !important;
+  margin-right: 0 !important;
+  stroke-width: 1.75;
+}
+
+#modal-claim-bonus-close {
+  width: 100%;
+  min-height: 32px;
+  padding: 6px 14px !important;
+  border-color: transparent;
+  color: var(--text-secondary);
+  font-size: var(--text-ui) !important;
+}
+
+#modal-claim-bonus-close:hover {
+  color: var(--text-primary);
+}
+
+/* Ropilot Credits limit modal */
+.modal-content.modal-credit-limit {
+  max-width: min(560px, calc(100vw - 32px));
+  width: 86%;
+  border-radius: var(--radius-dialog);
+  background: var(--popover);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+}
+
+.credit-limit-body {
+  padding: 24px;
+  text-align: center;
+}
+
+.credit-limit-kicker {
+  margin: 0 0 16px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.credit-limit-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 24px 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: rgba(252, 252, 252, 0.02);
+}
+
+.credit-limit-logo-wrap {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: var(--fill-2);
+  border: 1px solid var(--border);
+}
+
+.credit-limit-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.credit-limit-card h2 {
+  margin: 0;
+  max-width: 460px;
+  color: var(--text-primary);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.credit-limit-description {
+  max-width: 440px;
+  margin: 10px 0 24px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.credit-limit-description strong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.credit-limit-primary {
+  min-width: 200px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-btn);
+  background: var(--primary-bg);
+  color: var(--primary-fg);
+  font-family: inherit;
+  font-size: var(--text-ui);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur) ease-out;
+}
+
+.credit-limit-primary:hover {
+  background: var(--primary-bg-hover);
+}
+
+.credit-limit-primary:active {
+  background: var(--primary-bg-active);
+}
+
+.credit-limit-primary svg {
+  width: 16px;
+  height: 16px;
+}
+
+.credit-limit-note {
+  margin: 14px 0 8px;
+  color: var(--text-muted);
+  font-size: var(--text-ui-sm);
+  line-height: 1.45;
+}
+
+.credit-limit-secondary {
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 4px 8px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: var(--text-ui);
+  font-weight: 400;
+  cursor: pointer;
+  transition: color var(--dur) ease-out, background var(--dur) ease-out;
+}
+
+.credit-limit-secondary:hover {
+  color: var(--text-primary);
+  background: var(--fill-hover);
+}
+
+@media (max-width: 640px) {
+  .modal-content.modal-credit-limit {
+    width: calc(100vw - 28px);
+    max-width: none;
+  }
+
+  .credit-limit-body {
+    padding: 18px 16px 20px;
+  }
+
+  .credit-limit-card {
+    padding: 24px 16px 20px;
+  }
+
+  .credit-limit-card h2 {
+    font-size: 20px;
+  }
+
+  .credit-limit-primary {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+#btn-connection-retry .retry-text.hidden {
+  display: none;
+}
+
+#btn-connection-retry .spinner {
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+}
+
+/* Diff Modal (legacy) */
+.modal-content.modal-diff {
+  max-width: 800px;
+  width: 95%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.diff-header-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.diff-status {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 6px;
+  background: var(--fill-3);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-ui-xs);
+  font-weight: 500;
+}
+
+.diff-filename {
+  font-family: var(--font-mono);
+  font-size: var(--text-ui-sm);
+  color: var(--text-secondary);
+}
+
+.diff-container {
+  background: rgba(252, 252, 252, 0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  overflow-y: auto;
+  max-height: 60vh;
+  font-family: var(--font-mono);
+  font-size: var(--text-ui-sm);
+  line-height: 1.5;
+}
+
+.diff-line {
+  display: flex;
+  padding: 0;
+  border-left: 2px solid transparent;
+}
+
+.diff-linenum {
+  width: 40px;
+  padding: 1px 8px;
+  text-align: right;
+  color: var(--text-faint);
+  background: transparent;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  flex-shrink: 0;
+}
+
+.diff-prefix {
+  width: 20px;
+  padding: 1px 4px;
+  text-align: center;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  flex-shrink: 0;
+}
+
+.diff-code {
+  flex: 1;
+  padding: 1px 12px 1px 4px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.diff-line.diff-added {
+  background: color-mix(in srgb, var(--diff-added) 10%, transparent);
+  border-left-color: var(--diff-added);
+}
+
+.diff-line.diff-added .diff-prefix {
+  color: var(--diff-added);
+}
+
+.diff-line.diff-removed {
+  background: color-mix(in srgb, var(--diff-removed) 10%, transparent);
+  border-left-color: var(--diff-removed);
+}
+
+.diff-line.diff-removed .diff-prefix {
+  color: var(--diff-removed);
+}
+
+.diff-line.diff-unchanged {
+  background: transparent;
+}
+
+.diff-line.diff-unchanged .diff-prefix {
+  color: var(--text-muted);
+}
+
+.diff-line.diff-separator {
+  background: var(--fill-1);
+  border-left-color: transparent;
+  justify-content: center;
+}
+
+.diff-line.diff-separator .diff-code {
+  color: var(--text-muted);
+  font-style: normal;
+  text-align: center;
+  padding: 4px 12px;
+}
+
+/* Rojo error modal */
+.rojo-error-log-container {
+  margin-top: 12px;
+}
+
+.rojo-error-log-label {
+  display: block;
+  font-size: var(--text-ui);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.rojo-error-details {
+  background: rgba(252, 252, 252, 0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-btn);
+  padding: 8px 10px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-ui-sm);
+  line-height: 1.5;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.rojo-error-details:empty {
+  display: none;
+}
+
+/* ===========================================
+   Theme Picker (Settings)
+   =========================================== */
+
+.theme-picker {
+  display: flex;
+  gap: 12px;
+}
+
+.theme-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color var(--dur) ease-out;
+}
+
+.theme-card.is-selected {
+  border-color: var(--border-heavy);
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.35);
+}
+
+.theme-card:hover:not(.is-selected) {
+  border-color: var(--border-light);
+}
+
+.theme-card-preview {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 13px 13px 0 0;
+  font-family: 'Fira Mono', var(--font-mono);
+  font-size: 10px;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+.theme-card-label {
+  font-size: var(--text-ui-sm);
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding-bottom: 6px;
+}
+
+.theme-card.is-selected .theme-card-label {
+  color: var(--text-primary);
+}
+
+/* Ropilot theme preview */
+.theme-preview-ropilot {
+  background: #1a1a1d;
+  color: #abb2bf;
+}
+.theme-preview-ropilot .tp-kw { color: #c678dd; }
+.theme-preview-ropilot .tp-str { color: #98c379; }
+.theme-preview-ropilot .tp-num { color: #d19a66; }
+.theme-preview-ropilot .tp-cm { color: #5c6370; }
+.theme-preview-ropilot .tp-fn { color: #61afef; }
+.theme-preview-ropilot .tp-bi { color: #e6c07b; }
+
+/* Studio theme preview */
+.theme-preview-studio {
+  background: rgb(32, 34, 39);
+  color: rgb(188, 190, 200);
+}
+.theme-preview-studio .tp-kw { color: rgb(235, 121, 115); }
+.theme-preview-studio .tp-str { color: rgb(142, 233, 182); }
+.theme-preview-studio .tp-num { color: rgb(242, 186, 42); }
+.theme-preview-studio .tp-cm { color: rgb(106, 111, 129); }
+.theme-preview-studio .tp-fn { color: rgb(250, 228, 170); }
+.theme-preview-studio .tp-bi { color: rgb(112, 160, 255); }
+
+/* Model Announcement Modal
+   Keeps each launch's artwork; the chrome around it is the Synara dialog. */
+.modal-content.modal-model-announcement {
+  max-width: 520px;
+  width: calc(100% - 32px);
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content.modal-model-announcement .model-announcement-thumb {
+  background: #d9e9ff;
+  border-bottom: 1px solid var(--border);
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.modal-content.modal-model-announcement .model-announcement-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Fable 5 hero — square alpha-channel animation on Anthropic's cream backdrop */
+.modal-content.modal-model-announcement .model-announcement-thumb.is-fable {
+  background: #f0e1bf;
+}
+
+.modal-content.modal-model-announcement .model-announcement-thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.modal-content.modal-model-announcement .model-announcement-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-content.modal-model-announcement .model-announcement-title {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.modal-content.modal-model-announcement .model-announcement-summary {
+  color: var(--text-secondary);
+  line-height: 1.375;
+  font-size: var(--text-ui);
+  margin: 0 0 4px;
+}
+
+/* Right-aligned footer, primary on the far right (markup lists it first). */
+.modal-content.modal-model-announcement .model-announcement-actions {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.modal-content.modal-model-announcement .model-announcement-actions .btn-primary,
+.modal-content.modal-model-announcement .model-announcement-actions .btn-secondary {
+  flex: none;
+  width: auto;
+  min-width: 0;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===========================================
+   Claude Fable 5.1 launch splash
+   The official 5.1 launch key art — pastel sky, pink clouds, crescent
+   moon — framed so the moon anchors the right and the baked-in campaign
+   title stays out of frame. The Fable starburst sits on a cream chip
+   astride the seam. Staged rise for the copy.
+   =========================================== */
+
+#fable51-announcement-modal {
+  z-index: 140;
+}
+
+.modal-content.modal-fable51-announcement {
+  position: relative;
+  max-width: 540px;
+  animation: fable51-settle 0.5s var(--ease-out) both;
+}
+
+/* The 5.1 key art, cropped in-frame: the oversized img selects the
+   clean band of the source (src x 340-857, y 0-226 of 1200x630) — pink
+   cloud upper-left, crescent moon right, and the baked-in campaign
+   title ("...and Mythos 5.1") safely below the crop line. */
+.modal-content.modal-fable51-announcement .fable51-sky {
+  position: relative;
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  background: #679bd5;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-content.modal-fable51-announcement .fable51-sky img {
+  position: absolute;
+  top: 0;
+  left: -65.8%;
+  width: 232.2%;
+  height: auto;
+  display: block;
+}
+
+.modal-content.modal-fable51-announcement .fable51-seam {
+  display: none;
+}
+
+/* The Fable identity mark — the starburst on Anthropic's cream — as a
+   chip astride the seam, aligned with the copy's left edge. */
+.fable51-badge {
+  position: absolute;
+  top: 0;
+  left: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #f0eee6;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  animation: fable51-badge-pop 0.45s var(--ease-out) 0.1s both;
+}
+
+.fable51-badge img {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.modal-content.modal-fable51-announcement .model-announcement-body {
+  position: relative;
+  padding: 34px 20px 20px;
+  gap: 6px;
+}
+
+.fable51-eyebrow {
+  margin: 0;
+  font-size: var(--text-ui-sm);
+  font-weight: 400;
+  color: var(--text-muted);
+  animation: fable51-rise 0.45s var(--ease-out) 0.16s both;
+}
+
+.modal-content.modal-fable51-announcement .model-announcement-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  animation: fable51-rise 0.45s var(--ease-out) 0.22s both;
+}
+
+.modal-content.modal-fable51-announcement .model-announcement-summary {
+  animation: fable51-rise 0.45s var(--ease-out) 0.28s both;
+}
+
+.modal-content.modal-fable51-announcement .model-announcement-actions {
+  animation: fable51-rise 0.45s var(--ease-out) 0.34s both;
+}
+
+@keyframes fable51-settle {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fable51-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fable51-badge-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-content.modal-fable51-announcement,
+  .fable51-eyebrow,
+  .fable51-badge,
+  .modal-content.modal-fable51-announcement .model-announcement-title,
+  .modal-content.modal-fable51-announcement .model-announcement-summary,
+  .modal-content.modal-fable51-announcement .model-announcement-actions {
+    animation: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .fable51-badge {
+    width: 40px;
+    height: 40px;
+  }
+  .fable51-badge img {
+    width: 20px;
+    height: 20px;
+  }
+}

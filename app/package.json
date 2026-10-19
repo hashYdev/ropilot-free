@@ -1,0 +1,19 @@
+{
+  "name": "ropilot",
+  "version": "1.3.2",
+  "description": "Ropilot - AI-powered Roblox development assistant",
+  "main": "bootstrap.js",
+  "author": {
+    "name": "Ropilot",
+    "email": "support@ropilot.ai"
+  },
+  "dependencies": {
+    "mica-electron": "^1.5.16",
+    "mvdan-sh": "^0.10.1"
+  },
+  "allowScripts": {
+    "electron@28.3.3": true,
+    "esbuild@0.24.2": true,
+    "fsevents@2.3.2": true
+  }
+}

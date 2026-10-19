@@ -1,0 +1,785 @@
+/* ===========================================
+   Inline Diff Preview — Synara "Edited files" card
+   =========================================== */
+
+/* Synara turn-end changes card: .65rem radius, border-light at 55%
+   (ink ~.025), no fill of its own */
+.inline-diff {
+  margin: 0;
+  border-radius: 10.4px;
+  border: 1px solid rgba(252, 252, 252, 0.025);
+  background: transparent;
+  overflow: hidden;
+  max-width: 100%;
+  animation: fadeIn 0.2s var(--ease-out);
+}
+
+.inline-diff-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 34px;
+  box-sizing: border-box;
+  padding: 6px 8px 6px 12px;
+  /* user-message tint at 40% (ink ~.0104), border-light divider (ink .046) */
+  background: rgba(252, 252, 252, 0.0104);
+  border-bottom: 1px solid rgba(252, 252, 252, 0.046);
+}
+
+.inline-diff.collapsed .inline-diff-header {
+  border-bottom-color: transparent;
+}
+
+.inline-diff-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.inline-diff-badge {
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 6px;
+  border-radius: var(--radius-sm);
+  background: var(--fill-3);
+  color: var(--text-secondary);
+  font-size: var(--text-ui-xs);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.inline-diff-filename {
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  line-height: 21.125px;
+  color: var(--text-primary);
+  opacity: 0.92;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Clickable filename - opens script in Studio */
+.inline-diff-filename.clickable {
+  cursor: pointer;
+  /* Override the global user-select: text rule to ensure clicks work properly */
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+.inline-diff-filename.clickable:hover {
+  color: var(--text-primary);
+  opacity: 1;
+  text-decoration: underline;
+  text-decoration-color: var(--text-faint);
+  text-underline-offset: 0.18em;
+}
+
+/* Script type no longer tints the card border; the leading icon carries it */
+.inline-diff[data-script-type="Script"],
+.inline-diff[data-script-type="LocalScript"],
+.inline-diff[data-script-type="ModuleScript"] {
+  border-color: var(--border);
+}
+
+.inline-diff-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* Synara's bordered "Review" pill (COMPOSER_INLINE_ACTION_PILL): hairline
+   border-light outline, px-2.5, 13px at ink .9 */
+.inline-diff-open-studio {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  height: 26px;
+  padding: 0 10px;
+  background: transparent;
+  border: 1px solid rgba(252, 252, 252, 0.046);
+  border-radius: var(--radius-md);
+  color: rgba(252, 252, 252, 0.9);
+  font-size: var(--text-ui);
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--dur) ease, color var(--dur) ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.inline-diff-open-studio:hover {
+  background: var(--fill-hover);
+  color: var(--text-primary);
+}
+
+.inline-diff-open-studio svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.inline-diff-open-studio > * {
+  pointer-events: none;
+}
+
+.inline-diff-open-studio:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+/* p-1 chevron button, muted-foreground/50 at rest */
+.inline-diff-toggle {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  color: rgba(252, 252, 252, 0.29);
+  cursor: pointer;
+  transition: background var(--dur) ease, color var(--dur) ease;
+}
+
+.inline-diff-toggle:hover {
+  background: var(--fill-hover);
+  color: rgba(252, 252, 252, 0.8);
+}
+
+.inline-diff-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.inline-diff-toggle svg {
+  width: 14px;
+  height: 14px;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.inline-diff.collapsed .inline-diff-toggle svg {
+  transform: rotate(-90deg);
+}
+
+.inline-diff-body {
+  max-height: 200px; /* ~11 lines at 12px font with 1.5 line-height */
+  overflow-y: auto;
+  padding: 2px 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-ui-sm);
+  line-height: 1.5;
+  tab-size: 4;
+  -moz-tab-size: 4;
+}
+
+.inline-diff-body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.inline-diff-body::-webkit-scrollbar-thumb {
+  background: var(--fill-4);
+  border-radius: 4px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+.inline-diff.collapsed .inline-diff-body {
+  display: none;
+}
+
+/* Inline diff lines: tinted rows, no side bars, faint gutter */
+.inline-diff .diff-line {
+  padding: 0;
+  border-left: 0;
+}
+
+.inline-diff .diff-line.diff-added {
+  background: rgba(0, 162, 64, 0.08);
+}
+
+.inline-diff .diff-line.diff-removed {
+  background: rgba(224, 46, 42, 0.08);
+}
+
+.inline-diff .diff-line.diff-added .diff-prefix {
+  color: var(--diff-added);
+}
+
+.inline-diff .diff-line.diff-removed .diff-prefix {
+  color: var(--diff-removed);
+}
+
+.inline-diff .diff-line.diff-separator {
+  background: rgba(252, 252, 252, 0.02);
+}
+
+.inline-diff .diff-line.diff-separator .diff-code {
+  font-style: normal;
+  color: var(--text-muted);
+}
+
+.inline-diff .diff-linenum {
+  width: 36px;
+  padding: 0 6px 0 8px;
+  font-size: var(--text-ui-xs);
+  line-height: 18px;
+  color: var(--text-faint);
+  background: transparent;
+  font-variant-numeric: tabular-nums;
+}
+
+.inline-diff .diff-prefix {
+  width: 14px;
+  padding: 0 1px;
+  font-size: var(--text-ui-xs);
+  line-height: 18px;
+  color: var(--text-faint);
+}
+
+/* Beat base.css `.message * { user-select: text !important }` so copy is code-only */
+.inline-diff .diff-linenum,
+.inline-diff .diff-prefix {
+  -webkit-user-select: none !important;
+  user-select: none !important;
+}
+
+.inline-diff .diff-code {
+  padding: 0 10px 0 2px;
+  font-size: var(--text-ui-sm);
+  line-height: 18px;
+  font-weight: 400;
+}
+
+/* Ropilot theme keeps keywords at text weight (Synara code rendering);
+   the Studio theme re-bolds Lua reserved words below to match Roblox Studio. */
+.inline-diff .diff-code .hljs-keyword,
+.inline-diff .diff-code .hljs-literal,
+.inline-diff .diff-code .lua-keyword {
+  font-weight: 400;
+}
+
+.inline-diff .diff-code .hljs-strong {
+  font-weight: 600;
+}
+
+.inline-diff .diff-unchanged .diff-code .lua-builtin-name {
+  color: #61afef;
+}
+
+.inline-diff .diff-added .diff-code .lua-builtin-name {
+  color: #78beff;
+}
+
+.inline-diff .diff-removed .diff-code .lua-builtin-name {
+  color: #75b5e8;
+}
+
+.inline-diff .diff-unchanged .diff-code .lua-builtin-member-name {
+  color: #61afef;
+}
+
+.inline-diff .diff-added .diff-code .lua-builtin-member-name {
+  color: #78beff;
+}
+
+.inline-diff .diff-removed .diff-code .lua-builtin-member-name {
+  color: #75b5e8;
+}
+
+/* Luau method calls (.Foo(, :Bar() — post-wrapped in utils.highlightLua to match Studio */
+.inline-diff .diff-unchanged .diff-code .lua-property-name {
+  color: #61afef;
+}
+
+.inline-diff .diff-added .diff-code .lua-property-name {
+  color: #78beff;
+}
+
+.inline-diff .diff-removed .diff-code .lua-property-name {
+  color: #75b5e8;
+}
+
+.inline-diff .diff-unchanged .diff-code .lua-method-name {
+  color: #d19a66;
+}
+
+.inline-diff .diff-added .diff-code .lua-method-name {
+  color: #e8c078;
+}
+
+.inline-diff .diff-removed .diff-code .lua-method-name {
+  color: #e8b575;
+}
+
+/* Stats summary in header */
+.inline-diff-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 0;
+  font-size: var(--text-ui);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.inline-diff-stats:empty {
+  display: none;
+}
+
+.inline-diff-stats .stat-added {
+  color: var(--diff-added);
+}
+
+.inline-diff-stats .stat-removed {
+  color: var(--diff-removed);
+}
+
+/* Script type icons in diff header */
+.script-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.inline-diff-info .script-icon {
+  width: 14px;
+  height: 14px;
+  margin-right: 0;
+  opacity: 0.85;
+}
+
+/* ===========================================
+   Syntax Highlighting in Inline Diffs
+   =========================================== */
+
+/* Ensure highlight.js syntax colors show through diff backgrounds */
+.inline-diff .diff-code {
+  /* Use transparent background so diff line colors show through */
+  background: transparent !important;
+}
+
+/* Override highlight.js background to be transparent in diffs */
+.inline-diff .diff-code .hljs,
+.inline-diff .diff-code code {
+  background: transparent !important;
+  padding: 0;
+}
+
+/* Syntax highlighting token colors - slightly adjusted for visibility on diff backgrounds */
+/* These work with atom-one-dark theme */
+
+/* Unchanged lines - use standard syntax colors */
+.inline-diff .diff-unchanged .diff-code .hljs-keyword,
+.inline-diff .diff-unchanged .diff-code .hljs-selector-tag,
+.inline-diff .diff-unchanged .diff-code .hljs-literal,
+.inline-diff .diff-unchanged .diff-code .hljs-section,
+.inline-diff .diff-unchanged .diff-code .hljs-link {
+  color: #c678dd;
+}
+
+.inline-diff .diff-unchanged .diff-code .hljs-string,
+.inline-diff .diff-unchanged .diff-code .hljs-title,
+.inline-diff .diff-unchanged .diff-code .hljs-name,
+.inline-diff .diff-unchanged .diff-code .hljs-type,
+.inline-diff .diff-unchanged .diff-code .hljs-attribute,
+.inline-diff .diff-unchanged .diff-code .hljs-symbol,
+.inline-diff .diff-unchanged .diff-code .hljs-bullet,
+.inline-diff .diff-unchanged .diff-code .hljs-addition,
+.inline-diff .diff-unchanged .diff-code .hljs-variable,
+.inline-diff .diff-unchanged .diff-code .hljs-template-tag,
+.inline-diff .diff-unchanged .diff-code .hljs-template-variable {
+  color: #98c379;
+}
+
+.inline-diff .diff-unchanged .diff-code .hljs-comment,
+.inline-diff .diff-unchanged .diff-code .hljs-quote,
+.inline-diff .diff-unchanged .diff-code .hljs-deletion,
+.inline-diff .diff-unchanged .diff-code .hljs-meta {
+  color: #5c6370;
+}
+
+.inline-diff .diff-unchanged .diff-code .hljs-number,
+.inline-diff .diff-unchanged .diff-code .hljs-regexp,
+.inline-diff .diff-unchanged .diff-code .hljs-literal,
+.inline-diff .diff-unchanged .diff-code .hljs-params {
+  color: #d19a66;
+}
+
+.inline-diff .diff-unchanged .diff-code .hljs-built_in,
+.inline-diff .diff-unchanged .diff-code .hljs-builtin-name {
+  color: #e6c07b;
+}
+
+.inline-diff .diff-unchanged .diff-code .hljs-function .hljs-keyword {
+  color: #c678dd;
+}
+
+.inline-diff .diff-unchanged .diff-code .hljs-function .hljs-title {
+  color: #61afef;
+}
+
+/* Added lines - brighter colors for visibility on green background */
+.inline-diff .diff-added .diff-code .hljs-keyword,
+.inline-diff .diff-added .diff-code .hljs-selector-tag,
+.inline-diff .diff-added .diff-code .hljs-literal,
+.inline-diff .diff-added .diff-code .hljs-section,
+.inline-diff .diff-added .diff-code .hljs-link {
+  color: #d19de8;
+}
+
+.inline-diff .diff-added .diff-code .hljs-string,
+.inline-diff .diff-added .diff-code .hljs-title,
+.inline-diff .diff-added .diff-code .hljs-name,
+.inline-diff .diff-added .diff-code .hljs-type,
+.inline-diff .diff-added .diff-code .hljs-attribute,
+.inline-diff .diff-added .diff-code .hljs-symbol,
+.inline-diff .diff-added .diff-code .hljs-bullet,
+.inline-diff .diff-added .diff-code .hljs-addition,
+.inline-diff .diff-added .diff-code .hljs-variable,
+.inline-diff .diff-added .diff-code .hljs-template-tag,
+.inline-diff .diff-added .diff-code .hljs-template-variable {
+  color: #b5e890;
+}
+
+.inline-diff .diff-added .diff-code .hljs-comment,
+.inline-diff .diff-added .diff-code .hljs-quote,
+.inline-diff .diff-added .diff-code .hljs-deletion,
+.inline-diff .diff-added .diff-code .hljs-meta {
+  color: #7a8590;
+}
+
+.inline-diff .diff-added .diff-code .hljs-number,
+.inline-diff .diff-added .diff-code .hljs-regexp,
+.inline-diff .diff-added .diff-code .hljs-literal,
+.inline-diff .diff-added .diff-code .hljs-params {
+  color: #e5b070;
+}
+
+.inline-diff .diff-added .diff-code .hljs-built_in,
+.inline-diff .diff-added .diff-code .hljs-builtin-name {
+  color: #f0d080;
+}
+
+.inline-diff .diff-added .diff-code .hljs-function .hljs-title {
+  color: #7cc5f5;
+}
+
+/* Removed lines - adjusted colors for visibility on red background */
+.inline-diff .diff-removed .diff-code .hljs-keyword,
+.inline-diff .diff-removed .diff-code .hljs-selector-tag,
+.inline-diff .diff-removed .diff-code .hljs-literal,
+.inline-diff .diff-removed .diff-code .hljs-section,
+.inline-diff .diff-removed .diff-code .hljs-link {
+  color: #d8a5e5;
+}
+
+.inline-diff .diff-removed .diff-code .hljs-string,
+.inline-diff .diff-removed .diff-code .hljs-title,
+.inline-diff .diff-removed .diff-code .hljs-name,
+.inline-diff .diff-removed .diff-code .hljs-type,
+.inline-diff .diff-removed .diff-code .hljs-attribute,
+.inline-diff .diff-removed .diff-code .hljs-symbol,
+.inline-diff .diff-removed .diff-code .hljs-bullet,
+.inline-diff .diff-removed .diff-code .hljs-addition,
+.inline-diff .diff-removed .diff-code .hljs-variable,
+.inline-diff .diff-removed .diff-code .hljs-template-tag,
+.inline-diff .diff-removed .diff-code .hljs-template-variable {
+  color: #a8d480;
+}
+
+.inline-diff .diff-removed .diff-code .hljs-comment,
+.inline-diff .diff-removed .diff-code .hljs-quote,
+.inline-diff .diff-removed .diff-code .hljs-deletion,
+.inline-diff .diff-removed .diff-code .hljs-meta {
+  color: #8a8a95;
+}
+
+.inline-diff .diff-removed .diff-code .hljs-number,
+.inline-diff .diff-removed .diff-code .hljs-regexp,
+.inline-diff .diff-removed .diff-code .hljs-literal,
+.inline-diff .diff-removed .diff-code .hljs-params {
+  color: #e8b575;
+}
+
+.inline-diff .diff-removed .diff-code .hljs-built_in,
+.inline-diff .diff-removed .diff-code .hljs-builtin-name {
+  color: #f5d590;
+}
+
+.inline-diff .diff-removed .diff-code .hljs-function .hljs-title {
+  color: #85c8f5;
+}
+
+/* Base text color for diff lines */
+.inline-diff .diff-unchanged .diff-code {
+  color: rgba(252, 252, 252, 0.8);
+}
+
+.inline-diff .diff-added .diff-code {
+  color: rgba(252, 252, 252, 0.92);
+}
+
+.inline-diff .diff-removed .diff-code {
+  color: rgba(252, 252, 252, 0.86);
+}
+
+/* ===========================================
+   Studio Theme (Roblox Studio default)
+   =========================================== */
+
+/* Studio keeps its editor surface for the code area; the card chrome stays Synara */
+body[data-diff-theme="studio"] .inline-diff {
+  --studio-diff-cell-pitch: 7.3px;
+}
+
+body[data-diff-theme="studio"] .inline-diff-body {
+  background: rgb(32, 34, 39);
+}
+
+/* Studio's own change gutter: a coloured bar beside each edited line */
+body[data-diff-theme="studio"] .inline-diff .diff-line {
+  border-left: 2px solid transparent;
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-line.diff-added {
+  background: rgba(34, 197, 94, 0.1);
+  border-left-color: #22c55e;
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-line.diff-removed {
+  background: rgba(239, 68, 68, 0.1);
+  border-left-color: #ef4444;
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-linenum {
+  color: rgb(106, 111, 129);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-code {
+  font-family: 'Fira Mono', var(--font-mono);
+  /* Studio metrics: 11px cells (the pitch below is measured at this size) */
+  font-size: var(--text-ui-xs);
+  /* Match the measured Roblox Studio character-cell pitch from the reference screenshot. */
+  letter-spacing: calc(var(--studio-diff-cell-pitch) - 1ch);
+  font-weight: 400;
+  font-variant-ligatures: none;
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-code .hljs-keyword,
+body[data-diff-theme="studio"] .inline-diff .diff-code .hljs-literal,
+body[data-diff-theme="studio"] .inline-diff .diff-code .hljs-strong,
+body[data-diff-theme="studio"] .inline-diff .diff-code .lua-keyword {
+  font-weight: 600;
+}
+
+/* Studio: base text colors */
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code {
+  color: rgb(188, 190, 200);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code {
+  color: rgb(200, 210, 195);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code {
+  color: rgb(210, 195, 195);
+}
+
+/* Studio: unchanged lines */
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-keyword,
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-selector-tag,
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-section,
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-link {
+  color: rgb(235, 121, 115);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-literal {
+  color: rgb(242, 186, 42);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-string {
+  color: rgb(142, 233, 182);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-comment,
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-quote,
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-meta {
+  color: rgb(106, 111, 129);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-number,
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-regexp {
+  color: rgb(242, 186, 42);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-built_in,
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-builtin-name {
+  color: rgb(143, 180, 255);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-title {
+  color: rgb(250, 228, 170);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .lua-method-name,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .lua-method-name,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .lua-method-name {
+  color: rgb(250, 228, 170);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .lua-property-name,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .lua-property-name,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .lua-property-name {
+  color: rgb(112, 160, 255);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .lua-builtin-name,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .lua-builtin-name,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .lua-builtin-name {
+  color: rgb(143, 180, 255) !important;
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .lua-builtin-member-name,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .lua-builtin-member-name,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .lua-builtin-member-name {
+  color: rgb(143, 180, 255) !important;
+}
+
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-variable,
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-attribute {
+  color: rgb(112, 160, 255);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-type {
+  color: rgb(82, 139, 255);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-params {
+  color: rgb(188, 190, 200);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-function .hljs-keyword {
+  color: rgb(235, 121, 115);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-unchanged .diff-code .hljs-function .hljs-title {
+  color: rgb(250, 228, 170);
+}
+
+/* Studio: added lines - slightly brighter for green bg visibility */
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-keyword,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-selector-tag,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-section,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-link {
+  color: rgb(240, 135, 130);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-literal {
+  color: rgb(245, 195, 60);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-string {
+  color: rgb(155, 240, 195);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-comment,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-quote,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-meta {
+  color: rgb(120, 125, 145);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-number,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-regexp {
+  color: rgb(245, 195, 60);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-built_in,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-builtin-name {
+  color: rgb(143, 180, 255);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-title {
+  color: rgb(252, 235, 185);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-variable,
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-attribute {
+  color: rgb(130, 175, 255);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-type {
+  color: rgb(100, 155, 255);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-added .diff-code .hljs-function .hljs-title {
+  color: rgb(252, 235, 185);
+}
+
+/* Studio: removed lines - slightly brighter for red bg visibility */
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-keyword,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-selector-tag,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-section,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-link {
+  color: rgb(240, 135, 130);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-literal {
+  color: rgb(245, 195, 60);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-string {
+  color: rgb(155, 240, 195);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-comment,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-quote,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-meta {
+  color: rgb(120, 125, 145);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-number,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-regexp {
+  color: rgb(245, 195, 60);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-built_in,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-builtin-name {
+  color: rgb(143, 180, 255);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-title {
+  color: rgb(252, 235, 185);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-variable,
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-attribute {
+  color: rgb(130, 175, 255);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-type {
+  color: rgb(100, 155, 255);
+}
+
+body[data-diff-theme="studio"] .inline-diff .diff-removed .diff-code .hljs-function .hljs-title {
+  color: rgb(252, 235, 185);
+}
