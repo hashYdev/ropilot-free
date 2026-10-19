@@ -9,6 +9,20 @@ rewrite its JavaScript, repack it and build an installer.
 
 ---
 
+## The build
+
+`Ropilot-Studio-Free-Setup.exe` — 85.4 MB
+
+```
+sha256  68b09e2b6b59f62abf689dc8d85c9c2852591648148f918988faf2a71d1561f1
+```
+
+Verified by `verify-installer.py`, which unpacks the finished installer with
+7z, pulls `app.asar` back out and diffs it against the one that was packed.
+A stale installer cannot pass that.
+
+---
+
 ## Why it's like this
 
 Ropilot's paid surface is entirely client-side. The app has two ways to run a
