@@ -19,6 +19,17 @@ verify-installer.py             opens the finished installer and checks what's i
 Ropilot-Studio-Free-Setup.exe   the built installer
 ```
 
+### The installer
+
+```
+Ropilot-Studio-Free-Setup.exe   89,484,838 bytes
+sha256                          814b9292126cb264989fc873bb03c3fa11d5bf48aaa68c97474f70092a138fa1
+```
+
+Built by `bash build.sh --exe` from the `app/` in this repo, then verified by
+`verify-installer.py` — which unpacks it and confirms the `app.asar` inside is
+byte-identical to the one the build packed.
+
 ---
 
 ## Building it
